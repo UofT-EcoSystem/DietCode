@@ -2,16 +2,16 @@
 
 ## Prerequisites
 
-- Minimum Requirement: A machine with a modern NVIDIA GPU (driver version >=
-  **465.19.01** for CUDA 11.3, Reference: https://docs.nvidia.com/cuda/cuda-toolkit-release-notes/index.html#cuda-major-component-versions)
+- Minimum Requirement: A machine with a modern NVIDIA GPU and GPU Driver version
+  >= **465.19.01** (for CUDA 11.3) [1].
 
 - Docker & Docker-Compose:
 
   ```Bash
   # Docker Installation Steps
-  # Reference: https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#installing-on-ubuntu-and-debian
   curl https://get.docker.com | sh && sudo systemctl --now enable docker
   ```
+  [2]
 
   ```Bash
   # NVIDIA Docker Installation Steps
@@ -35,3 +35,8 @@
   ```Bash
   docker-compose build tvm-dev
   ```
+
+## References
+
+[1] CUDA Compatibility. https://docs.nvidia.com/cuda/cuda-toolkit-release-notes/index.html#cuda-major-component-versions
+[2] NVIDIA Docker Installation Steps. https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#installing-on-ubuntu-and-debian
