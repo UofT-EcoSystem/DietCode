@@ -2,16 +2,15 @@
 
 ## Prerequisites
 
-- Minimum Requirement: A machine with a modern NVIDIA GPU and GPU Driver version
-  >= **465.19.01** (for CUDA 11.3) [1].
+- Minimum Requirement: A machine with a modern NVIDIA GPU and GPU Driver
+  version >= **465.19.01** (for CUDA 11.3) [1].
 
-- Docker & Docker-Compose:
+- Docker & Docker-Compose [2]:
 
   ```Bash
   # Docker Installation Steps
   curl https://get.docker.com | sh && sudo systemctl --now enable docker
   ```
-  [2]
 
   ```Bash
   # NVIDIA Docker Installation Steps
@@ -25,6 +24,7 @@
   ```
 
   ```Bash
+  # Docker-Compose Installation Steps
   pip3 install docker-compose
   ```
 
@@ -38,5 +38,5 @@
 
 ## References
 
-[1] CUDA Compatibility. https://docs.nvidia.com/cuda/cuda-toolkit-release-notes/index.html#cuda-major-component-versions
-[2] NVIDIA Docker Installation Steps. https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#installing-on-ubuntu-and-debian
+- [1] CUDA Compatibility. https://docs.nvidia.com/cuda/cuda-toolkit-release-notes/index.html#cuda-major-component-versions
+- [2] NVIDIA Docker Installation Steps. https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#installing-on-ubuntu-and-debian
