@@ -1,0 +1,6 @@
+[submodule "tvm"]
+	path = tvm
+	url = https://github.com/UofT-EcoSystem/tvm
+[submodule "tvm_base"]
+	path = tvm_base
+	url = https://github.com/UofT-EcoSystem/tvm
