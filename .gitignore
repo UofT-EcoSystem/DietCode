@@ -1,0 +1,23 @@
+# Log Files
+*.log
+*.csv
+*.json
+total_latency.tsv
+
+# Scratchpad
+scratchpad*
+temp_workspace*
+
+# Model Checkpoints
+bert_base_uncased
+
+# Unignore everything in the saved_artifacts folder
+!**/saved_*/**/*
+
+# Compiled Artifacts
+__pycache__
+*.pyc
+*.exe
+*.S
+*.o
+a.out
