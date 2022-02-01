@@ -23,7 +23,7 @@ else:
 # decorators used by pytest's
 tvm_base_decor = pytest.mark.skipif(not use_tvm_base,
                                     reason="TVM base branch must be set: USE_TVM_BASE=1")
-tvm_dev_decor  = pytest.mark.skipif(use_tvm_base, reason="TVM dev branch must be set: USE_TVM_BASE=0")
+dietcode_decor = pytest.mark.skipif(use_tvm_base, reason="TVM dev branch must be set: USE_TVM_BASE=0")
 
 rand_seed = 0
 
