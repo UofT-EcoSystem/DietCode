@@ -61,8 +61,9 @@
   different TVM branches (*Base* or
   <img src="./figures/DietCode_text.png" alt="DietCode" height="16"></img>).
   **NOTE THAT** at least one of the scripts MUST be activated before running the
-  tests (some require the *Base* branch while others require
-  <img src="./figures/DietCode_text.png" alt="DietCode" height="16"></img>):
+  tests (some require the
+  <img src="./figures/DietCode_text.png" alt="DietCode" height="16"></img>
+  branch while others require *Base*):
 
   ```Bash
   # DietCode
