@@ -1,4 +1,4 @@
-# DietCode MLSys 2022 Artifact
+# DietCode
 
 ![](./figures/DietCode.png)
 
@@ -9,8 +9,9 @@
 
 ## Prerequisites
 
-- Minimum Requirement: A machine with a modern NVIDIA GPU and GPU Driver
-  version >= **465.19.01** (for CUDA 11.3) [1].
+- Minimum Requirement: A machine with a modern NVIDIA GPU and GPU driver
+  version >= **465.19.01** (for CUDA 11.3 in
+  [the Dockerfile](./dockerfiles/tvm.Dockerfile)) [1].
 
 - Docker & Docker-Compose [2]:
 
