@@ -1,6 +1,6 @@
 # DietCode MLSys 2022 Artifact
 
-![](./DietCode_640x320.png)
+![](./figures/DietCode.png)
 
 - [Prerequisites](#prerequisites)
 - [Code Organization](#code-organization)
