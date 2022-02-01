@@ -4,6 +4,7 @@
 
 - [Prerequisites](#prerequisites)
 - [Build Instructions](#build-instructions)
+- [Code Organization](#code-organization)
 - [References](#references)
 
 ## Prerequisites
@@ -57,6 +58,9 @@
                          -DUSE_CUBLAS=1 \
                          -DUSE_CUDNN=1 .. && \
                    make -j 4
+  # build the Python binding
+  /mnt/tvm/build $ cd ../python
+  /mnt/tvm/python $ python3 setup.py build
 
   # TVM Base (same procedure)
   /mnt/tvm/build $ cd ../../tvm_base
@@ -66,6 +70,8 @@
                               -DUSE_CUBLAS=1 \
                               -DUSE_CUDNN=1 .. && \
                         make -j 4
+  /mnt/tvm_base/build $ cd ../python
+  /mnt/tvm_base/python $ python3 setup.py build
   ```
 
 ## References
