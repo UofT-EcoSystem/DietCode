@@ -40,23 +40,17 @@
 
 ## Code Organization
 
-- [**`tests`**](./tests)
-
-  Contains test cases for testing code generation changes (i.e., local padding &
-  decision-tree dispatching) and benchmarking performance. Please click on the
-  folder for more details.
+- [**`tests`**](./tests): Contains test cases for testing code generation
+  changes (i.e., local padding & decision-tree dispatching) and benchmarking
+  performance. Please click on the folder for more details.
   
-- [**`tvm_base`**](./tvm_base)
-
-  A clean TVM branch that has only a few changes (for performance benchmarking
-  only). Please refer to [this
-  page](https://github.com/UofT-EcoSystem/tvm/compare/bojian/DietCode_base...bojian/DietCode/base)
+- [**`tvm_base`**](./tvm_base): A clean TVM branch that has only a few changes
+  (for performance benchmarking only). Please refer to
+  [this page](https://github.com/UofT-EcoSystem/tvm/compare/bojian/DietCode_base...bojian/DietCode/base)
   for the changes made at this branch.
 
-- [**`tvm`**](./tvm)
-
-  *DietCode* that is built on top of TVM. Please refer to [this
-  page](https://github.com/UofT-EcoSystem/tvm/compare/bojian/DietCode_base...bojian/DietCode/base)
+- [**`tvm`**](./tvm): *DietCode* that is built on top of TVM. Please refer to
+  [this page](https://github.com/UofT-EcoSystem/tvm/compare/bojian/DietCode_base...bojian/DietCode/stable)
   for the changes made at this branch.
 
 ## Build Instructions
