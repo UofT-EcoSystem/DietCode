@@ -37,10 +37,33 @@
 
 ## Instructions
 
-- Build the Docker image:
+- Build and Run the Docker image:
 
   ```Bash
   docker-compose build tvm-dev
+  docker-compose run --rm tvm-dev
+  ```
+
+- Build *DietCode* and the TVM baseline:
+
+  ```Bash
+  # DietCode
+  /mnt $ cd tvm
+  /mnt/tvm $ mkdir build && cd build
+  /mnt/tvm/build $ cmake -DUSE_CUDA=/usr/local/cuda/ \
+                         -DUSE_LLVM=/usr/lib/llvm/bin/llvm-config \
+                         -DUSE_CUBLAS=1 \
+                         -DUSE_CUDNN=1 .. && \
+                   make -j 4
+
+  # TVM Base (same procedure)
+  /mnt/tvm/build $ cd ../../tvm_base
+  /mnt/tvm_base $ mkdir build && cd build
+  /mnt/tvm_base/build $ cmake -DUSE_CUDA=/usr/local/cuda/ \
+                              -DUSE_LLVM=/usr/lib/llvm/bin/llvm-config \
+                              -DUSE_CUBLAS=1 \
+                              -DUSE_CUDNN=1 .. && \
+                        make -j 4
   ```
 
 ## References
