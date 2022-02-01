@@ -65,10 +65,10 @@
   <img src="./figures/DietCode_text.png" alt="DietCode" height="16"></img>):
 
   ```Bash
-  # Base
-  source environ/activate_base.sh
   # DietCode
   source environ/activate_dietcode.sh
+  # Base
+  source environ/activate_base.sh
   ```
 
 ## Build Instructions
@@ -94,7 +94,7 @@
   /mnt/tvm/build $ cd ../python
   /mnt/tvm/python $ python3 setup.py build
 
-  # TVM Base (same procedure)
+  # Base (same procedure)
   /mnt/tvm/build $ cd ../../tvm_base
   /mnt/tvm_base $ mkdir build && cd build
   /mnt/tvm_base/build $ cmake -DUSE_CUDA=/usr/local/cuda/ \
