@@ -1,7 +1,9 @@
 # DietCode MLSys 2022 Artifact
 
+![](./DietCode.png)
+
 - [Prerequisites](#prerequisites)
-- [Instructions](#instructions)
+- [Build Instructions](#build-instructions)
 - [References](#references)
 
 ## Prerequisites
@@ -35,7 +37,7 @@
   pip3 install docker-compose
   ```
 
-## Instructions
+## Build Instructions
 
 - Build and Run the Docker image:
 

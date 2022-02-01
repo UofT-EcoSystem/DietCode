@@ -16,9 +16,8 @@ if use_tvm_base:
     logger.info("Using TVM base branch")
 else:
     logger.info("Using TVM dev branch")
-    os.environ["DIETCODE_SCHED_OPT"] = '1'
-    os.environ["DIETCODE_PRINT_LAUNCHBOUND"] = '1'
     logger.info("!!! Enabling all the code generation optimizations !!!")
+    os.environ["DIETCODE_CODEGEN_OPT"] = '1'
 
 # decorators used by pytest's
 tvm_base_decor = pytest.mark.skipif(not use_tvm_base,
