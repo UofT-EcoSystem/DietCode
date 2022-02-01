@@ -1,7 +1,6 @@
 import torch
 import tvm
 
-import ctypes
 import logging
 import numpy as np
 import os
@@ -33,26 +32,4 @@ np.random.seed(rand_seed)
 torch.manual_seed(rand_seed)
 
 CUDAContext = tvm.cuda()
-
-libcuda = ctypes.CDLL('libcuda.so')
-# needed to retrieve the device name
-assert libcuda.cuInit(0) == 0, "Failed to initialize CUDA driver APIs"
-
-cuda_device_name = CUDAContext.device_name
-
-if cuda_device_name == 'Tesla T4':
-    cuda_target_abbrev = 't4'
-    cuda_target = 'nvidia/nvidia-t4'
-elif cuda_device_name == 'NVIDIA GeForce RTX 2080 Ti':
-    cuda_target_abbrev = 'rtx_2080_ti'
-    cuda_target = 'nvidia/geforce-rtx-2080-ti'
-elif cuda_device_name == 'NVIDIA GeForce RTX 3090':
-    cuda_target_abbrev = 'rtx_3090'
-    cuda_target = 'nvidia/geforce-rtx-3090'
-elif cuda_device_name == 'Tesla V100-SXM2-16GB':
-    cuda_target_abbrev = 'v100'
-    cuda_target = 'nvidia/nvidia-v100'
-else:
-    assert False, "Unknown CUDA device name={}".format(cuda_device_name)
-
-CUDATarget = tvm.target.Target(cuda_target)
+CUDATarget = tvm.target.Target('cuda')
