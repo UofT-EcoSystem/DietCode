@@ -58,8 +58,11 @@
   for the changes made at this branch.
 
 - [**`environ`**](./environ): Script files that can be activated to select
-  different TVM branches (*Base*/<img src="./figures/DietCode_text.png" alt="DietCode" height="16"></img>).
-  **NOTE THAT** at least one of the scripts MUST be activated before running the tests:
+  different TVM branches (*Base* or
+  <img src="./figures/DietCode_text.png" alt="DietCode" height="16"></img>).
+  **NOTE THAT** at least one of the scripts MUST be activated before running the
+  tests (some require the *Base* branch while others require
+  <img src="./figures/DietCode_text.png" alt="DietCode" height="16"></img>):
 
   ```Bash
   # Base
