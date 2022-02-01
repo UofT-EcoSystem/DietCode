@@ -1,10 +1,10 @@
 # DietCode MLSys 2022 Artifact
 
-![](./DietCode.png)
+![](./DietCode_640x320.png)
 
 - [Prerequisites](#prerequisites)
-- [Build Instructions](#build-instructions)
 - [Code Organization](#code-organization)
+- [Build Instructions](#build-instructions)
 - [References](#references)
 
 ## Prerequisites
@@ -37,6 +37,17 @@
   # Docker-Compose Installation Steps
   pip3 install docker-compose
   ```
+
+## Code Organization
+
+- [`tests`](./tests): Contains test cases for testing code generation changes
+  (i.e., local padding & decision-tree dispatching) and benchmarking
+  performance. Please click on the folder for more details.
+- [`tvm_base`]: A clean TVM branch that has only a few changes (for performance
+  benchmarking only).
+- [`tvm`](./tvm): *DietCode* that is built on top of TVM. Please refer to
+  [this page]()
+  that shows all the changes made.
 
 ## Build Instructions
 
