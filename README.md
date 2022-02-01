@@ -47,22 +47,24 @@
   changes (i.e., local padding & decision-tree dispatching) and benchmarking
   performance. Please click on the folder for more details.
   
-- [**`tvm_base`**](./tvm_base): A clean TVM branch (denoted as *Base*) that has
-  only a few changes (for performance benchmarking only). Please refer to
-  [this page](https://github.com/UofT-EcoSystem/tvm/compare/bojian/DietCode_base...bojian/DietCode/base)
-  for the changes made at this branch.
-
 - [**`tvm`**](./tvm): <img src="./figures/DietCode_text.png" alt="DietCode" height="16"></img>
   that is built on top of TVM. Please refer to
   [this page](https://github.com/UofT-EcoSystem/tvm/compare/bojian/DietCode_base...bojian/DietCode/stable)
   for the changes made at this branch.
 
+- [**`tvm_base`**](./tvm_base): A clean TVM branch (denoted as *Base*) that has
+  only a few changes (for performance benchmarking only). Please refer to
+  [this page](https://github.com/UofT-EcoSystem/tvm/compare/bojian/DietCode_base...bojian/DietCode/base)
+  for the changes made at this branch.
+
 - [**`environ`**](./environ): Script files that can be activated to select
-  different TVM branches (*Base* or
-  <img src="./figures/DietCode_text.png" alt="DietCode" height="16"></img>).
+  different TVM branches (
+  <img src="./figures/DietCode_text.png" alt="DietCode" height="16"></img>
+  or *Base*).
   **NOTE THAT** at least one of the scripts MUST be activated before running the
-  tests (some require the *Base* branch while others require
-  <img src="./figures/DietCode_text.png" alt="DietCode" height="16"></img>):
+  tests (some require the
+  <img src="./figures/DietCode_text.png" alt="DietCode" height="16"></img>
+  branch while others require *Base*):
 
   ```Bash
   # DietCode
