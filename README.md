@@ -26,8 +26,6 @@
                   | sudo apt-key add - \
           && curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list \
                   | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
-  curl -s -L https://nvidia.github.io/nvidia-container-runtime/experimental/$distribution/nvidia-container-runtime.list \
-          | sudo tee /etc/apt/sources.list.d/nvidia-container-runtime.list
   sudo apt-get update
   sudo apt-get install -y nvidia-docker2
   sudo systemctl restart docker
@@ -36,7 +34,12 @@
   ```Bash
   # Docker-Compose Installation Steps
   pip3 install docker-compose
+
+  printf "PATH=\${PATH}:~/.local/bin" >> ~/.bashrc
   ```
+
+  Note that you might need to log out and re-log in for changes such as the
+  `PATH` variable to take place.
 
 ## Code Organization
 
