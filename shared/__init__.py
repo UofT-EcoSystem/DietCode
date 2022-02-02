@@ -10,19 +10,19 @@ import random
 
 logger = logging.getLogger(__name__)
 
-use_tvm_base = (int(os.getenv('USE_TVM_BASE', '0')) == 1)
+use_dietcode = (int(os.getenv('USE_DIETCODE', '0')) == 1)
 
-if use_tvm_base:
-    logger.info("Using TVM base branch")
-else:
-    logger.info("Using TVM dev branch")
-    logger.info("!!! Enabling all the code generation optimizations !!!")
+if use_dietcode:
+    # enable all the code generation optimizations
     os.environ["DIETCODE_CODEGEN_OPT"] = '1'
 
-# decorators used by pytest's
-tvm_base_decor = pytest.mark.skipif(not use_tvm_base,
-                                    reason="TVM base branch must be set: USE_TVM_BASE=1")
-dietcode_decor = pytest.mark.skipif(use_tvm_base, reason="TVM dev branch must be set: USE_TVM_BASE=0")
+# decorators used for filtering tests
+base_decor = pytest.mark.skipif(use_dietcode, reason="Base branch must be set: "
+                                                     "source environ/activate_base.sh")
+dietcode_decor = pytest.mark.skipif(not use_dietcode,
+                                    reason="DietCode branch must be set: "
+                                           "source environ/activate_dietcode.sh"
+                                    )
 
 rand_seed = 0
 
