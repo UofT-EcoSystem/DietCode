@@ -1,3 +1,6 @@
+# CI
+actions-runner
+
 # Log Files
 *.log
 *.csv
