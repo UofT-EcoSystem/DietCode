@@ -1,11 +1,4 @@
-# DietCode
-
-![](./figures/DietCode.png)
-
-- [Prerequisites](#prerequisites)
-- [Code Organization](#code-organization)
-- [Build Instructions](#build-instructions)
-- [References](#references)
+# <img src="./figures/DietCode_text.png" alt="DietCode" height="48"></img>
 
 ## Prerequisites
 
