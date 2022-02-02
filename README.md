@@ -1,4 +1,4 @@
-# DietCode 
+# <img src="./figures/DietCode_text.png" alt="DietCode" height="48"></img>
 
 <p align="center">
   <img src="./figures/DietCode.png" alt="DietCode"></img>
