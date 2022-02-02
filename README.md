@@ -72,6 +72,9 @@ auto-scheduler framework.
   ```Bash
   # DietCode
   source environ/activate_dietcode.sh
+  ```
+
+  ```Bash
   # Base
   source environ/activate_base.sh
   ```
@@ -87,29 +90,13 @@ auto-scheduler framework.
 - Build *DietCode* and *Base*:
 
   ```Bash
-  # DietCode
-  /mnt $ cd tvm
-  /mnt/tvm $ mkdir build && cd build
-  /mnt/tvm/build $ cmake -DUSE_CUDA=/usr/local/cuda/ \
-                         -DUSE_LLVM=/usr/lib/llvm/bin/llvm-config \
-                         -DUSE_CUBLAS=1 \
-                         -DUSE_CUDNN=1 .. && \
-                   make -j 4
-  # build the Python binding
-  /mnt/tvm/build $ cd ../python
-  /mnt/tvm/python $ python3 setup.py build
-
-  # Base (same procedure)
-  /mnt/tvm/build $ cd ../../tvm_base
-  /mnt/tvm_base $ mkdir build && cd build
-  /mnt/tvm_base/build $ cmake -DUSE_CUDA=/usr/local/cuda/ \
-                              -DUSE_LLVM=/usr/lib/llvm/bin/llvm-config \
-                              -DUSE_CUBLAS=1 \
-                              -DUSE_CUDNN=1 .. && \
-                        make -j 4
-  /mnt/tvm_base/build $ cd ../python
-  /mnt/tvm_base/python $ python3 setup.py build
+  ./scripts/1-build.sh tvm
   ```
+
+  ```Bash
+  ./scripts/1-build.sh tvm_base
+  ```
+
 
 ## References
 
