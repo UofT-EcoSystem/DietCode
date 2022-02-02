@@ -90,10 +90,12 @@ auto-scheduler framework.
 - Build *DietCode* and *Base*:
 
   ```Bash
+  # DietCode
   ./scripts/1-build.sh tvm
   ```
 
   ```Bash
+  # Base
   ./scripts/1-build.sh tvm_base
   ```
 
