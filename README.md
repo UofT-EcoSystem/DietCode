@@ -1,6 +1,8 @@
-# DietCode
+# DietCode 
 
-![](./figures/DietCode.png)
+<p align="center">
+  <img src="./figures/DietCode.png" alt="DietCode"></img>
+</p>
 
 - [Prerequisites](#prerequisites)
 - [Code Organization](#code-organization)
