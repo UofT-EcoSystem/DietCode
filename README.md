@@ -15,34 +15,29 @@ auto-scheduler framework.
   version >= **465.19.01** (for CUDA 11.3 in
   [the Dockerfile](./dockerfiles/tvm.Dockerfile)) [1].
 
-- Docker & Docker-Compose [2]:
+- Docker & Docker-Compose [2, 3]:
 
   ```Bash
-  # Docker Installation Steps
+  # Docker
   curl https://get.docker.com | sh && sudo systemctl --now enable docker
   ```
 
   ```Bash
-  # NVIDIA Docker Installation Steps
-  distribution=$(. /etc/os-release;echo $ID$VERSION_ID) \
-          && curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey \
-                  | sudo apt-key add - \
-          && curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list \
-                  | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
-  sudo apt-get update
-  sudo apt-get install -y nvidia-docker2
-  sudo systemctl restart docker
+  # Docker Post-Installation
+  sudo groupadd docker
+  sudo usermod -aG docker $USER
+  newgrp docker
   ```
 
   ```Bash
-  # Docker-Compose Installation Steps
-  pip3 install docker-compose
-
-  printf "PATH=\${PATH}:~/.local/bin" >> ~/.bashrc
+  # NVIDIA Docker
+  ./scripts/0-install_nvidia_docker.sh
   ```
 
-  Note that you might need to log out and re-log in for changes such as the
-  `PATH` variable to take place.
+  ```Bash
+  # Docker-Compose
+  sudo -H pip3 install docker-compose
+  ```
 
 ## Code Organization
 
