@@ -17,7 +17,6 @@ RUN apt-get update && \
         cuda-samples-${CUDA_VERSION_} \
         cuda-nsight-compute-${CUDA_VERSION_} \
         cuda-nsight-systems-${CUDA_VERSION_} \
-        libgl1 libfontconfig libxkbcommon-x11-0 \
         libcudnn${CUDNN_MAJOR_VERSION}=${CUDNN_VERSION}*+cuda${CUDA_VERSION_} \
         libcudnn${CUDNN_MAJOR_VERSION}-dev=${CUDNN_VERSION}*+cuda${CUDA_VERSION_} && \
     rm -rf /var/lib/apt/lists/*
