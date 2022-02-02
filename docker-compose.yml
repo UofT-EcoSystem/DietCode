@@ -2,7 +2,7 @@ version: '2.3'
 
 services:
     DietCode:
-        image: DietCode:stable
+        image: dietcode:stable
         build:
             context: ./dockerfiles
             dockerfile: tvm.Dockerfile
