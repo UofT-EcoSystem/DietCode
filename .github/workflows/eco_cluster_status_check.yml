@@ -1,4 +1,4 @@
-name: Local Status Check
+name: eco-cluster status check
 
 on:
     schedule:
