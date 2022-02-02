@@ -1,5 +1,14 @@
 # <img src="./figures/DietCode_text.png" alt="DietCode" height="48"></img> [![Local Status Check](https://github.com/UofT-EcoSystem/DietCode/actions/workflows/local_status_check.yml/badge.svg)](https://github.com/UofT-EcoSystem/DietCode/actions/workflows/local_status_check.yml)
 
+Thank you for your interest in the
+<img src="./figures/DietCode_text.png" alt="DietCode" height="16"></img>
+project. The key objective of
+<img src="./figures/DietCode_text.png" alt="DietCode" height="16"></img> is to
+deliver high-performance programs for dynamic-shape tensor programs. Please
+kindly go through the documentation below that guides you on how to build and
+use the <img src="./figures/DietCode_text.png" alt="DietCode" height="16"></img> 
+auto-scheduler framework.
+
 ## Prerequisites
 
 - Minimum Requirement: A machine with a modern NVIDIA GPU and GPU driver
