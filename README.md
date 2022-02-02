@@ -1,4 +1,4 @@
-# <img src="./figures/DietCode_text.png" alt="DietCode" height="48"></img>
+# <img src="./figures/DietCode_text.png" alt="DietCode" height="48"></img> [![build and test](https://github.com/UofT-EcoSystem/DietCode/actions/workflows/build_and_test.yml/badge.svg)](https://github.com/UofT-EcoSystem/DietCode/actions/workflows/build_and_test.yml)
 
 ## Prerequisites
 
