@@ -1,10 +1,5 @@
 # <img src="./figures/DietCode_text.png" alt="DietCode" height="48"></img>
 
-- [Prerequisites](#prerequisites)
-- [Code Organization](#code-organization)
-- [Build Instructions](#build-instructions)
-- [References](#references)
-
 ## Prerequisites
 
 - Minimum Requirement: A machine with a modern NVIDIA GPU and GPU driver
