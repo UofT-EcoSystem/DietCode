@@ -98,4 +98,5 @@ auto-scheduler framework.
 ## References
 
 - [1] CUDA Compatibility. https://docs.nvidia.com/cuda/cuda-toolkit-release-notes/index.html#cuda-major-component-versions
-- [2] NVIDIA Docker Installation Steps. https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#installing-on-ubuntu-and-debian
+- [2] Docker Post-Installation Steps. https://docs.docker.com/engine/install/linux-postinstall/#manage-docker-as-a-non-root-user
+- [3] NVIDIA Docker Installation Steps. https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#installing-on-ubuntu-and-debian
