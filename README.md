@@ -94,7 +94,6 @@ auto-scheduler framework.
   ./scripts/1-build.sh tvm_base
   ```
 
-
 ## References
 
 - [1] CUDA Compatibility. https://docs.nvidia.com/cuda/cuda-toolkit-release-notes/index.html#cuda-major-component-versions
