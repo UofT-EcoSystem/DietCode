@@ -16,9 +16,8 @@ def test_local_padding():
     """
     This test case shows the performance improvement brought by local padding.
     We compare the compute throughputs between two schedules, one without local
-    padding (denoted as 'baseline') and the other with local padding.
+    padding (baseline) and the other with local padding (DietCode).
     """
-
     B, T, I, H = 16, 60, 768, 2304
     TFLOPs = 2 * B * T * I * H / 1e12
     
