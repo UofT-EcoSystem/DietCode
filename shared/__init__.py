@@ -1,6 +1,7 @@
 import torch
 import tvm
 
+import ctypes
 import logging
 import numpy as np
 import os
@@ -31,4 +32,9 @@ np.random.seed(rand_seed)
 torch.manual_seed(rand_seed)
 
 CUDAContext = tvm.cuda()
+
+libcuda = ctypes.CDLL('libcuda.so')
+# needed to retrieve the device name
+assert libcuda.cuInit(0) == 0, "Failed to initialize CUDA driver APIs"
+
 CUDATarget = tvm.target.Target('cuda')

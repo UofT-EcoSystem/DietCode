@@ -4,7 +4,7 @@ import numpy as np
 
 logger = logging.getLogger(__name__)
 
-from ...shared import dietcode_decor
+from ...shared import CUDAContext, dietcode_decor
 
 from ..ops.dense.sample_schedule import dense_128x128
 from ..ops.dense.fixture import Dense, cuBLASDenseFixture
@@ -44,7 +44,11 @@ def test_local_padding():
                                 verify_correctness=True
                             )
 
-    logger.info("Baseline vs. DietCode: {} vs. {} (TFLOPS)".format(
-                    TFLOPs / np.average(baseline_perf_results),
-                    TFLOPs / np.average(dietcode_perf_results)
-                ))
+    baseline_tflops = TFLOPs / np.average(baseline_perf_results)
+    dietcode_tflops = TFLOPs / np.average(dietcode_perf_results)
+    logger.info(f"Baseline vs. DietCode: {baseline_tflops} vs. {dietcode_tflops} (TFLOPS)")
+
+    if CUDAContext.device_name == 'NVIDIA GeForce RTX 3090':
+        # make sure that the measured performance numbers match our expectation:
+        # (Baseline : 1 vs. DietCode : 11)
+        assert baseline_tflops < 2 and dietcode_tflops > 10
