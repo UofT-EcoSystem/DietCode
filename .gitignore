@@ -1,6 +1,9 @@
 # CI
 actions-runner
 
+# IDE
+.env
+
 # Log Files
 *.log
 *.csv
@@ -14,13 +17,12 @@ temp_workspace*
 # Model Checkpoints
 bert_base_uncased
 
-# Unignore everything in the saved_artifacts folder
+# unignore everything in the saved_* folder
 !**/saved_*/**/*
 
-# Compiled Artifacts
+# Compilation Artifacts
 __pycache__
 *.pyc
 *.exe
 *.S
 *.o
-a.out
