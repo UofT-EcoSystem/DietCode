@@ -20,7 +20,7 @@ def test_local_padding():
     """
 
     B, T, I, H = 16, 60, 768, 2304
-    TFLOPS = 2 * B * T * I * H
+    TFLOPs = 2 * B * T * I * H / 1e12
     
     wkl_func_args = (B * T, I, H)
     cublas_fixture = cuBLASDenseFixture(*wkl_func_args)
@@ -39,7 +39,7 @@ def test_local_padding():
                                 fixture=cublas_fixture
                             )
 
-    logger.info("Baseline vs. DietCode: {} vs. {}".format(
-                    TFLOPS / np.average(baseline_perf_results) / 1e12,
-                    TFLOPS / np.average(dietcode_perf_results) / 1e12
+    logger.info("Baseline vs. DietCode: {} vs. {} (TFLOPS)".format(
+                    TFLOPs / np.average(baseline_perf_results),
+                    TFLOPs / np.average(dietcode_perf_results)
                 ))
