@@ -10,4 +10,3 @@ services:
         volumes:
             - .:/mnt
         working_dir: /mnt
-        privileged: true
