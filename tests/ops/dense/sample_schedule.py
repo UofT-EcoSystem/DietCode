@@ -1,12 +1,12 @@
-"""
-Sample Schedule for A Dense Layer
-
-This schedule is used for testing code generation changes.
-"""
 from tvm import te
 
 
 def dense_128x128(X, W, T_dense, s):
+    """
+    Sample Schedule for A Dense Layer
+
+    This schedule is used for testing code generation changes.
+    """
     T_dense_i, T_dense_j, T_dense_k = tuple(T_dense.op.axis) + tuple(T_dense.op.reduce_axis)
     T_dense_local, = s.cache_write([T_dense], "local")
     T_dense_local_i_c, T_dense_local_j_c, T_dense_local_k = tuple(T_dense_local.op.axis) + tuple(T_dense_local.op.reduce_axis)
