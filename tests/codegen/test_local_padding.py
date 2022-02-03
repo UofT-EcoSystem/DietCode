@@ -49,6 +49,5 @@ def test_local_padding():
     logger.info(f"Baseline vs. DietCode: {baseline_tflops} vs. {dietcode_tflops} (TFLOPS)")
 
     if CUDAContext.device_name == 'NVIDIA GeForce RTX 3090':
-        # make sure that the measured performance numbers match our expectation:
-        # (Baseline : 1 vs. DietCode : 11)
+        # Expectation on Compute Throughputs: 1 (Baseline) vs. 11 (DietCode)
         assert baseline_tflops < 2 and dietcode_tflops > 10
