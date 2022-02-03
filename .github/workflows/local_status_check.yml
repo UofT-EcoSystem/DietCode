@@ -1,15 +1,17 @@
 name: local status check
 
 on:
-    schedule:
-        - cron: "0 9 * * *"
+  schedule:
+    - cron: "0 9 * * *"
 
 jobs:
-    build:
-        runs-on: local
-        steps:
-            - uses: actions/checkout@master
-            - name: DietCode (build)
-              run: docker-compose run --rm DietCode bash -c "/mnt/scripts/1-build.sh tvm"
-            - name: Base (Build)
-              run: docker-compose run --rm DietCode bash -c "/mnt/scripts/1-build.sh tvm_base"
+  build:
+    runs-on: local
+    steps:
+      - uses: actions/checkout@master
+        with:
+          submodules: true
+      - name: DietCode (build)
+        run: docker-compose run --rm DietCode bash -c "/mnt/scripts/1-build.sh tvm"
+      - name: Base (Build)
+        run: docker-compose run --rm DietCode bash -c "/mnt/scripts/1-build.sh tvm_base"
