@@ -62,8 +62,7 @@ def get_time_evaluator_results(wkl_func, wkl_func_args, fixture,
 
     kernel(*module_data)
     if verify_correctness:
-        np.testing.assert_allclose(module_data[-1].asnumpy(),
-                                   fixture.Y_np_expected,
+        np.testing.assert_allclose(module_data[-1].asnumpy(), fixture.Y_np,
                                    rtol=1e-3, atol=1e-3)
 
     warmup_evaluator = kernel.time_evaluator(kernel.entry_name, CUDAContext,

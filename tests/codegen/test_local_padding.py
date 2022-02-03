@@ -27,16 +27,21 @@ def test_local_padding():
     # temporarily disable local padding
     os.environ['DIETCODE_DO_LOCAL_PADDING'] = '0'
     baseline_perf_results = get_time_evaluator_results_rpc_wrapper(
-                                wkl_func=Dense, wkl_func_args=wkl_func_args,
+                                wkl_func=Dense,
+                                wkl_func_args=wkl_func_args,
                                 sched_func_or_str=dense_128x128,
-                                fixture=cublas_fixture
+                                fixture=cublas_fixture,
+                                print_kernel=True
                             )
     os.environ['DIETCODE_DO_LOCAL_PADDING'] = '1'
 
     dietcode_perf_results = get_time_evaluator_results_rpc_wrapper(
-                                wkl_func=Dense, wkl_func_args=wkl_func_args,
+                                wkl_func=Dense,
+                                wkl_func_args=wkl_func_args,
                                 sched_func_or_str=dense_128x128,
-                                fixture=cublas_fixture
+                                fixture=cublas_fixture,
+                                print_kernel=True,
+                                verify_correctness=True
                             )
 
     logger.info("Baseline vs. DietCode: {} vs. {} (TFLOPS)".format(
