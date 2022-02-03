@@ -1,3 +1,4 @@
+import filecmp
 import logging
 import os
 import numpy as np
@@ -41,8 +42,12 @@ def test_local_padding():
                                 sched_func_or_str=dense_128x128,
                                 fixture=cublas_fixture,
                                 print_kernel=True,
+                                log_kernel_filename="temp_workspace.log",
                                 verify_correctness=True
                             )
+    assert filecmp.cmp(os.path.dirname(os.path.realpath(__file__))
+                           + "/saved_artifacts/test_local_padding.cu",
+                       "temp_workspace.log")
 
     baseline_tflops = TFLOPs / np.average(baseline_perf_results)
     dietcode_tflops = TFLOPs / np.average(dietcode_perf_results)

@@ -14,7 +14,7 @@ from ....shared import CUDAContext, CUDATarget
 
 def get_time_evaluator_results(wkl_func, wkl_func_args, fixture,
                                sched_func_or_str=None,
-                               print_kernel=False, kernel_log_filename=None,
+                               print_kernel=False, log_kernel_filename=None,
                                verify_correctness=False):
     """
     Measure the given workload with the provided schedule string (generated from
@@ -26,7 +26,7 @@ def get_time_evaluator_results(wkl_func, wkl_func_args, fixture,
     wkl_func_args       : Workload Function Arguments
     fixture             : Operator Fixture, used for checking correctness
     print_kernel        : Whether to print the kernel to the console
-    kernel_log_filename : Filename to dump kernel output
+    log_kernel_filename : Filename to dump kernel output
     verify_correctness  : Whether to verify the correctness of the generated
                           kernel (using the fixture)
     """
@@ -47,8 +47,8 @@ def get_time_evaluator_results(wkl_func, wkl_func_args, fixture,
         logger.info("{}".format(tvm.lower(s, tensor_args, simple_mode=True)))
         logger.info("{}".format(kernel_src))
 
-        if kernel_log_filename is not None:
-            with open(kernel_log_filename, 'w') as fout:
+        if log_kernel_filename is not None:
+            with open(log_kernel_filename, 'w') as fout:
                 fout.write("{}".format(kernel_src))
 
     if hasattr(fixture, "vendor_module_data"):
