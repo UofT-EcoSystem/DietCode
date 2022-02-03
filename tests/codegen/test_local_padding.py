@@ -6,8 +6,8 @@ logger = logging.getLogger(__name__)
 
 from ...shared import dietcode_decor
 
-from ..ops.dense.sample_schedule import dense_2048x768x2304
-from ..ops.dense.fixture import Dense
+from ..ops.dense.sample_schedule import dense_128x128
+from ..ops.dense.fixture import Dense, cuBLASDenseFixture
 from ..ops.shared.utils import get_time_evaluator_results_rpc_wrapper
 
 
@@ -25,17 +25,18 @@ def test_local_padding():
     wkl_func_args = (B * T, I, H)
     cublas_fixture = cuBLASDenseFixture(*wkl_func_args)
 
-    os.environ['DIETCODE_CODEGEN_OPT'] = '0'
+    # temporarily disable local padding
+    os.environ['DIETCODE_DO_LOCAL_PADDING'] = '0'
     baseline_perf_results = get_time_evaluator_results_rpc_wrapper(
                                 wkl_func=Dense, wkl_func_args=wkl_func_args,
-                                sched_func_or_str=dense_2048x768x2304,
+                                sched_func_or_str=dense_128x128,
                                 fixture=cublas_fixture
                             )
-    os.environ['DIETCODE_CODEGEN_OPT'] = '1'
+    os.environ['DIETCODE_DO_LOCAL_PADDING'] = '1'
 
     dietcode_perf_results = get_time_evaluator_results_rpc_wrapper(
                                 wkl_func=Dense, wkl_func_args=wkl_func_args,
-                                sched_func_or_str=dense_2048x768x2304,
+                                sched_func_or_str=dense_128x128,
                                 fixture=cublas_fixture
                             )
 
