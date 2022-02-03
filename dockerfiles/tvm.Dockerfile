@@ -14,9 +14,6 @@ RUN apt-get update && \
     CUDA_VERSION_=$(printf ${CUDA_VERSION} | grep -oE '[0-9]+.[0-9]+') && \
     CUDNN_MAJOR_VERSION=$(printf ${CUDNN_VERSION} | grep -oE '[0-9]+' | head -1) && \
     apt-get install -y --no-install-recommends \
-        cuda-samples-${CUDA_VERSION_} \
-        cuda-nsight-compute-${CUDA_VERSION_} \
-        cuda-nsight-systems-${CUDA_VERSION_} \
         libcudnn${CUDNN_MAJOR_VERSION}=${CUDNN_VERSION}*+cuda${CUDA_VERSION_} \
         libcudnn${CUDNN_MAJOR_VERSION}-dev=${CUDNN_VERSION}*+cuda${CUDA_VERSION_} && \
     rm -rf /var/lib/apt/lists/*
@@ -50,7 +47,7 @@ ENV PATH=${PATH}:/usr/lib/llvm/bin
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-        vim build-essential gdb python3-dev && \
+        git vim build-essential python3-dev && \
     ln -s /usr/bin/python3 /usr/bin/python && \
     rm -rf /var/lib/apt/lists/*
 
@@ -65,9 +62,7 @@ RUN pip install cmake
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-        git curl libtinfo-dev libedit-dev \
-        libxml2-dev zlib1g-dev && \
-    printf "git config --global credential.helper store\n" >> /root/.bashrc && \
+        curl libtinfo-dev libedit-dev libxml2-dev zlib1g-dev && \
     rm -rf /var/lib/apt/lists/*
 
 RUN pip install numpy scipy decorator attrs psutil typed_ast cython six \
