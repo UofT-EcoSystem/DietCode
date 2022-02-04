@@ -19,6 +19,11 @@ def test_local_padding():
     We compare the compute throughputs between two schedules, one without local
     padding (baseline) and the other with local padding (DietCode).
     """
+    # We deliberately set the value of the sequence length such that
+    #
+    # (B * T = 16 * 60 = 960) % 128 ≠ 0
+    #
+    # where 128 is the tile size of the micro-kernel dense_128x128. 
     B, T, I, H = 16, 60, 768, 2304
     TFLOPs = 2 * B * T * I * H / 1e12
     
