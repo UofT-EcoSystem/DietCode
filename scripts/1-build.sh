@@ -2,7 +2,7 @@
 
 PROJECT_ROOT=$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)/..
 
-if [ $1 != "tvm" ] || [ $1 = "tvm_base" ]; then
+if [ $1 != "tvm" ] && [ $1 != "tvm_base" ]; then
         printf "Expecting one command line argument (tvm/tvm_base), but got $1 instead\n"
         exit -1
 fi
