@@ -11,10 +11,13 @@ cd ${PROJECT_ROOT}/$1
 
 mkdir -p build && cd build
 
-cmake -DUSE_CUDA=/usr/local/cuda/ \
-      -DUSE_LLVM=/usr/lib/llvm/bin/llvm-config \
-      -DUSE_CUBLAS=1 \
-      -DUSE_CUDNN=1 ..
+if [ ! -f Makefile ]; then
+        cmake -DUSE_CUDA=/usr/local/cuda/ \
+              -DUSE_LLVM=/usr/lib/llvm/bin/llvm-config \
+              -DUSE_CUBLAS=1 \
+              -DUSE_CUDNN=1 ..
+fi
+
 make -j 4
 
 cd ${PROJECT_ROOT}/$1/python
