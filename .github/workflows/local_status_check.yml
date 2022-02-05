@@ -16,4 +16,4 @@ jobs:
       - name: Base (Build)
         run: docker-compose run --rm tvm-dev bash -c "/mnt/scripts/1-build.sh tvm_base"
       - name: Code Generation Tests
-        run: docker-compose run --rm tvm-dev bash -c "source scripts/activate_dietcode.sh && pytest -s tests/codegen"
+        run: docker-compose run --rm tvm-dev bash -c "source environ/activate_dietcode.sh && pytest -s tests/codegen"
