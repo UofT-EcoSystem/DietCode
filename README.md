@@ -9,6 +9,9 @@ kindly go through the documentation below that guides you on how to build and
 use the <img src="./figures/DietCode_text.png" alt="DietCode" height="16"></img> 
 auto-scheduler framework.
 
+:point_up: *Please refer to the top-left corner of the README for the table of
+contents*.
+
 ## Prerequisites
 
 - Minimum Requirement: A machine with a modern NVIDIA GPU and GPU driver
@@ -93,6 +96,15 @@ auto-scheduler framework.
   # Base
   ./scripts/1-build.sh tvm_base
   ```
+
+## How To?
+
+- **Know how the implementation details of
+  <img src="./figures/DietCode_text.png" alt="DietCode" height="16"></img>?**
+  - Please refer to the [**`tvm`**](./tvm) submodule and
+    [this page](https://github.com/UofT-EcoSystem/tvm/compare/bojian/DietCode_base...bojian/DietCode/stable)
+    for the changes made at this branch. We did our best to document the code
+    thoroughly, with the key changes highlighted using the `<DietCode>` tag.
 
 ## References
 
