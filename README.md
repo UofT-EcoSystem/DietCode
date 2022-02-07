@@ -99,7 +99,7 @@ contents*.
 
 ## How To?
 
-- **Know how the implementation details of
+- **Know the implementation details of
   <img src="./figures/DietCode_text.png" alt="DietCode" height="16"></img>?**
   - Please refer to the [**`tvm`**](./tvm) submodule and
     [this page](https://github.com/UofT-EcoSystem/tvm/compare/bojian/DietCode_base...bojian/DietCode/stable)
