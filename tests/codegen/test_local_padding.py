@@ -18,13 +18,35 @@ def test_local_padding():
     This test case shows the performance improvement brought by local padding.
     We compare the compute throughputs between two schedules, one without local
     padding (baseline) and the other with local padding (DietCode).
+    
+    We use the dense layer as the workload:
+    
+        Mathematical Expression: Y = XW^T
+    
+        for (i = 0; i < B × T; ++i)
+          for (j = 0: j < H; ++j)
+            for (k = 0; k < I; ++k)
+              Y[i, j] += X[i, k] * W[j, k]
+    
+    where (B, T, I, H) stand for (batch size, sequence length, input size,
+    hidden dimension) respectively (namings adopted from the BERT model).
+    
+    We adopt a sample schedule `dense_128x128x4` for this workload. The
+    schedule, as its name suggests, has a tile size of (128, 128, 4) along the
+    (i, j, k) dimension respectively.
+    
+    Furthermore, we deliberately set the value of the sequence length T to 60,
+    and the input size I to 770, so that
+    
+        (B * T = 16 * 60 = 960) % 128 ≠ 0
+        
+        (I = 770) % 4 ≠ 0
+
+    Our evaluations show that the local padding optimization of DietCode can
+    significantly boost the performance of the generated CUDA kernel by more
+    than 10× in this case (on a modern NVIDIA RTX 3090 GPU).
     """
-    # We deliberately set the value of the sequence length such that
-    #
-    # (B * T = 16 * 60 = 960) % 128 ≠ 0
-    #
-    # where 128 is the tile size of the micro-kernel dense_128x128. 
-    B, T, I, H = 16, 60, 768, 2304
+    B, T, I, H = 16, 60, 770, 2304
     TFLOPs = 2 * B * T * I * H / 1e12
     
     wkl_func_args = (B * T, I, H)

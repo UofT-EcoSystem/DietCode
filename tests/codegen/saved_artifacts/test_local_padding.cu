@@ -80,14 +80,22 @@ extern "C" __global__ void __launch_bounds__(256) default_function_kernel0(float
   T_matmul_NT_local[(62)] = 0.000000e+00f;
   T_matmul_NT_local[(31)] = 0.000000e+00f;
   T_matmul_NT_local[(63)] = 0.000000e+00f;
-  for (int k_outer_outer = 0; k_outer_outer < 192; ++k_outer_outer) {
+  for (int k_outer_outer = 0; k_outer_outer < 193; ++k_outer_outer) {
     __syncthreads();
     if (((int)threadIdx.x) < 128) {
-      if ((((((int)blockIdx.x) / 18) * 128) + ((int)threadIdx.x)) < 960) {
-        ((float4*)(X_shared + ((((int)threadIdx.x) * 4))))[0] = ((float4*)(X + (((((((int)blockIdx.x) / 18) * 98304) + (((int)threadIdx.x) * 768)) + (k_outer_outer * 4)))))[0];
-      }
+      X_shared[((((int)threadIdx.x) * 4))] = (((((((int)blockIdx.x) / 18) * 128) + ((int)threadIdx.x)) < 960) ? X[(((((((int)blockIdx.x) / 18) * 98560) + (((int)threadIdx.x) * 770)) + (k_outer_outer * 4)))] : 0.000000e+00f);
     }
-    ((float2*)(W_shared + ((((int)threadIdx.x) * 2))))[0] = ((float2*)(W + ((((((((int)blockIdx.x) % 18) * 98304) + ((((int)threadIdx.x) >> 1) * 768)) + (k_outer_outer * 4)) + ((((int)threadIdx.x) & 1) * 2)))))[0];
+    if (((int)threadIdx.x) < 128) {
+      X_shared[(((((int)threadIdx.x) * 4) + 1))] = (((((((int)blockIdx.x) / 18) * 128) + ((int)threadIdx.x)) < 960) ? X[((((((((int)blockIdx.x) / 18) * 98560) + (((int)threadIdx.x) * 770)) + (k_outer_outer * 4)) + 1))] : 0.000000e+00f);
+    }
+    if (((int)threadIdx.x) < 128) {
+      X_shared[(((((int)threadIdx.x) * 4) + 2))] = ((((((((int)blockIdx.x) / 18) * 128) + ((int)threadIdx.x)) < 960) && (k_outer_outer < 192)) ? X[((((((((int)blockIdx.x) / 18) * 98560) + (((int)threadIdx.x) * 770)) + (k_outer_outer * 4)) + 2))] : 0.000000e+00f);
+    }
+    if (((int)threadIdx.x) < 128) {
+      X_shared[(((((int)threadIdx.x) * 4) + 3))] = ((((((((int)blockIdx.x) / 18) * 128) + ((int)threadIdx.x)) < 960) && (k_outer_outer < 192)) ? X[((((((((int)blockIdx.x) / 18) * 98560) + (((int)threadIdx.x) * 770)) + (k_outer_outer * 4)) + 3))] : 0.000000e+00f);
+    }
+    W_shared[((((int)threadIdx.x) * 2))] = ((((k_outer_outer * 4) + ((((int)threadIdx.x) & 1) * 2)) < 770) ? W[((((((((int)blockIdx.x) % 18) * 98560) + ((((int)threadIdx.x) >> 1) * 770)) + (k_outer_outer * 4)) + ((((int)threadIdx.x) & 1) * 2)))] : 0.000000e+00f);
+    W_shared[(((((int)threadIdx.x) * 2) + 1))] = ((((k_outer_outer * 4) + (((((int)threadIdx.x) * 2) + 1) & 3)) < 770) ? W[((((((((int)blockIdx.x) % 18) * 98560) + ((((((int)threadIdx.x) * 2) + 1) >> 2) * 770)) + (k_outer_outer * 4)) + (((((int)threadIdx.x) * 2) + 1) & 3)))] : 0.000000e+00f);
     __syncthreads();
     T_matmul_NT_local[(0)] = (T_matmul_NT_local[(0)] + (X_shared[(((((int)threadIdx.x) >> 5) * 64))] * W_shared[(((((int)threadIdx.x) & 31) * 8))]));
     T_matmul_NT_local[(32)] = (T_matmul_NT_local[(32)] + (X_shared[(((((int)threadIdx.x) >> 5) * 64))] * W_shared[((((((int)threadIdx.x) & 31) * 8) + 256))]));
