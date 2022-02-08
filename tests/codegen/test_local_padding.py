@@ -80,6 +80,17 @@ def test_local_padding():
     dietcode_tflops = TFLOPs / np.average(dietcode_perf_results)
     logger.info(f"Baseline vs. DietCode: {baseline_tflops} vs. {dietcode_tflops} (TFLOPS)")
 
+    # Expectation
+    #
+    # =================================
+    # GPU       RTX 3090    RTX 2080 Ti
+    # --------  --------    -----------
+    # Baseline  ~1          ~0.6
+    # DietCode  ~11         ~6
+    # =================================
     if CUDAContext.device_name == 'NVIDIA GeForce RTX 3090':
-        # Expectation on Compute Throughputs: 1 (Baseline) vs. 11 (DietCode)
+        # Expectation on Compute Throughputs: 1.0 (Baseline) vs. 11 (DietCode)
         assert baseline_tflops < 2 and dietcode_tflops > 10
+    if CUDAContext.device_name == 'NVIDIA GeForce RTX 2080 Ti':
+        # Expectation on Compute Throughputs: 0.6 (Baseline) vs. 6  (DietCode)
+        assert baseline_tflops < 1 and dietcode_tflops > 5
