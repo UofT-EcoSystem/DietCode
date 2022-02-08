@@ -1,13 +1,10 @@
 # <img src="./figures/DietCode_text.png" alt="DietCode" height="48"></img> [![RTX 3090 desktop](https://github.com/UofT-EcoSystem/DietCode/actions/workflows/rtx_3090_desktop.yml/badge.svg)](https://github.com/UofT-EcoSystem/DietCode/actions/workflows/rtx_3090_desktop.yml) [![RTX 2080 Ti server](https://github.com/UofT-EcoSystem/DietCode/actions/workflows/rtx_2080_ti_server.yml/badge.svg)](https://github.com/UofT-EcoSystem/DietCode/actions/workflows/rtx_2080_ti_server.yml)
 
-Thank you for your interest in the
-<img src="./figures/DietCode_text.png" alt="DietCode" height="16"></img>
-project. The key objective of
-<img src="./figures/DietCode_text.png" alt="DietCode" height="16"></img> is to
+Thank you for your interest in the <img src="./figures/DietCode_text.png"
+alt="DietCode" height="16"></img> project. The key objective of *DietCode* is to
 deliver high-performance programs for dynamic-shape tensor programs. Please
 kindly go through the documentation below that guides you on how to build and
-use the <img src="./figures/DietCode_text.png" alt="DietCode" height="16"></img> 
-auto-scheduler framework.
+use the *DietCode* auto-scheduler framework.
 
 :point_up: *Please refer to the top-left corner of the README for the table of
 contents*.
@@ -59,13 +56,9 @@ contents*.
   for the changes made at this branch.
 
 - [**`environ`**](./environ): Script files that can be activated to select
-  different TVM branches (
-  <img src="./figures/DietCode_text.png" alt="DietCode" height="16"></img>
-  or *Base*).
-  **NOTE THAT at least one of the scripts MUST be activated** before running the
-  tests (some require the
-  <img src="./figures/DietCode_text.png" alt="DietCode" height="16"></img>
-  branch while others require *Base*):
+  different TVM branches (*DietCode* or *Base*). **Note that at least one of the
+  scripts MUST be activated** before running the tests (some require the
+  *DietCode* branch while others require *Base*):
 
   ```Bash
   # DietCode
