@@ -62,7 +62,7 @@ contents*.
   different TVM branches (
   <img src="./figures/DietCode_text.png" alt="DietCode" height="16"></img>
   or *Base*).
-  **NOTE THAT** at least one of the scripts MUST be activated before running the
+  **NOTE THAT at least one of the scripts MUST be activated** before running the
   tests (some require the
   <img src="./figures/DietCode_text.png" alt="DietCode" height="16"></img>
   branch while others require *Base*):
