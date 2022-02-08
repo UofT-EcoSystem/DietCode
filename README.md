@@ -92,7 +92,7 @@ contents*.
 
 ## How To?
 
-- **Getting started with
+- **Get started with
   <img src="./figures/DietCode_text.png" alt="DietCode" height="16"></img>?**
   - Please refer to the [**`test`**](./test) folder that contains examples
     demonstrating the code generation optimizations and the auto-scheduler
