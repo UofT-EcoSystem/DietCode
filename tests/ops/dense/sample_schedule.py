@@ -1,7 +1,7 @@
 from tvm import te
 
 
-def dense_128x128(X, W, T_dense, s):
+def dense_128x128x4(X, W, T_dense, s):
     """
     Sample Schedule for A Dense Layer
 

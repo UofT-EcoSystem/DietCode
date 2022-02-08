@@ -7,7 +7,7 @@ logger = logging.getLogger(__name__)
 
 from ...shared import CUDAContext, dietcode_decor
 
-from ..ops.dense.sample_schedule import dense_128x128
+from ..ops.dense.sample_schedule import dense_128x128x4
 from ..ops.dense.fixture import Dense, cuBLASDenseFixture
 from ..ops.shared.utils import get_time_evaluator_results_rpc_wrapper
 
@@ -57,7 +57,7 @@ def test_local_padding():
     baseline_perf_results = get_time_evaluator_results_rpc_wrapper(
                                 wkl_func=Dense,
                                 wkl_func_args=wkl_func_args,
-                                sched_func_or_str=dense_128x128,
+                                sched_func_or_str=dense_128x128x4,
                                 fixture=cublas_fixture,
                                 print_kernel=True
                             )
@@ -66,7 +66,7 @@ def test_local_padding():
     dietcode_perf_results = get_time_evaluator_results_rpc_wrapper(
                                 wkl_func=Dense,
                                 wkl_func_args=wkl_func_args,
-                                sched_func_or_str=dense_128x128,
+                                sched_func_or_str=dense_128x128x4,
                                 fixture=cublas_fixture,
                                 print_kernel=True,
                                 log_kernel_filename="temp_workspace.log",
