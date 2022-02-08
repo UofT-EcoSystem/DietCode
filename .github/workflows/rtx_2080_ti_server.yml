@@ -1,4 +1,4 @@
-name: RTX 2080 Ti
+name: RTX 2080 Ti server
 
 on:
   schedule:

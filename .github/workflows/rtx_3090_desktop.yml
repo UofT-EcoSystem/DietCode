@@ -1,4 +1,4 @@
-name: RTX 3090
+name: RTX 3090 desktop
 
 on:
   schedule:
