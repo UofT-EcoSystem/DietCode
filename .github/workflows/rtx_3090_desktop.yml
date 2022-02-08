@@ -1,4 +1,4 @@
-name: local status check
+name: RTX 3090
 
 on:
   schedule:

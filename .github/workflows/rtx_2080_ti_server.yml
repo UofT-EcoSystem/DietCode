@@ -1,4 +1,4 @@
-name: eco-cluster status check
+name: RTX 2080 Ti
 
 on:
   schedule:

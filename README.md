@@ -1,4 +1,4 @@
-# <img src="./figures/DietCode_text.png" alt="DietCode" height="48"></img> [![local status check](https://github.com/UofT-EcoSystem/DietCode/actions/workflows/local_status_check.yml/badge.svg)](https://github.com/UofT-EcoSystem/DietCode/actions/workflows/local_status_check.yml) [![eco-cluster status check](https://github.com/UofT-EcoSystem/DietCode/actions/workflows/eco_cluster_status_check.yml/badge.svg)](https://github.com/UofT-EcoSystem/DietCode/actions/workflows/eco_cluster_status_check.yml)
+# <img src="./figures/DietCode_text.png" alt="DietCode" height="48"></img> [![RTX 3090 desktop](https://github.com/UofT-EcoSystem/DietCode/actions/workflows/rtx_3090_desktop.yml/badge.svg)](https://github.com/UofT-EcoSystem/DietCode/actions/workflows/rtx_3090_desktop.yml) [![RTX 2080 Ti Server](https://github.com/UofT-EcoSystem/DietCode/actions/workflows/rtx_2080_ti_server.yml/badge.svg)](https://github.com/UofT-EcoSystem/DietCode/actions/workflows/rtx_2080_ti_server.yml)
 
 Thank you for your interest in the
 <img src="./figures/DietCode_text.png" alt="DietCode" height="16"></img>
