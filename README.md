@@ -41,9 +41,10 @@ use the *DietCode* auto-scheduler framework.
 
 ## Code Organization
 
-- [**`tests`**](./tests): Contains test cases for testing code generation
-  changes (i.e., local padding & decision-tree dispatching) and benchmarking
-  performance. Please click on the folder for more details.
+- [**`tests`**](./tests): Contains examples (as well as test cases) for testing
+  key features (i.e., local padding, auto-scheduling, and decision-tree
+  dispatching) in terms of correctness and runtime performance. Please click on
+  the folder for more details.
   
 - [**`tvm`**](./tvm): <img src="./figures/DietCode_text.png" alt="DietCode" height="16"></img>
   that is built on top of TVM. Please refer to
