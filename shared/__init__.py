@@ -17,6 +17,13 @@ if use_dietcode:
     # enable all the code generation optimizations
     os.environ["DIETCODE_CODEGEN_OPT"] = '1'
 
+class no_local_padding:
+    def __enter__(self):
+        os.environ["DIETCODE_DO_LOCAL_PADDING"] = '0'
+
+    def __exit__(self, exc_type, exc_value, exc_tb):
+        os.environ["DIETCODE_DO_LOCAL_PADDING"] = '1'
+
 # decorators used for filtering tests
 base_decor = pytest.mark.skipif(use_dietcode, reason="Base branch must be set: "
                                                      "source environ/activate_base.sh")
