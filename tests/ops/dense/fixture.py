@@ -23,9 +23,12 @@ class cuBLASDenseFixture:
     """
     cuBLAS Dense Fixture
 
-    This fixture performs the computation Dense([B, I], [H, I]) and is using the
-    NVIDIA cuBLAS library under the hood. It is used for checking the
-    correctness and testing the performance of DietCode.
+    This fixture performs the computation
+    
+        Dense([B, I], [H, I])
+    
+    and is using the NVIDIA cuBLAS library under the hood. It is used for
+    checking the correctness and testing the performance of DietCode.
     """
     __slots__ = 'B', 'I', 'H', 'X_np', 'W_np', 'Y', 'Y_np'
 
