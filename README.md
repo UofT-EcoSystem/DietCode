@@ -97,7 +97,7 @@ framework.
 
 - **Get started with <img src="./figures/DietCode_text_black.png" alt="DietCode"
   height="16"></img>?**
-  - Please refer to the [**`test`**](./test) folder that contains examples
+  - Please refer to the [**`tests`**](./tests) folder that contains examples
     demonstrating the code generation optimizations and the auto-scheduler
     frontend interface of *DietCode*.
 
