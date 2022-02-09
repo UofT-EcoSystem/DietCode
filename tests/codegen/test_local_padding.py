@@ -77,15 +77,14 @@ def test_local_padding():
     cublas_fixture = cuBLASDenseFixture(*wkl_func_args)
 
     # temporarily disable local padding
-    os.environ['DIETCODE_DO_LOCAL_PADDING'] = '0'
-    baseline_perf_results = get_time_evaluator_results_rpc_wrapper(
-                                wkl_func=Dense,
-                                wkl_func_args=wkl_func_args,
-                                sched_func_or_str=dense_128x128x4,
-                                fixture=cublas_fixture,
-                                print_kernel=True
-                            )
-    os.environ['DIETCODE_DO_LOCAL_PADDING'] = '1'
+    with no_local_padding():
+        baseline_perf_results = get_time_evaluator_results_rpc_wrapper(
+                                    wkl_func=Dense,
+                                    wkl_func_args=wkl_func_args,
+                                    sched_func_or_str=dense_128x128x4,
+                                    fixture=cublas_fixture,
+                                    print_kernel=True
+                                )
 
     dietcode_perf_results = get_time_evaluator_results_rpc_wrapper(
                                 wkl_func=Dense,
@@ -167,13 +166,13 @@ def test_local_padding_ii():
 
     # temporarily disable local padding
     with no_local_padding():
-      baseline_perf_results = get_time_evaluator_results_rpc_wrapper(
-                                  wkl_func=BatchMatmulNT,
-                                  wkl_func_args=wkl_func_args,
-                                  sched_func_or_str=batch_matmul_nt_1x128x128x8,
-                                  fixture=cublas_fixture,
-                                  print_kernel=True
-                              )
+        baseline_perf_results = get_time_evaluator_results_rpc_wrapper(
+                                    wkl_func=BatchMatmulNT,
+                                    wkl_func_args=wkl_func_args,
+                                    sched_func_or_str=batch_matmul_nt_1x128x128x8,
+                                    fixture=cublas_fixture,
+                                    print_kernel=True
+                                )
 
     dietcode_perf_results = get_time_evaluator_results_rpc_wrapper(
                                 wkl_func=BatchMatmulNT,
