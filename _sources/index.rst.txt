@@ -7,4 +7,4 @@ the key features) of DietCode:
 .. toctree::
    :maxdepth: 3
 
-   test_local_padding
+   local_padding
