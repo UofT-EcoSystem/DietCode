@@ -1,7 +1,3 @@
-"""
-Local Padding
-=============
-"""
 import filecmp
 from flaky import flaky
 import logging
