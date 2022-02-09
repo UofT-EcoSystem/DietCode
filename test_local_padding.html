@@ -4,7 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>Local Padding &#8212; DietCode MLSys 2022 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
@@ -13,6 +13,7 @@
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="prev" title="DietCode Documentation (Test Cases)" href="index.html" /> 
@@ -43,6 +44,157 @@
 <span id="local-padding"></span><h1>Local Padding<a class="headerlink" href="#module-codegen.test_local_padding" title="Permalink to this headline">¶</a></h1>
 <section id="id1">
 <h2>Local Padding<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="codegen.test_local_padding.test_local_padding">
+<span class="sig-prename descclassname"><span class="pre">codegen.test_local_padding.</span></span><span class="sig-name descname"><span class="pre">test_local_padding</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#codegen.test_local_padding.test_local_padding" title="Permalink to this definition">¶</a></dt>
+<dd><p>This test case shows the performance improvement brought by local padding.
+We compare the compute throughputs between two schedules, one without local
+padding (baseline) and the other with local padding (DietCode).</p>
+<p>We use the dense layer as an example workload:</p>
+<div class="math notranslate nohighlight">
+\[Y = XW^T, X : [B\times T, I], W : [H, I], Y : [B\times T, H]\]</div>
+<p>In <code class="docutils literal notranslate"><span class="pre">tvm.te</span></code> form:</p>
+<div class="highlight-C++ notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">B</span> <span class="o">*</span> <span class="n">T</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+  <span class="k">for</span> <span class="p">(</span><span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="o">:</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">H</span><span class="p">;</span> <span class="o">++</span><span class="n">j</span><span class="p">)</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">k</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">I</span><span class="p">;</span> <span class="o">++</span><span class="n">k</span><span class="p">)</span>
+      <span class="n">Y</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">+=</span> <span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="o">*</span> <span class="n">W</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">];</span>
+</pre></div>
+</div>
+<p>where <span class="math notranslate nohighlight">\((B, T, I, H)\)</span> stand for (batch size, sequence length, input
+size, hidden dimension) respectively (namings adopted from the <a class="reference internal" href="#bert" id="id2"><span>[BERT]</span></a>
+model).</p>
+<blockquote>
+<div><div class="citation" id="bert" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">BERT</a><span class="fn-bracket">]</span></span>
+<p>J. Devlin et al. <em>BERT: Pre-training of Deep Bidirectional
+Transformers for Language Understanding</em>. NAACL-NLT 2019</p>
+</div>
+</div>
+</div></blockquote>
+<p>We adopt a sample schedule <code class="docutils literal notranslate"><span class="pre">dense_128x128x4</span></code> for this workload. The
+schedule, as its name suggests, has a tile size of <span class="math notranslate nohighlight">\((128, 128, 4)\)</span>
+along the <span class="math notranslate nohighlight">\((i, j, k)\)</span> dimension respectively. Furthermore, we
+deliberately set the value of the sequence length <span class="math notranslate nohighlight">\(T\)</span> to <span class="math notranslate nohighlight">\(60\)</span>,
+and the input size <span class="math notranslate nohighlight">\(I\)</span> to <span class="math notranslate nohighlight">\(770\)</span>, so that</p>
+<div class="math notranslate nohighlight">
+\[(B\times T = 16\times 60 = 960) \% 128 \ne 0, (I = 770) \% 4 \ne 0\]</div>
+<p>which is common in the case of handling dynamic-shape workloads.</p>
+<p>Due to the imperfect tiling, out-of-boundary checks (a.k.a., predicates)
+have to be injected inside the loop body, which can greatly hurt the
+performance. However, we make the following key observations:</p>
+<ul>
+<li><p>The schedule generated by the auto-scheduler usually consists of 3 main
+stages, namely</p>
+<ul>
+<li><p><strong>Fetch</strong>: Obtain the input data from the global to the shared memory.</p>
+<div class="highlight-CUDA notranslate"><div class="highlight"><pre><span></span><span class="n">X_shared</span><span class="p">[...]</span> <span class="o">=</span> <span class="n">X</span><span class="p">[...];</span> <span class="n">W_shared</span><span class="p">[...]</span> <span class="o">=</span> <span class="n">W</span><span class="p">[...];</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Compute</strong>: Compute output results using the shared memory variables
+and write to the registers.</p>
+<div class="highlight-CUDA notranslate"><div class="highlight"><pre><span></span><span class="n">Y_local</span><span class="p">[...]</span> <span class="o">=</span> <span class="n">X_shared</span><span class="p">[...]</span> <span class="o">*</span> <span class="n">W_shared</span><span class="p">[...];</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Writeback</strong>: Write the results of the registers back to the global
+memory.</p>
+<div class="highlight-CUDA notranslate"><div class="highlight"><pre><span></span><span class="n">Y</span><span class="p">[...]</span> <span class="o">=</span> <span class="n">Y_local</span><span class="p">[...];</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+<li><p>The predicates at the <strong>Compute</strong> stage have the biggest impact on the
+runtime performance, but the good news is they duplicate those at the
+Fetch and the Writeback stage and hence can be <em>safely</em> removed. This is
+in essence padding the compute by the size of the local workspace, hence
+the name <strong>Local Padding</strong>.</p></li>
+</ul>
+<p>Our evaluations show that the local padding optimization of DietCode can
+significantly boost the performance of the generated CUDA kernel by as much
+as <span class="math notranslate nohighlight">\(10\times\)</span> in this case (on modern NVIDIA RTX GPUs). The table
+below illustrates the results we get from the CI workflow:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>GPU</p></th>
+<th class="head"><p>Baseline</p></th>
+<th class="head"><p>DietCode</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>RTX 3090</p></td>
+<td><p>~0.98</p></td>
+<td><p>~11</p></td>
+</tr>
+<tr class="row-odd"><td><p>RTX 2080 Ti</p></td>
+<td><p>~0.43</p></td>
+<td><p>~5.2</p></td>
+</tr>
+</tbody>
+</table>
+<p>where the numbers denote compute throughputs (in TFLOPs/sec), and hence the
+higher the better.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="codegen.test_local_padding.test_local_padding_ii">
+<span class="sig-prename descclassname"><span class="pre">codegen.test_local_padding.</span></span><span class="sig-name descname"><span class="pre">test_local_padding_ii</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#codegen.test_local_padding.test_local_padding_ii" title="Permalink to this definition">¶</a></dt>
+<dd><p>This test case shows the necessity of NOT shrinking the local workspace,
+which is required for local padding.</p>
+<p>In TVM, the size of the local workspace (e.g., shared memory or registers)
+will be automatically shrinked if the code generator detects that the
+workspace is not fully utilized by the tensor programs. However, this
+optimization can be NOT desirable.</p>
+<p>For example, consider the batched matrix multiply workload:</p>
+<div class="math notranslate nohighlight">
+\[Y = \operatorname{BatchMatmulNT}(X, W), X : \left[B\times NH, T,
+\frac{H}{A}\right], W : \left[B\times NH, T, \frac{H}{NH}\right],
+Y : [B\times NH, T, T]\]</div>
+<div class="highlight-C++ notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">B</span> <span class="o">*</span> <span class="n">NH</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+  <span class="k">for</span> <span class="p">(</span><span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="o">:</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">T</span><span class="p">;</span> <span class="o">++</span><span class="n">j</span><span class="p">)</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">k</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">T</span><span class="p">;</span> <span class="o">++</span><span class="n">k</span><span class="p">)</span>
+      <span class="k">for</span> <span class="p">(</span><span class="n">l</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">l</span> <span class="o">&lt;</span> <span class="n">H</span> <span class="o">/</span> <span class="n">NH</span><span class="p">;</span> <span class="o">++</span><span class="n">l</span><span class="p">)</span>
+        <span class="n">Y</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="o">+=</span> <span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">l</span><span class="p">]</span> <span class="o">*</span> <span class="n">W</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">l</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>where <span class="math notranslate nohighlight">\(NH\)</span> stands for the number of attention heads (also adopted from
+the BERT model, other parameters are the same as above).</p>
+<p>We adopt a sample schedule <code class="docutils literal notranslate"><span class="pre">batch_matmul_nt_1x128x128x8</span></code> for this
+workload. The schedule has a tile size of <span class="math notranslate nohighlight">\((1, 128, 128, 8)\)</span> along the
+<span class="math notranslate nohighlight">\((i, j, k, l)\)</span> dimension respectively. By the tile sizes, the local
+workspace (i.e., shared memory allocations) for <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(W\)</span> are
+<span class="math notranslate nohighlight">\(1\times 128\times 8\)</span> and <span class="math notranslate nohighlight">\(1\times 128\times 8\)</span>
+respectively.</p>
+<p>The allocations work fine in the case when <span class="math notranslate nohighlight">\(T=128\)</span>, but if <span class="math notranslate nohighlight">\(T\)</span>
+is just a little smaller (e.g., <span class="math notranslate nohighlight">\(T=120\)</span>), the TVM code generator will
+find out that all the thread blocks are not fully utilizing the shared
+memory variables and shrink them, which prevents local padding from taking
+place (as it requests access to the whole workspace).</p>
+<p>Our evaluations show that the local padding optimization of DietCode can
+significantly boost the performance of the generated CUDA kernel by as much
+as <span class="math notranslate nohighlight">\(2\times\)</span> in this case (on modern NVIDIA RTX GPUs). The table
+below illustrates the results we get from the CI workflow:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>GPU</p></th>
+<th class="head"><p>Baseline</p></th>
+<th class="head"><p>DietCode</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>RTX 3090</p></td>
+<td><p>~3.5</p></td>
+<td><p>~8.7</p></td>
+</tr>
+<tr class="row-odd"><td><p>RTX 2080 Ti</p></td>
+<td><p>~1.8</p></td>
+<td><p>~5.5</p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </section>
 </section>
 
