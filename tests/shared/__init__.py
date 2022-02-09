@@ -18,11 +18,15 @@ if use_dietcode:
     os.environ["DIETCODE_CODEGEN_OPT"] = '1'
 
 class no_local_padding:
+    """
+    Disable local padding within the scope.
+    """
     def __enter__(self):
         os.environ["DIETCODE_DO_LOCAL_PADDING"] = '0'
 
     def __exit__(self, exc_type, exc_value, exc_tb):
         os.environ["DIETCODE_DO_LOCAL_PADDING"] = '1'
+
 
 # decorators used for filtering tests
 base_decor = pytest.mark.skipif(use_dietcode, reason="Base branch must be set: "
@@ -33,18 +37,15 @@ dietcode_decor = pytest.mark.skipif(not use_dietcode,
                                     )
 
 rand_seed = 0
-
 random.seed(rand_seed)
 np.random.seed(rand_seed)
 torch.manual_seed(rand_seed)
 
 CUDAContext = tvm.cuda()
-
 try:
     libcuda = ctypes.CDLL('libcuda.so')
     # needed to retrieve the device name
     assert libcuda.cuInit(0) == 0, "Failed to initialize CUDA driver APIs"
 except OSError:
     logger.error("Unable to find libcuda.so. Have you installed the GPU driver?")
-
 CUDATarget = tvm.target.Target('cuda')
