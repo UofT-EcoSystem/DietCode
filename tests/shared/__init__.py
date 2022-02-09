@@ -17,7 +17,7 @@ if use_dietcode:
     # enable all the code generation optimizations
     os.environ["DIETCODE_CODEGEN_OPT"] = '1'
 
-class no_local_padding:
+class NoLocalPadding:
     """
     Disable local padding within the scope.
     """
@@ -26,6 +26,19 @@ class no_local_padding:
 
     def __exit__(self, exc_type, exc_value, exc_tb):
         os.environ["DIETCODE_DO_LOCAL_PADDING"] = '1'
+
+
+class DoLoopPartitioning:
+    """
+    Enable loop partitioning within the scope.
+    """
+    def __enter__(self):
+        os.environ["DIETCODE_DO_LOCAL_PADDING"] = '0'
+        os.environ["DIETCODE_DO_LOOP_PARTITIONING"] = '1'
+
+    def __exit__(self, exc_type, exc_value, exc_tb):
+        os.environ["DIETCODE_DO_LOCAL_PADDING"] = '1'
+        os.environ["DIETCODE_DO_LOOP_PARTITIONING"] = '0'
 
 
 # decorators used for filtering tests

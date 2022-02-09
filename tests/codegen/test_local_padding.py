@@ -6,7 +6,7 @@ import numpy as np
 
 logger = logging.getLogger(__name__)
 
-from shared import CUDAContext, dietcode_decor, no_local_padding
+from shared import CUDAContext, dietcode_decor, NoLocalPadding
 
 from ops.shared.utils import get_time_evaluator_results_rpc_wrapper
 
@@ -112,7 +112,7 @@ def test_local_padding():
     cublas_fixture = cuBLASDenseFixture(*wkl_func_args)
 
     # temporarily disable local padding
-    with no_local_padding():
+    with NoLocalPadding():
         baseline_perf_results = get_time_evaluator_results_rpc_wrapper(
                                     wkl_func=Dense,
                                     wkl_func_args=wkl_func_args,
@@ -215,7 +215,7 @@ def test_local_padding_ii():
     print(BatchMatmulNT, cublas_fixture, wkl_func_args, batch_matmul_nt_1x128x128x8)
 
     # temporarily disable local padding
-    with no_local_padding():
+    with NoLocalPadding():
         baseline_perf_results = get_time_evaluator_results_rpc_wrapper(
                                     wkl_func=BatchMatmulNT,
                                     wkl_func_args=wkl_func_args,
