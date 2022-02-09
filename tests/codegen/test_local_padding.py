@@ -86,10 +86,10 @@ def test_local_padding():
       in essence padding the compute by the size of the local workspace, hence
       the name **Local Padding**.
 
-    Our evaluations show that the local padding optimization of DietCode can
-    significantly boost the performance of the generated CUDA kernel by as much
-    as :math:`10\\times` in this case (on modern NVIDIA RTX GPUs). The table
-    below illustrates the results we get from the CI workflow:
+    Our evaluations show that local padding can significantly boost the
+    performance of the generated CUDA kernel by as much as :math:`10\\times` in
+    this case (on modern NVIDIA RTX GPUs). The table below illustrates the
+    results we get from the CI workflow:
 
     =========== ======== ========
     GPU         Baseline DietCode
@@ -98,8 +98,8 @@ def test_local_padding():
     RTX 2080 Ti ~0.43    ~5.2
     =========== ======== ========
 
-    where the numbers denote compute throughputs (in TFLOPs/sec), and hence the
-    higher the better.
+    where the numbers denote the compute throughputs (in TFLOPs/sec), and hence
+    the higher the better.
     """
     from ops.dense.sample_schedule import dense_128x128x4
     from ops.dense.fixture import Dense, cuBLASDenseFixture
@@ -190,10 +190,10 @@ def test_local_padding_ii():
     memory variables and shrink them, which prevents local padding from taking
     place (as it requests access to the whole workspace).
 
-    Our evaluations show that the local padding optimization of DietCode can
-    significantly boost the performance of the generated CUDA kernel by as much
-    as :math:`2\\times` in this case (on modern NVIDIA RTX GPUs). The table
-    below illustrates the results we get from the CI workflow:
+    Our evaluations show that preserving the local workspace can boost the
+    performance of the generated CUDA kernel by as much as :math:`2.5\\times` in
+    this case. The table below illustrates the results we get from the CI
+    workflow:
 
     =========== ======== ========
     GPU         Baseline DietCode
