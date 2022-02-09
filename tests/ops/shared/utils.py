@@ -51,7 +51,7 @@ def get_time_evaluator_results(wkl_func, wkl_func_args, fixture,
             with open(log_kernel_filename, 'w') as fout:
                 fout.write("{}".format(kernel_src))
 
-    if hasattr(fixture, "vendor_module_data"):
+    if hasattr(fixture, "module_data_fixture_view"):
         # Sometimes, the fixture has constraint on the module data layout (e.g.,
         # the cuDNN on the conv2d operator). Therefore, if
         # `module_data_fixture_view` is explicitly specified, we have to invoke

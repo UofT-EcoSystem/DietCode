@@ -5,7 +5,7 @@ import numpy as np
 
 logger = logging.getLogger(__name__)
 
-from shared import CUDAContext, dietcode_decor
+from shared import CUDAContext, dietcode_decor, no_local_padding
 
 from ops.shared.utils import get_time_evaluator_results_rpc_wrapper
 
@@ -68,7 +68,7 @@ def test_local_padding():
     """
     from ops.dense.sample_schedule import dense_128x128x4
     from ops.dense.fixture import Dense, cuBLASDenseFixture
-    
+
 
     B, T, I, H = 16, 60, 770, 2304
     TFLOPs = 2 * B * T * I * H / 1e12
@@ -153,4 +153,38 @@ def test_local_padding_ii():
     blocks are not fully utilizing the shared memory variables and shrink them,
     which prevents local padding from taking place.
     """
-    pass    
+    from ops.batch_matmul.sample_schedule import batch_matmul_nt_1x128x128x8
+    from ops.batch_matmul.fixture import BatchMatmulNT, cuBLASBatchMatmulNTFixture
+    
+
+    B, T, H, NH = 16, 120, 768, 12
+    TFLOPs = 2 * B * T * T * H / 1e12
+    
+    wkl_func_args = (B * NH, T, H // NH, T)
+    cublas_fixture = cuBLASBatchMatmulNTFixture(*wkl_func_args)
+
+    print(BatchMatmulNT, cublas_fixture, wkl_func_args, batch_matmul_nt_1x128x128x8)
+
+    # temporarily disable local padding
+    with no_local_padding():
+      baseline_perf_results = get_time_evaluator_results_rpc_wrapper(
+                                  wkl_func=BatchMatmulNT,
+                                  wkl_func_args=wkl_func_args,
+                                  sched_func_or_str=batch_matmul_nt_1x128x128x8,
+                                  fixture=cublas_fixture,
+                                  print_kernel=True
+                              )
+
+    dietcode_perf_results = get_time_evaluator_results_rpc_wrapper(
+                                wkl_func=BatchMatmulNT,
+                                wkl_func_args=wkl_func_args,
+                                sched_func_or_str=batch_matmul_nt_1x128x128x8,
+                                fixture=cublas_fixture,
+                                print_kernel=True,
+                                log_kernel_filename="temp_workspace.log",
+                                verify_correctness=True
+                            )
+
+    baseline_tflops = TFLOPs / np.average(baseline_perf_results)
+    dietcode_tflops = TFLOPs / np.average(dietcode_perf_results)
+    logger.info(f"Baseline vs. DietCode: {baseline_tflops} vs. {dietcode_tflops} (TFLOPS)")

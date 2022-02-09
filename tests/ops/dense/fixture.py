@@ -3,7 +3,7 @@ from tvm import auto_scheduler, te, topi
 
 import numpy as np
 
-from ....shared import CUDATarget, CUDAContext
+from shared import CUDATarget, CUDAContext
 
 
 @auto_scheduler.register_workload
