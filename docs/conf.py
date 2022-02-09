@@ -58,4 +58,5 @@ html_theme = 'sphinxdoc'
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
-autodoc_mock_imports = ["..", '...', 'tvm']
+# Ignore imports from the TVM package.
+autodoc_mock_imports = ['tvm']
