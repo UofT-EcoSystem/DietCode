@@ -3,11 +3,11 @@
 :point_up: *Please refer to the top-left corner of the README for the table of
 contents*.
 
-Thank you for your interest in the <img src="./figures/DietCode_text.png"
-alt="DietCode" height="16"></img> project. The key objective of *DietCode* is to
-deliver high-performance programs for dynamic-shape tensor programs. Please
-kindly go through the documentation below that guides you on how to build and
-use the *DietCode* auto-scheduler framework.
+Thank you so much for your interest in the <img
+src="./figures/DietCode_text.png" alt="DietCode" height="16"></img> project. The
+key objective of *DietCode* is to deliver high-performance programs for
+dynamic-shape tensor programs. Please kindly go through the documentation below
+that guides you on how to build and use the *DietCode* auto-scheduler framework.
 
 ## Prerequisites
 
@@ -41,19 +41,19 @@ use the *DietCode* auto-scheduler framework.
 
 ## Code Organization
 
-- [**`tests`**](./tests): Contains examples (as well as test cases) for testing
-  key features (i.e., local padding, auto-scheduling, and decision-tree
+- [**`tests`**](./tests): Contains tutorial examples (as well as test cases) for
+  testing key features (i.e., local padding, auto-scheduling, and decision-tree
   dispatching) in terms of correctness and runtime performance. Please click on
   the folder for more details.
   
-- [**`tvm`**](./tvm): <img src="./figures/DietCode_text.png" alt="DietCode" height="16"></img>
-  that is built on top of TVM. Please refer to
-  [this page](https://github.com/UofT-EcoSystem/tvm/compare/bojian/DietCode_base...bojian/DietCode/stable)
+- [**`tvm`**](./tvm): <img src="./figures/DietCode_text.png" alt="DietCode"
+  height="16"></img> that is built on top of TVM. Please refer to [this
+  page](https://github.com/UofT-EcoSystem/tvm/compare/bojian/DietCode_base...bojian/DietCode/stable)
   for the changes made at this branch.
 
 - [**`tvm_base`**](./tvm_base): A clean TVM branch (denoted as *Base*) that has
-  only a few changes (for performance benchmarking only). Please refer to
-  [this page](https://github.com/UofT-EcoSystem/tvm/compare/bojian/DietCode_base...bojian/DietCode/base)
+  only a few changes (for performance benchmarking only). Please refer to [this
+  page](https://github.com/UofT-EcoSystem/tvm/compare/bojian/DietCode_base...bojian/DietCode/base)
   for the changes made at this branch.
 
 - [**`environ`**](./environ): Script files that can be activated to select
@@ -101,13 +101,16 @@ use the *DietCode* auto-scheduler framework.
 
 - **Know the implementation details of
   <img src="./figures/DietCode_text.png" alt="DietCode" height="16"></img>?**
-  - Please refer to the [**`tvm`**](./tvm) submodule and
-    [this page](https://github.com/UofT-EcoSystem/tvm/compare/bojian/DietCode_base...bojian/DietCode/stable)
+  - Please refer to the [**`tvm`**](./tvm) submodule and [this
+    page](https://github.com/UofT-EcoSystem/tvm/compare/bojian/DietCode_base...bojian/DietCode/stable)
     for the changes made at this branch. We did our best to document the code
     thoroughly, with the key changes highlighted using the `<DietCode>` tag.
 
 ## References
 
-- [1] CUDA Compatibility. https://docs.nvidia.com/cuda/cuda-toolkit-release-notes/index.html#cuda-major-component-versions
-- [2] Docker Post-Installation Steps. https://docs.docker.com/engine/install/linux-postinstall/#manage-docker-as-a-non-root-user
-- [3] NVIDIA Docker Installation Steps. https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#installing-on-ubuntu-and-debian
+- [1] CUDA Compatibility.
+  https://docs.nvidia.com/cuda/cuda-toolkit-release-notes/index.html#cuda-major-component-versions
+- [2] Docker Post-Installation Steps.
+  https://docs.docker.com/engine/install/linux-postinstall/#manage-docker-as-a-non-root-user
+- [3] NVIDIA Docker Installation Steps.
+  https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#installing-on-ubuntu-and-debian
