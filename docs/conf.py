@@ -56,7 +56,7 @@ html_theme = 'sphinxdoc'
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+html_static_path = []
 
 # Ignore imports from 3rd-party modules.
 autodoc_mock_imports = ['numpy', 'pytest', 'torch', 'tvm']
