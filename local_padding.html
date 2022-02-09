@@ -109,10 +109,10 @@ Fetch and the Writeback stage and hence can be <em>safely</em> removed. This is
 in essence padding the compute by the size of the local workspace, hence
 the name <strong>Local Padding</strong>.</p></li>
 </ul>
-<p>Our evaluations show that the local padding optimization of DietCode can
-significantly boost the performance of the generated CUDA kernel by as much
-as <span class="math notranslate nohighlight">\(10\times\)</span> in this case (on modern NVIDIA RTX GPUs). The table
-below illustrates the results we get from the CI workflow:</p>
+<p>Our evaluations show that local padding can significantly boost the
+performance of the generated CUDA kernel by as much as <span class="math notranslate nohighlight">\(10\times\)</span> in
+this case (on modern NVIDIA RTX GPUs). The table below illustrates the
+results we get from the CI workflow:</p>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>GPU</p></th>
@@ -131,8 +131,8 @@ below illustrates the results we get from the CI workflow:</p>
 </tr>
 </tbody>
 </table>
-<p>where the numbers denote compute throughputs (in TFLOPs/sec), and hence the
-higher the better.</p>
+<p>where the numbers denote the compute throughputs (in TFLOPs/sec), and hence
+the higher the better.</p>
 </dd></dl>
 
 <dl class="py function">
@@ -169,10 +169,10 @@ is just a little smaller (e.g., <span class="math notranslate nohighlight">\(T=1
 find out that all the thread blocks are not fully utilizing the shared
 memory variables and shrink them, which prevents local padding from taking
 place (as it requests access to the whole workspace).</p>
-<p>Our evaluations show that the local padding optimization of DietCode can
-significantly boost the performance of the generated CUDA kernel by as much
-as <span class="math notranslate nohighlight">\(2\times\)</span> in this case (on modern NVIDIA RTX GPUs). The table
-below illustrates the results we get from the CI workflow:</p>
+<p>Our evaluations show that preserving the local workspace can boost the
+performance of the generated CUDA kernel by as much as <span class="math notranslate nohighlight">\(2.5\times\)</span> in
+this case. The table below illustrates the results we get from the CI
+workflow:</p>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>GPU</p></th>
