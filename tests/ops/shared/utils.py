@@ -9,7 +9,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-from ....shared import CUDAContext, CUDATarget
+from shared import CUDAContext, CUDATarget
 
 
 def get_time_evaluator_results(wkl_func, wkl_func_args, fixture,

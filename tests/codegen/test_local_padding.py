@@ -5,11 +5,9 @@ import numpy as np
 
 logger = logging.getLogger(__name__)
 
-from ...shared import CUDAContext, dietcode_decor
+from shared import CUDAContext, dietcode_decor
 
-from ..ops.dense.sample_schedule import dense_128x128x4
-from ..ops.dense.fixture import Dense, cuBLASDenseFixture
-from ..ops.shared.utils import get_time_evaluator_results_rpc_wrapper
+from ops.shared.utils import get_time_evaluator_results_rpc_wrapper
 
 
 @dietcode_decor
@@ -68,6 +66,10 @@ def test_local_padding():
     significantly boost the performance of the generated CUDA kernel by more
     than 10× in this case (on a modern NVIDIA RTX 3090 GPU).
     """
+    from ops.dense.sample_schedule import dense_128x128x4
+    from ops.dense.fixture import Dense, cuBLASDenseFixture
+    
+
     B, T, I, H = 16, 60, 770, 2304
     TFLOPs = 2 * B * T * I * H / 1e12
     
