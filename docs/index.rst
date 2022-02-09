@@ -1,8 +1,12 @@
-DietCode Documentation (Test Cases)
-===================================
+.. |DietCode| image:: ../figures/DietCode_text.png
+    :height: 24
+    :alt: Alternative text
 
-Please refer to the followings for the documentation on the use cases (and also
-the key features) of DietCode:
+|DietCode| Examples
+===================
+
+Please refer to the followings for the documentation on the tutorial examples.
+Those examples also demonstrate the key features of the *DietCode* framework:
 
 .. toctree::
    :maxdepth: 3
