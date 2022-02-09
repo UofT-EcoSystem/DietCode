@@ -250,4 +250,4 @@ def test_local_padding_ii():
         np.testing.assert_allclose(dietcode_tflops, 8.7, atol=1e-1, rtol=1e-1)
     if CUDAContext.device_name == 'NVIDIA GeForce RTX 2080 Ti':
         np.testing.assert_allclose(baseline_tflops, 1.8, atol=1e-1, rtol=1e-1)
-        np.testing.assert_allclose(dietcode_tflops, 5.5,  atol=1e-1, rtol=1e-1)
+        np.testing.assert_allclose(dietcode_tflops, 5.5, atol=1e-1, rtol=1e-1)
