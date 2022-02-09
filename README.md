@@ -4,10 +4,11 @@
 contents*.
 
 Thank you so much for your interest in the <img
-src="./figures/DietCode_text.png" alt="DietCode" height="16"></img> project. The
-key objective of *DietCode* is to deliver high-performance programs for
-dynamic-shape tensor programs. Please kindly go through the documentation below
-that guides you on how to build and use the *DietCode* auto-scheduler framework.
+src="./figures/DietCode_text_black.png" alt="DietCode" height="16"></img>
+project. The key objective of *DietCode* is to deliver high-performance programs
+for dynamic-shape tensor programs. Please kindly go through the documentation
+below that guides you on how to build and use the *DietCode* auto-scheduler
+framework.
 
 ## Prerequisites
 
@@ -46,8 +47,9 @@ that guides you on how to build and use the *DietCode* auto-scheduler framework.
   dispatching) in terms of correctness and runtime performance. Please click on
   the folder for more details.
   
-- [**`tvm`**](./tvm): <img src="./figures/DietCode_text.png" alt="DietCode"
-  height="16"></img> that is built on top of TVM. Please refer to [this
+- [**`tvm`**](./tvm): <img src="./figures/DietCode_text_black.png"
+  alt="DietCode" height="16"></img> that is built on top of TVM. Please refer to
+  [this
   page](https://github.com/UofT-EcoSystem/tvm/compare/bojian/DietCode_base...bojian/DietCode/stable)
   for the changes made at this branch.
 
@@ -93,14 +95,14 @@ that guides you on how to build and use the *DietCode* auto-scheduler framework.
 
 ## How To?
 
-- **Get started with
-  <img src="./figures/DietCode_text.png" alt="DietCode" height="16"></img>?**
+- **Get started with <img src="./figures/DietCode_text_black.png" alt="DietCode"
+  height="16"></img>?**
   - Please refer to the [**`test`**](./test) folder that contains examples
     demonstrating the code generation optimizations and the auto-scheduler
     frontend interface of *DietCode*.
 
-- **Know the implementation details of
-  <img src="./figures/DietCode_text.png" alt="DietCode" height="16"></img>?**
+- **Know the implementation details of <img
+  src="./figures/DietCode_text_black.png" alt="DietCode" height="16"></img>?**
   - Please refer to the [**`tvm`**](./tvm) submodule and [this
     page](https://github.com/UofT-EcoSystem/tvm/compare/bojian/DietCode_base...bojian/DietCode/stable)
     for the changes made at this branch. We did our best to document the code
