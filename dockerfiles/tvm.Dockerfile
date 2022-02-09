@@ -66,7 +66,8 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 RUN pip install numpy scipy decorator attrs psutil typed_ast cython six \
-                xgboost tornado pytest synr cloudpickle sklearn
+                xgboost tornado synr cloudpickle sklearn
+RUN pip install pytest flaky
 RUN pip install transformers==3.0 && \
     pip install torch==1.7.0+cu110 torchvision==0.8.1+cu110 -f https://download.pytorch.org/whl/torch_stable.html
 
