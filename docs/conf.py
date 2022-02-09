@@ -59,4 +59,4 @@ html_theme = 'sphinxdoc'
 html_static_path = []
 
 # Ignore imports from 3rd-party modules.
-autodoc_mock_imports = ['numpy', 'pytest', 'torch', 'tvm']
+autodoc_mock_imports = ['flaky', 'numpy', 'pytest', 'torch', 'tvm']
