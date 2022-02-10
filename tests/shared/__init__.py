@@ -21,24 +21,25 @@ class NoLocalPadding:
     """
     Disable local padding within the scope.
     """
+
     def __enter__(self):
-        os.environ["DIETCODE_CODEGEN_OPT"] = '0'
+        os.environ["DIETCODE_DO_LOCAL_PADDING"] = '0'
 
     def __exit__(self, exc_type, exc_value, exc_tb):
-        os.environ["DIETCODE_CODEGEN_OPT"] = '1'
+        os.environ["DIETCODE_DO_LOCAL_PADDING"] = '1'
 
 
-class DoLoopPartitioning:
+class DoLoopPartitioning(NoLocalPadding):
     """
     Enable loop partitioning within the scope.
     """
     def __enter__(self):
-        os.environ["DIETCODE_CODEGEN_OPT"] = '0'
+        super().__enter__()
         os.environ["DIETCODE_DO_LOOP_PARTITIONING"] = '1'
 
     def __exit__(self, exc_type, exc_value, exc_tb):
-        os.environ["DIETCODE_CODEGEN_OPT"] = '1'
         os.environ["DIETCODE_DO_LOOP_PARTITIONING"] = '0'
+        super().__exit__()
 
 
 # decorators used for filtering tests
