@@ -39,7 +39,7 @@ class DoLoopPartitioning(NoLocalPadding):
 
     def __exit__(self, exc_type, exc_value, exc_tb):
         os.environ["DIETCODE_DO_LOOP_PARTITIONING"] = '0'
-        super().__exit__()
+        super().__exit__(exc_type, exc_value, exc_tb)
 
 
 # decorators used for filtering tests
