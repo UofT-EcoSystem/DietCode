@@ -38,9 +38,6 @@ def test_local_padding():
     size, hidden dimension) respectively (namings adopted from the [BERT]_
     model).
 
-        .. [BERT] J. Devlin et al. *BERT: Pre-training of Deep Bidirectional
-           Transformers for Language Understanding*. NAACL-NLT 2019
-    
     We adopt a sample schedule ``dense_128x128x4`` for this workload. The
     schedule, as its name suggests, has a tile size of :math:`(128, 128, 4)`
     along the :math:`(i, j, k)` dimension respectively. Furthermore, we
@@ -175,7 +172,7 @@ def test_local_padding_ii():
                 Y[i, j, k] += X[i, j, l] * W[i, k, l]
 
     where :math:`NH` stands for the number of attention heads (also adopted from
-    the BERT model, other parameters are the same as above).
+    the [BERT]_ model, other parameters are the same as above).
 
     We adopt a sample schedule ``batch_matmul_nt_1x128x128x8`` for this
     workload. The schedule has a tile size of :math:`(1, 128, 128, 8)` along the
@@ -204,6 +201,9 @@ def test_local_padding_ii():
 
     where the numbers again denote the compute throughputs (in TFLOPs/sec), and
     hence the higher the better.
+
+    .. [BERT] J. Devlin et al. *BERT: Pre-training of Deep Bidirectional
+           Transformers for Language Understanding*. NAACL-NLT 2019
     """
     from ops.batch_matmul.sample_schedule import batch_matmul_nt_1x128x128x8
     from ops.batch_matmul.fixture import BatchMatmulNT, cuBLASBatchMatmulNTFixture
