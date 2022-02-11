@@ -12,3 +12,5 @@ Those examples also demonstrate the key features of the *DietCode* framework:
    :maxdepth: 3
 
    local_padding
+
+   loop_partitioning
