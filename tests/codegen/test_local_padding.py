@@ -201,6 +201,9 @@ def test_local_padding_ii():
     RTX 3090    ~3.5     ~8.7
     RTX 2080 Ti ~1.8     ~5.5
     =========== ======== ========
+
+    where the numbers again denote the compute throughputs (in TFLOPs/sec), and
+    hence the higher the better.
     """
     from ops.batch_matmul.sample_schedule import batch_matmul_nt_1x128x128x8
     from ops.batch_matmul.fixture import BatchMatmulNT, cuBLASBatchMatmulNTFixture
