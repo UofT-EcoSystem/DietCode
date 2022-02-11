@@ -4,18 +4,13 @@ on: [push]
 
 jobs:
     build:
-        runs-on: ubuntu-latest
+        runs-on: local
         steps:
             - uses: actions/checkout@master
               with:
                 persist-credentials: false
-            - name: Sphinx
-              run: |
-                sudo apt-get install -y python3-setuptools 
-                sudo -H pip3 install flaky pytest recommonmark sphinx
             - name: Build
-              run: | 
-                cd docs && make html
+              run: cd docs && make html
             - name: Publish
               uses: JamesIves/github-pages-deploy-action@v4.2.3
               with:
