@@ -65,14 +65,6 @@ padding (baseline) and the other with local padding (DietCode).</p>
 <p>where <span class="math notranslate nohighlight">\((B, T, I, H)\)</span> stand for (batch size, sequence length, input
 size, hidden dimension) respectively (namings adopted from the <a class="reference internal" href="#bert" id="id1"><span>[BERT]</span></a>
 model).</p>
-<blockquote>
-<div><div class="citation" id="bert" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">BERT</a><span class="fn-bracket">]</span></span>
-<p>J. Devlin et al. <em>BERT: Pre-training of Deep Bidirectional
-Transformers for Language Understanding</em>. NAACL-NLT 2019</p>
-</div>
-</div>
-</div></blockquote>
 <p>We adopt a sample schedule <code class="docutils literal notranslate"><span class="pre">dense_128x128x4</span></code> for this workload. The
 schedule, as its name suggests, has a tile size of <span class="math notranslate nohighlight">\((128, 128, 4)\)</span>
 along the <span class="math notranslate nohighlight">\((i, j, k)\)</span> dimension respectively. Furthermore, we
@@ -161,7 +153,7 @@ Y : [B\times NH, T, T]\]</div>
 </pre></div>
 </div>
 <p>where <span class="math notranslate nohighlight">\(NH\)</span> stands for the number of attention heads (also adopted from
-the BERT model, other parameters are the same as above).</p>
+the <a class="reference internal" href="#bert" id="id2"><span>[BERT]</span></a> model, other parameters are the same as above).</p>
 <p>We adopt a sample schedule <code class="docutils literal notranslate"><span class="pre">batch_matmul_nt_1x128x128x8</span></code> for this
 workload. The schedule has a tile size of <span class="math notranslate nohighlight">\((1, 128, 128, 8)\)</span> along the
 <span class="math notranslate nohighlight">\((i, j, k, l)\)</span> dimension respectively. By the tile sizes, the local
@@ -197,6 +189,14 @@ workflow:</p>
 </table>
 <p>where the numbers again denote the compute throughputs (in TFLOPs/sec), and
 hence the higher the better.</p>
+<div role="list" class="citation-list">
+<div class="citation" id="bert" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>BERT<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id1">1</a>,<a role="doc-backlink" href="#id2">2</a>)</span>
+<p>J. Devlin et al. <em>BERT: Pre-training of Deep Bidirectional
+Transformers for Language Understanding</em>. NAACL-NLT 2019</p>
+</div>
+</div>
 </dd></dl>
 
 </section>
