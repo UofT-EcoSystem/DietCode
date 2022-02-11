@@ -9,6 +9,10 @@ jobs:
             - uses: actions/checkout@master
               with:
                 persist-credentials: false
+            - name: Sphinx
+              run: |
+                sudo apt-get install -y python3-setuptools 
+                sudo -H pip3 install flaky pytest recommonmark sphinx
             - name: Build
               run: cd docs && make html
             - name: Publish
