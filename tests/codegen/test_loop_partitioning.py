@@ -15,7 +15,9 @@ from ops.shared.utils import get_time_evaluator_results_rpc_wrapper
 @dietcode_decor
 def test_loop_partitioning():
     """
-    
+    This test case shows the performance improvement brought by loop
+    partitioning. We compare the compute throughputs between two schedules, one
+    without local padding (baseline) and the other with loop partitioning.
     """
     from ops.dense.sample_schedule import dense_128x128x4
     from ops.dense.fixture import Dense, cuBLASDenseFixture
