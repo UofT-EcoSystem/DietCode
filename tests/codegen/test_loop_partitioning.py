@@ -49,7 +49,14 @@ def test_loop_partitioning():
                                    log_kernel_filename="temp_workspace.log",
                                    verify_correctness=True
                                )
+    assert filecmp.cmp(os.path.dirname(os.path.realpath(__file__))
+                            + "/saved_artifacts/test_loop_partitioning.cu",
+                       "temp_workspace.log")
 
     baseline_tflops = TFLOPs / np.average(baseline_perf_results)
     dietcode_tflops = TFLOPs / np.average(nimble_perf_results)
     logger.info(f"Baseline vs. DietCode: {baseline_tflops} vs. {dietcode_tflops} (TFLOPS)")
+
+    if CUDAContext.device_name == 'NVIDIA GeForce RTX 3090':
+        np.testing.assert_allclose(baseline_tflops, 0.98, atol=1e-1, rtol=1e-1)
+        np.testing.assert_allclose(dietcode_tflops, 11.3, atol=1e-1, rtol=1e-1)
