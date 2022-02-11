@@ -13,4 +13,7 @@ Those examples also demonstrate the key features of the *DietCode* framework:
 
    local_padding
 
+.. toctree::
+   :maxdepth: 3
+
    loop_partitioning
