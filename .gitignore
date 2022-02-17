@@ -1,0 +1,32 @@
+.DS_Store
+
+# CI
+actions-runner
+
+.~lock.*
+
+# Artifacts
+*.log
+*.csv
+*.json
+total_latency.tsv
+
+# Scratchpad
+scratchpad*
+temp_workspace*
+
+# Model Checkpoints
+bert_base_uncased
+
+!.vscode/c_cpp_properties.json
+!.vscode/settings.json
+
+# Unignore everything in the saved_artifacts folder
+!**/saved_*/**/*
+
+# Compiled Artifacts
+__pycache__
+*.pyc
+*.exe
+*.S
+*.o

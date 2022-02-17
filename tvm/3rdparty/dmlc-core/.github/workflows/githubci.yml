@@ -1,0 +1,39 @@
+name: continuous build
+
+on: [push, pull_request]
+
+jobs:
+  tests:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        task: ["unittest_gtest", "cmake_test", "sanitizer_test", "s390x_test"]
+        os: [macos-10.15, ubuntu-18.04]
+        exclude:
+          # excludes sanitizer_test and s390x_test on macOS
+          - os: macos-10.15
+            task: "sanitizer_test"
+          - os: macos-10.15
+            task: "s390x_test"
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Install Dependencies
+        run: |
+          if [[ $(uname) != "Darwin" ]]; then
+            sudo apt update
+            sudo apt install doxygen libcurl4-openssl-dev gcc-5 g++-5
+          else
+            brew install libomp doxygen
+          fi
+          python3 -m pip install --user --upgrade pip setuptools
+          python3 -m pip install --user flake8 pylint cpplint
+      - name: Lint
+        run: |
+          TASK=lint ./scripts/test_script.sh
+      - name: googletest
+        run: |
+          if [[ "${{ matrix.task }}" == "s390x_test" ]]; then
+            docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+          fi
+          TASK=${{ matrix.task }} ./scripts/test_script.sh

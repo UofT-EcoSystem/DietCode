@@ -1,0 +1,13 @@
+version: '2.3'
+
+services:
+    tvm-dev:
+        image: tvm-dev:DietCode
+        build:
+            context: ./dockerfiles
+            dockerfile: tvm.Dockerfile
+        runtime: nvidia
+        volumes:
+            - .:/mnt
+        working_dir: /mnt
+        privileged: true
