@@ -44,11 +44,11 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <section id="module-codegen.test_local_padding">
-<span id="local-padding"></span><h1>Local Padding<a class="headerlink" href="#module-codegen.test_local_padding" title="Permalink to this headline">¶</a></h1>
+  <section id="module-codegen.test_1_local_padding">
+<span id="local-padding"></span><h1>Local Padding<a class="headerlink" href="#module-codegen.test_1_local_padding" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
-<dt class="sig sig-object py" id="codegen.test_local_padding.test_local_padding">
-<span class="sig-prename descclassname"><span class="pre">codegen.test_local_padding.</span></span><span class="sig-name descname"><span class="pre">test_local_padding</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#codegen.test_local_padding.test_local_padding" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="codegen.test_1_local_padding.test_local_padding">
+<span class="sig-prename descclassname"><span class="pre">codegen.test_1_local_padding.</span></span><span class="sig-name descname"><span class="pre">test_local_padding</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#codegen.test_1_local_padding.test_local_padding" title="Permalink to this definition">¶</a></dt>
 <dd><p>This test case shows the performance improvement brought by local padding.
 We compare the compute throughputs between two schedules, one without local
 padding (baseline) and the other with local padding (DietCode).</p>
@@ -132,8 +132,8 @@ the higher the better.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="codegen.test_local_padding.test_local_padding_ii">
-<span class="sig-prename descclassname"><span class="pre">codegen.test_local_padding.</span></span><span class="sig-name descname"><span class="pre">test_local_padding_ii</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#codegen.test_local_padding.test_local_padding_ii" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="codegen.test_1_local_padding.test_local_padding_ii">
+<span class="sig-prename descclassname"><span class="pre">codegen.test_1_local_padding.</span></span><span class="sig-name descname"><span class="pre">test_local_padding_ii</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#codegen.test_1_local_padding.test_local_padding_ii" title="Permalink to this definition">¶</a></dt>
 <dd><p>This test case shows the necessity of NOT shrinking the local workspace,
 which is required for local padding.</p>
 <p>In TVM, the size of the local workspace (e.g., shared memory or registers)
