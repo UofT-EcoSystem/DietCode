@@ -1,5 +1,5 @@
 Loop Partitioning
 =================
 
-.. automodule:: codegen.test_loop_partitioning
+.. automodule:: codegen.test_2_loop_partitioning
     :members:
