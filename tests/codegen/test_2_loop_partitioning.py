@@ -17,11 +17,47 @@ def test_loop_partitioning():
     """
     This test case shows the performance improvement brought by loop
     partitioning, used as an optimization technique in the Nimble paper
-    [Nimble]_. Given below is an example that illustrates how loop partitioning
-    works:
+    [Nimble]_. Similar to local padding, the goal of loop partitioning is also
+    to mitigate the performance overhead brought by out-of-boundary checks.
+    
+    Given below is an example that illustrates how loop partitioning works:
+
+    .. code-block:: C++
+    
+        for (i = 0; i < ⌈T/t⌉; ++i)
+          for (j = 0: j < t; ++j)
+            if (i * t + j < T)  // do something
+    
+    The above code snippet can be transformed into
+
+    .. code-block:: C++
+
+        for (i = 0; i < ⌊T/t⌋; ++i)
+          for (j = 0: j < t; ++j)
+            // do something
+        for (j = 0; j < T - ⌊T/t⌋*t; ++j)
+          // do something
+
+    which does not have any predicates.
 
     We compare the compute throughputs between two schedules, one without loop
-    partitioning (baseline) and the other with loop partitioning.
+    partitioning (baseline) and the other with loop partitioning. The benchmark
+    we use is the same as the one in local padding
+    (:py:func:`codegen.test_1_local_padding.test_local_padding`). Our
+    evaluations show that loop partitioning can also significantly boost the
+    performance of the generated CUDA kernel by as much as :math:`10\\times`
+    (the same order of speedup as local padding). The table below illustrates
+    the results we get from the CI workflow:
+
+    =========== ======== ========
+    GPU         Baseline DietCode
+    =========== ======== ========
+    RTX 3090    ~0.98    ~11.2
+    RTX 2080 Ti ~0.43    ~5.98
+    =========== ======== ========
+
+    where the numbers denote the compute throughputs (in TFLOPs/sec), and hence
+    the higher the better.
     """
     from ops.dense.sample_schedule import dense_128x128x4
     from ops.dense.fixture import Dense, cuBLASDenseFixture
@@ -58,12 +94,12 @@ def test_loop_partitioning():
                        "temp_workspace.log")
 
     baseline_tflops = TFLOPs / np.average(baseline_perf_results)
-    dietcode_tflops = TFLOPs / np.average(nimble_perf_results)
-    logger.info(f"Baseline vs. DietCode: {baseline_tflops} vs. {dietcode_tflops} (TFLOPS)")
+    nimble_tflops = TFLOPs / np.average(nimble_perf_results)
+    logger.info(f"Baseline vs. Nimble: {baseline_tflops} vs. {nimble_tflops} (TFLOPS)")
 
     if CUDAContext.device_name == 'NVIDIA GeForce RTX 3090':
         np.testing.assert_allclose(baseline_tflops, 0.98, atol=1e-1, rtol=1e-1)
-        np.testing.assert_allclose(dietcode_tflops, 11.3, atol=1e-1, rtol=1e-1)
+        np.testing.assert_allclose(nimble_tflops, 11.2, atol=1e-1, rtol=1e-1)
 
 
 @flaky(max_runs=3)
