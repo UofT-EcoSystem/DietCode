@@ -106,6 +106,30 @@ def test_loop_partitioning():
 @dietcode_decor
 def test_loop_partitioning_ii():
     """
+    Therefore, one natural question to ask is:
+
+    .. topic:: Local Padding vs. Loop Partitioning
+
+        ***What is the difference between local padding and loop partitioning,
+        given that they share the same objective?***
+
+        Although the two techniques are indeed similar in what they are going to
+        achieve, we pick local padding primarily due to the following reasons:
+
+        - Due to the *partition* nature, **loop partitioning often needs to
+          duplicate the body statements** (as can be seen in the simple example
+          illustrated at the beginning of this page, where the comment `// do
+          something` appears twice). Depending on the number of spatial axes,
+          this duplication can happen multiple times. This can significantly
+          elongate the CUDA kernel body, especially in the case when the
+          unrolling factor is large, **which greatly increases the compilation
+          time for the kernel** (can be several minutes for a single kernel by
+          our measurements).
+        - **There are cases that can be handled by local padding but NOT by loop
+          partitioning**. We refer to the example below, which is again the same
+          as the one in local padding
+          (:py:func:`codegen.test_1_local_padding.test_local_padding_ii`).
+
     .. [Nimble] H. Shen et al. *Nimble: Efficiently Compiling Dynamic Neural
                 Networks for Model Inference*. MLSys 2021
     """
