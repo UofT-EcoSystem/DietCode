@@ -203,7 +203,7 @@ def test_local_padding_ii():
     hence the higher the better.
 
     .. [BERT] J. Devlin et al. *BERT: Pre-training of Deep Bidirectional
-           Transformers for Language Understanding*. NAACL-NLT 2019
+              Transformers for Language Understanding*. NAACL-NLT 2019
     """
     from ops.batch_matmul.sample_schedule import batch_matmul_nt_1x128x128x8
     from ops.batch_matmul.fixture import BatchMatmulNT, cuBLASBatchMatmulNTFixture

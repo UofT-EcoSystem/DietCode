@@ -16,8 +16,12 @@ from ops.shared.utils import get_time_evaluator_results_rpc_wrapper
 def test_loop_partitioning():
     """
     This test case shows the performance improvement brought by loop
-    partitioning. We compare the compute throughputs between two schedules, one
-    without local padding (baseline) and the other with loop partitioning.
+    partitioning, used as an optimization technique in the Nimble paper
+    [Nimble]_. Given below is an example that illustrates how loop partitioning
+    works:
+
+    We compare the compute throughputs between two schedules, one without loop
+    partitioning (baseline) and the other with loop partitioning.
     """
     from ops.dense.sample_schedule import dense_128x128x4
     from ops.dense.fixture import Dense, cuBLASDenseFixture
@@ -65,6 +69,10 @@ def test_loop_partitioning():
 @flaky(max_runs=3)
 @dietcode_decor
 def test_loop_partitioning_ii():
+    """
+    .. [Nimble] H. Shen et al. *Nimble: Efficiently Compiling Dynamic Neural
+                Networks for Model Inference*. MLSys 2021
+    """
     from ops.batch_matmul.sample_schedule import batch_matmul_nt_1x128x128x8
     from ops.batch_matmul.fixture import BatchMatmulNT, cuBLASBatchMatmulNTFixture
     
@@ -83,7 +91,7 @@ def test_loop_partitioning_ii():
                                     sched_func_or_str=batch_matmul_nt_1x128x128x8,
                                     fixture=cublas_fixture,
                                     print_kernel=True,
-                                    log_kernel_filename="temp_workspace_ii.log",
+                                    log_kernel_filename="temp_workspace.log",
                                 )
 
     with DoLoopPartitioning():
@@ -93,9 +101,12 @@ def test_loop_partitioning_ii():
                                   sched_func_or_str=batch_matmul_nt_1x128x128x8,
                                   fixture=cublas_fixture,
                                   print_kernel=True,
-                                  log_kernel_filename="temp_workspace.log",
+                                  log_kernel_filename="temp_workspace_ii.log",
                                   verify_correctness=True
                               )
+    # Loop partitioning is not able to optimize for this case, hence there
+    # should NOT be any difference in the generated code.
+    assert filecmp.cmp("temp_workspace_ii.log", "temp_workspace.log")
 
     baseline_tflops = TFLOPs / np.average(baseline_perf_results)
     nimble_tflops = TFLOPs / np.average(nimble_perf_results)
