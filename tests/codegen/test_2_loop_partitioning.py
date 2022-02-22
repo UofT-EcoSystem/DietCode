@@ -60,3 +60,43 @@ def test_loop_partitioning():
     if CUDAContext.device_name == 'NVIDIA GeForce RTX 3090':
         np.testing.assert_allclose(baseline_tflops, 0.98, atol=1e-1, rtol=1e-1)
         np.testing.assert_allclose(dietcode_tflops, 11.3, atol=1e-1, rtol=1e-1)
+
+
+@flaky(max_runs=3)
+@dietcode_decor
+def test_loop_partitioning_ii():
+    from ops.batch_matmul.sample_schedule import batch_matmul_nt_1x128x128x8
+    from ops.batch_matmul.fixture import BatchMatmulNT, cuBLASBatchMatmulNTFixture
+    
+
+    B, T, H, NH = 16, 120, 768, 12
+    TFLOPs = 2 * B * T * T * H / 1e12
+    
+    wkl_func_args = (B * NH, T, H // NH, T)
+    cublas_fixture = cuBLASBatchMatmulNTFixture(*wkl_func_args)
+
+    # temporarily disable local padding
+    with NoLocalPadding():
+        baseline_perf_results = get_time_evaluator_results_rpc_wrapper(
+                                    wkl_func=BatchMatmulNT,
+                                    wkl_func_args=wkl_func_args,
+                                    sched_func_or_str=batch_matmul_nt_1x128x128x8,
+                                    fixture=cublas_fixture,
+                                    print_kernel=True,
+                                    log_kernel_filename="temp_workspace_ii.log",
+                                )
+
+    with DoLoopPartitioning():
+        nimble_perf_results = get_time_evaluator_results_rpc_wrapper(
+                                  wkl_func=BatchMatmulNT,
+                                  wkl_func_args=wkl_func_args,
+                                  sched_func_or_str=batch_matmul_nt_1x128x128x8,
+                                  fixture=cublas_fixture,
+                                  print_kernel=True,
+                                  log_kernel_filename="temp_workspace.log",
+                                  verify_correctness=True
+                              )
+
+    baseline_tflops = TFLOPs / np.average(baseline_perf_results)
+    nimble_tflops = TFLOPs / np.average(nimble_perf_results)
+    logger.info(f"Baseline vs. DietCode: {baseline_tflops} vs. {nimble_tflops} (TFLOPS)")
