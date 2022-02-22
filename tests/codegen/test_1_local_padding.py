@@ -215,8 +215,6 @@ def test_local_padding_ii():
     wkl_func_args = (B * NH, T, H // NH, T)
     cublas_fixture = cuBLASBatchMatmulNTFixture(*wkl_func_args)
 
-    print(BatchMatmulNT, cublas_fixture, wkl_func_args, batch_matmul_nt_1x128x128x8)
-
     # temporarily disable local padding
     with NoLocalPadding():
         baseline_perf_results = get_time_evaluator_results_rpc_wrapper(
