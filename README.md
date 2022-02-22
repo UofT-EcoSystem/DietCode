@@ -1,7 +1,29 @@
-# <img src="./figures/DietCode_text.png" alt="DietCode" height="48"></img> [![RTX 3090 desktop](https://github.com/UofT-EcoSystem/DietCode/actions/workflows/rtx_3090_desktop.yml/badge.svg)](https://github.com/UofT-EcoSystem/DietCode/actions/workflows/rtx_3090_desktop.yml) [![RTX 2080 Ti server](https://github.com/UofT-EcoSystem/DietCode/actions/workflows/rtx_2080_ti_server.yml/badge.svg)](https://github.com/UofT-EcoSystem/DietCode/actions/workflows/rtx_2080_ti_server.yml)
+# <img src="./figures/DietCode_text.png" alt="DietCode" height="48"></img>
 
 :point_up: *Please refer to the top-left corner of the README for the table of
 contents*.
+
+<table>
+  <tr>
+    <th>Daily Status Check (Build + Test)</th>
+    <th><a href="https://uoft-ecosystem.github.io/DietCode/">Documentation</a></th>
+  </tr>
+  <tr>
+    <td>
+      <a href="https://github.com/UofT-EcoSystem/DietCode/actions/workflows/rtx_3090_desktop.yml">
+        <img src="https://github.com/UofT-EcoSystem/DietCode/actions/workflows/rtx_3090_desktop.yml/badge.svg" alt="RTX 3090 desktop">
+      </a>
+      <a href="https://github.com/UofT-EcoSystem/DietCode/actions/workflows/rtx_2080_ti_server.yml">
+        <img src="https://github.com/UofT-EcoSystem/DietCode/actions/workflows/rtx_2080_ti_server.yml/badge.svg" alt="RTX 2080 Ti server">
+      </a>
+    </td>
+    <td>
+      <a href="https://github.com/UofT-EcoSystem/DietCode/actions/workflows/website.yml">
+        <img src="https://github.com/UofT-EcoSystem/DietCode/actions/workflows/website.yml/badge.svg" alt="website">
+      </a>
+    </td>
+  </tr>
+</table>
 
 Thank you so much for your interest in the <img
 src="./figures/DietCode_text_black.png" alt="DietCode" height="16"></img>
