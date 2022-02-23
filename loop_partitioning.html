@@ -41,25 +41,29 @@
             
   <div class="section" id="module-codegen.test_2_loop_partitioning">
 <span id="loop-partitioning"></span><h1>Loop Partitioning<a class="headerlink" href="#module-codegen.test_2_loop_partitioning" title="Permalink to this headline">¶</a></h1>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="local_padding.html#module-codegen.test_1_local_padding" title="codegen.test_1_local_padding"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codegen.test_1_local_padding</span></code></a></p>
+</div>
 <dl class="py function">
 <dt class="sig sig-object py" id="codegen.test_2_loop_partitioning.test_loop_partitioning">
-<span class="sig-prename descclassname"><span class="pre">codegen.test_2_loop_partitioning.</span></span><span class="sig-name descname"><span class="pre">test_loop_partitioning</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/UofT-EcoSystem/DietCode/blob/main/tests/codegen/test_2_loop_partitioning.py#L14-L102"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#codegen.test_2_loop_partitioning.test_loop_partitioning" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">codegen.test_2_loop_partitioning.</span></span><span class="sig-name descname"><span class="pre">test_loop_partitioning</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/UofT-EcoSystem/DietCode/blob/main/tests/codegen/test_2_loop_partitioning.py#L19-L107"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#codegen.test_2_loop_partitioning.test_loop_partitioning" title="Permalink to this definition">¶</a></dt>
 <dd><p>This test case shows the performance improvement brought by loop
-partitioning, used as an optimization technique in the Nimble paper
-<a class="reference internal" href="#nimble" id="id1"><span>[Nimble]</span></a>. Similar to local padding, the goal of loop partitioning is also
-to mitigate the performance overhead brought by out-of-boundary checks.</p>
+partitioning, used as an optimization technique in the <a class="reference internal" href="#nimble" id="id1"><span>[Nimble]</span></a> paper.
+Similar to local padding, the goal of loop partitioning is also to mitigate
+the performance overhead brought by out-of-boundary checks.</p>
 <p>Given below is an example that illustrates how loop partitioning works:</p>
-<div class="highlight-C++ notranslate"><div class="highlight"><pre><span></span>for (i = 0; i &lt; ⌈T/t⌉; ++i)
-  for (j = 0: j &lt; t; ++j)
-    if (i * t + j &lt; T)  // do something
+<div class="highlight-C++ notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">ceil</span><span class="p">(</span><span class="n">T</span> <span class="o">/</span> <span class="n">t</span><span class="p">);</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+  <span class="k">for</span> <span class="p">(</span><span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="o">:</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">t</span><span class="p">;</span> <span class="o">++</span><span class="n">j</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">*</span> <span class="n">t</span> <span class="o">+</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">T</span><span class="p">)</span>  <span class="c1">// do something</span>
 </pre></div>
 </div>
 <p>The above code snippet can be transformed into</p>
-<div class="highlight-C++ notranslate"><div class="highlight"><pre><span></span>for (i = 0; i &lt; ⌊T/t⌋; ++i)
-  for (j = 0: j &lt; t; ++j)
-    // do something
-for (j = 0; j &lt; T - ⌊T/t⌋*t; ++j)
-  // do something
+<div class="highlight-C++ notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">floor</span><span class="p">(</span><span class="n">T</span> <span class="o">/</span> <span class="n">t</span><span class="p">);</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+  <span class="k">for</span> <span class="p">(</span><span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="o">:</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">t</span><span class="p">;</span> <span class="o">++</span><span class="n">j</span><span class="p">)</span>
+    <span class="c1">// do something</span>
+<span class="k">for</span> <span class="p">(</span><span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">T</span> <span class="o">-</span> <span class="n">floor</span><span class="p">(</span><span class="n">T</span> <span class="o">/</span> <span class="n">t</span><span class="p">)</span> <span class="o">*</span> <span class="n">t</span><span class="p">;</span> <span class="o">++</span><span class="n">j</span><span class="p">)</span>
+  <span class="c1">// do something</span>
 </pre></div>
 </div>
 <p>which does not have any predicates.</p>
@@ -100,8 +104,27 @@ the higher the better.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="codegen.test_2_loop_partitioning.test_loop_partitioning_ii">
-<span class="sig-prename descclassname"><span class="pre">codegen.test_2_loop_partitioning.</span></span><span class="sig-name descname"><span class="pre">test_loop_partitioning_ii</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/UofT-EcoSystem/DietCode/blob/main/tests/codegen/test_2_loop_partitioning.py#L105-L173"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#codegen.test_2_loop_partitioning.test_loop_partitioning_ii" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">codegen.test_2_loop_partitioning.</span></span><span class="sig-name descname"><span class="pre">test_loop_partitioning_ii</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/UofT-EcoSystem/DietCode/blob/main/tests/codegen/test_2_loop_partitioning.py#L110-L176"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#codegen.test_2_loop_partitioning.test_loop_partitioning_ii" title="Permalink to this definition">¶</a></dt>
 <dd><p>Therefore, one natural question to ask is:</p>
+<p><strong>What is the difference between local padding and loop partitioning, given
+that they share the same objective?</strong></p>
+<p>Although the two techniques are indeed similar in what they are going to
+achieve, we pick local padding primarily due to the following reasons:</p>
+<ul class="simple">
+<li><p>Due to the <em>partition</em> nature, <strong>loop partitioning needs to duplicate the
+body statements</strong> (as can be seen in the simple example illustrated
+before, where the comment <code class="docutils literal notranslate"><span class="pre">//</span> <span class="pre">do</span> <span class="pre">something</span></code> appears twice). Depending on
+the number of spatial axes, this duplication can happen multiple times.
+This can significantly elongate the CUDA kernel body, and further lead to
+a gigantic kernel in the case when the original kernel body is already
+long (e.g., because of a large unrolling factor), <strong>which eventually
+increases the compilation time for the kernel</strong> (can be several minutes
+for a single kernel by our measurements).</p></li>
+<li><p><strong>There are cases that can be handled by local padding but NOT by loop
+partitioning</strong>. We refer to the example below, which is again the same as
+the one in local padding
+(<a class="reference internal" href="local_padding.html#codegen.test_1_local_padding.test_local_padding_ii" title="codegen.test_1_local_padding.test_local_padding_ii"><code class="xref py py-func docutils literal notranslate"><span class="pre">codegen.test_1_local_padding.test_local_padding_ii()</span></code></a>).</p></li>
+</ul>
 <dl class="citation">
 <dt class="label" id="nimble"><span class="brackets"><a class="fn-backref" href="#id1">Nimble</a></span></dt>
 <dd><p>H. Shen et al. <em>Nimble: Efficiently Compiling Dynamic Neural
