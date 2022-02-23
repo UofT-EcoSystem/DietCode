@@ -1,3 +1,8 @@
+"""
+.. seealso::
+
+    :py:mod:`codegen.test_1_local_padding`
+"""
 import filecmp
 from flaky import flaky
 import logging
@@ -16,15 +21,15 @@ from ops.shared.utils import get_time_evaluator_results_rpc_wrapper
 def test_loop_partitioning():
     """
     This test case shows the performance improvement brought by loop
-    partitioning, used as an optimization technique in the Nimble paper
-    [Nimble]_. Similar to local padding, the goal of loop partitioning is also
-    to mitigate the performance overhead brought by out-of-boundary checks.
+    partitioning, used as an optimization technique in the [Nimble]_ paper.
+    Similar to local padding, the goal of loop partitioning is also to mitigate
+    the performance overhead brought by out-of-boundary checks.
     
     Given below is an example that illustrates how loop partitioning works:
 
     .. code-block:: C++
     
-        for (i = 0; i < ⌈T/t⌉; ++i)
+        for (i = 0; i < ceil(T / t); ++i)
           for (j = 0: j < t; ++j)
             if (i * t + j < T)  // do something
     
@@ -32,10 +37,10 @@ def test_loop_partitioning():
 
     .. code-block:: C++
 
-        for (i = 0; i < ⌊T/t⌋; ++i)
+        for (i = 0; i < floor(T / t); ++i)
           for (j = 0: j < t; ++j)
             // do something
-        for (j = 0; j < T - ⌊T/t⌋*t; ++j)
+        for (j = 0; j < T - floor(T / t) * t; ++j)
           // do something
 
     which does not have any predicates.
@@ -108,27 +113,25 @@ def test_loop_partitioning_ii():
     """
     Therefore, one natural question to ask is:
 
-    .. topic:: Local Padding vs. Loop Partitioning
+    **What is the difference between local padding and loop partitioning, given
+    that they share the same objective?**
 
-        ***What is the difference between local padding and loop partitioning,
-        given that they share the same objective?***
+    Although the two techniques are indeed similar in what they are going to
+    achieve, we pick local padding primarily due to the following reasons:
 
-        Although the two techniques are indeed similar in what they are going to
-        achieve, we pick local padding primarily due to the following reasons:
-
-        - Due to the *partition* nature, **loop partitioning often needs to
-          duplicate the body statements** (as can be seen in the simple example
-          illustrated at the beginning of this page, where the comment `// do
-          something` appears twice). Depending on the number of spatial axes,
-          this duplication can happen multiple times. This can significantly
-          elongate the CUDA kernel body, especially in the case when the
-          unrolling factor is large, **which greatly increases the compilation
-          time for the kernel** (can be several minutes for a single kernel by
-          our measurements).
-        - **There are cases that can be handled by local padding but NOT by loop
-          partitioning**. We refer to the example below, which is again the same
-          as the one in local padding
-          (:py:func:`codegen.test_1_local_padding.test_local_padding_ii`).
+    - Due to the *partition* nature, **loop partitioning needs to duplicate the
+      body statements** (as can be seen in the simple example illustrated
+      before, where the comment ``// do something`` appears twice). Depending on
+      the number of spatial axes, this duplication can happen multiple times.
+      This can significantly elongate the CUDA kernel body, and further lead to
+      a gigantic kernel in the case when the original kernel body is already
+      long (e.g., because of a large unrolling factor), **which eventually
+      increases the compilation time for the kernel** (can be several minutes
+      for a single kernel by our measurements).
+    - **There are cases that can be handled by local padding but NOT by loop
+      partitioning**. We refer to the example below, which is again the same as
+      the one in local padding
+      (:py:func:`codegen.test_1_local_padding.test_local_padding_ii`). 
 
     .. [Nimble] H. Shen et al. *Nimble: Efficiently Compiling Dynamic Neural
                 Networks for Model Inference*. MLSys 2021
