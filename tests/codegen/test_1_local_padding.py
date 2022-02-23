@@ -108,7 +108,7 @@ def test_local_padding():
     of the schedule's tile sizes (i.e., :math:`T=64` and :math:`I=768`). The
     number in the bracket is the raw throughput and the number before multiplies
     it with the ratio of (real/padded shape dimension) (i.e.,
-    :math:`60\/64\times 770\/772`).
+    :math:`60\\/64\\times 770\\/772`).
     """
     from ops.dense.sample_schedule import dense_128x128x4
     from ops.dense.fixture import Dense, cuBLASDenseFixture
