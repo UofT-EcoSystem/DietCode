@@ -84,14 +84,8 @@ extern "C" __global__ void __launch_bounds__(256) default_function_kernel0(float
     __syncthreads();
     if (((int)threadIdx.x) < 128) {
       X_shared[((((int)threadIdx.x) * 4))] = (((((((int)blockIdx.x) / 18) * 128) + ((int)threadIdx.x)) < 960) ? X[(((((((int)blockIdx.x) / 18) * 98560) + (((int)threadIdx.x) * 770)) + (k_outer_outer * 4)))] : 0.000000e+00f);
-    }
-    if (((int)threadIdx.x) < 128) {
       X_shared[(((((int)threadIdx.x) * 4) + 1))] = (((((((int)blockIdx.x) / 18) * 128) + ((int)threadIdx.x)) < 960) ? X[((((((((int)blockIdx.x) / 18) * 98560) + (((int)threadIdx.x) * 770)) + (k_outer_outer * 4)) + 1))] : 0.000000e+00f);
-    }
-    if (((int)threadIdx.x) < 128) {
       X_shared[(((((int)threadIdx.x) * 4) + 2))] = ((((((((int)blockIdx.x) / 18) * 128) + ((int)threadIdx.x)) < 960) && (k_outer_outer < 192)) ? X[((((((((int)blockIdx.x) / 18) * 98560) + (((int)threadIdx.x) * 770)) + (k_outer_outer * 4)) + 2))] : 0.000000e+00f);
-    }
-    if (((int)threadIdx.x) < 128) {
       X_shared[(((((int)threadIdx.x) * 4) + 3))] = ((((((((int)blockIdx.x) / 18) * 128) + ((int)threadIdx.x)) < 960) && (k_outer_outer < 192)) ? X[((((((((int)blockIdx.x) / 18) * 98560) + (((int)threadIdx.x) * 770)) + (k_outer_outer * 4)) + 3))] : 0.000000e+00f);
     }
     W_shared[((((int)threadIdx.x) * 2))] = ((((k_outer_outer * 4) + ((((int)threadIdx.x) & 1) * 2)) < 770) ? W[((((((((int)blockIdx.x) % 18) * 98560) + ((((int)threadIdx.x) >> 1) * 770)) + (k_outer_outer * 4)) + ((((int)threadIdx.x) & 1) * 2)))] : 0.000000e+00f);
