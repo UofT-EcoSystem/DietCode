@@ -31,7 +31,7 @@ def test_loop_partitioning():
     
         for (i = 0; i < ceil(T / t); ++i)
           for (j = 0: j < t; ++j)
-            if (i * t + j < T)  // do something
+            if (i * t + j < T) // do something
     
     The above code snippet can be transformed into
 
