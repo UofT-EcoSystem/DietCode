@@ -29,17 +29,15 @@ class NoLocalPadding:
         os.environ["DIETCODE_DO_LOCAL_PADDING"] = '1'
 
 
-class DoLoopPartitioning(NoLocalPadding):
+class DoLoopPartitioning():
     """
     Enable loop partitioning within the scope.
     """
     def __enter__(self):
-        super().__enter__()
         os.environ["DIETCODE_DO_LOOP_PARTITIONING"] = '1'
 
     def __exit__(self, exc_type, exc_value, exc_tb):
         os.environ["DIETCODE_DO_LOOP_PARTITIONING"] = '0'
-        super().__exit__(exc_type, exc_value, exc_tb)
 
 
 # decorators used for filtering tests
@@ -63,3 +61,5 @@ try:
 except OSError:
     logger.error("Unable to find libcuda.so. Have you installed the GPU driver?")
 CUDATarget = tvm.target.Target('cuda')
+
+tolerance = {'atol' : 5e-2, 'rtol' : 5e-2}

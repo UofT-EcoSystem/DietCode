@@ -11,7 +11,7 @@ import numpy as np
 
 logger = logging.getLogger(__name__)
 
-from shared import CUDAContext, dietcode_decor, NoLocalPadding
+from shared import CUDAContext, dietcode_decor, NoLocalPadding, tolerance
 
 from ops.shared.utils import get_time_evaluator_results_rpc_wrapper
 
@@ -108,7 +108,7 @@ def test_local_padding():
     of the schedule's tile sizes (i.e., :math:`T=64` and :math:`I=768`). The
     number in the bracket is the raw throughput and the number before multiplies
     it with the ratio of (real/padded shape dimension) (i.e.,
-    :math:`60\\/64\\times 770\\/772`).
+    :math:`60/64\\times 770/772`).
     """
     from ops.dense.sample_schedule import dense_128x128x4
     from ops.dense.fixture import Dense, cuBLASDenseFixture
@@ -148,11 +148,11 @@ def test_local_padding():
     logger.info(f"Baseline vs. Local Padding: {baseline_tflops} vs. {local_padding_tflops} (TFLOPS)")
 
     if CUDAContext.device_name == 'NVIDIA GeForce RTX 3090':
-        np.testing.assert_allclose(baseline_tflops, 0.98, atol=1e-1, rtol=1e-1)
-        np.testing.assert_allclose(local_padding_tflops, 11.6, atol=1e-1, rtol=1e-1)
+        np.testing.assert_allclose(baseline_tflops, 0.98, **tolerance)
+        np.testing.assert_allclose(local_padding_tflops, 11.6, **tolerance)
     if CUDAContext.device_name == 'NVIDIA GeForce RTX 2080 Ti':
-        np.testing.assert_allclose(baseline_tflops, 0.43, atol=1e-1, rtol=1e-1)
-        np.testing.assert_allclose(local_padding_tflops, 5.27, atol=1e-1, rtol=1e-1)
+        np.testing.assert_allclose(baseline_tflops, 0.43, **tolerance)
+        np.testing.assert_allclose(local_padding_tflops, 5.27, **tolerance)
 
 
 @flaky(max_runs=3)
@@ -255,8 +255,8 @@ def test_local_padding_ii():
     logger.info(f"Baseline vs. Local Padding: {baseline_tflops} vs. {local_padding_tflops} (TFLOPS)")
 
     if CUDAContext.device_name == 'NVIDIA GeForce RTX 3090':
-        np.testing.assert_allclose(baseline_tflops, 3.5, atol=1e-1, rtol=1e-1)
-        np.testing.assert_allclose(local_padding_tflops, 8.7, atol=1e-1, rtol=1e-1)
+        np.testing.assert_allclose(baseline_tflops, 3.5, **tolerance)
+        np.testing.assert_allclose(local_padding_tflops, 8.7, **tolerance)
     if CUDAContext.device_name == 'NVIDIA GeForce RTX 2080 Ti':
-        np.testing.assert_allclose(baseline_tflops, 1.8, atol=1e-1, rtol=1e-1)
-        np.testing.assert_allclose(local_padding_tflops, 5.5, atol=1e-1, rtol=1e-1)
+        np.testing.assert_allclose(baseline_tflops, 1.8, **tolerance)
+        np.testing.assert_allclose(local_padding_tflops, 5.5, **tolerance)

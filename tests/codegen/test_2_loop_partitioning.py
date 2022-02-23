@@ -11,7 +11,8 @@ import numpy as np
 
 logger = logging.getLogger(__name__)
 
-from shared import CUDAContext, dietcode_decor, NoLocalPadding, DoLoopPartitioning
+from shared import CUDAContext, dietcode_decor, NoLocalPadding, \
+                   DoLoopPartitioning, tolerance
 
 from ops.shared.utils import get_time_evaluator_results_rpc_wrapper
 
@@ -54,15 +55,17 @@ def test_loop_partitioning():
     (the same order of speedup as local padding). The table below illustrates
     the results we get from the CI workflow:
 
-    =========== ======== ========
-    GPU         Baseline DietCode
-    =========== ======== ========
-    RTX 3090    ~0.98    ~11.2
-    RTX 2080 Ti ~0.43    ~5.98
-    =========== ======== ========
+    =========== ======== ================= ============= ============
+    GPU         Baseline Loop Partitioning Local Padding Optimal
+    =========== ======== ================= ============= ============
+    RTX 3090    ~0.98    ~11.2             ~11.6         ~11.7 (12.5)
+    RTX 2080 Ti ~0.43    ~5.98             ~5.27
+    =========== ======== ================= ============= ============
 
     where the numbers denote the compute throughputs (in TFLOPs/sec), and hence
-    the higher the better.
+    the higher the better. Please refer to
+    :py:func:`codegen.test_1_local_padding.test_local_padding` for the
+    definition of *optimal*.
     """
     from ops.dense.sample_schedule import dense_128x128x4
     from ops.dense.fixture import Dense, cuBLASDenseFixture
@@ -84,27 +87,30 @@ def test_loop_partitioning():
                                     print_kernel=True
                                 )
 
-    with DoLoopPartitioning():
-        nimble_perf_results = get_time_evaluator_results_rpc_wrapper(
-                                   wkl_func=Dense,
-                                   wkl_func_args=wkl_func_args,
-                                   sched_func_or_str=dense_128x128x4,
-                                   fixture=cublas_fixture,
-                                   print_kernel=True,
-                                   log_kernel_filename="temp_workspace.log",
-                                   verify_correctness=True
-                               )
+    with NoLocalPadding(), DoLoopPartitioning():
+        loop_partitioning_perf_results = get_time_evaluator_results_rpc_wrapper(
+                                             wkl_func=Dense,
+                                             wkl_func_args=wkl_func_args,
+                                             sched_func_or_str=dense_128x128x4,
+                                             fixture=cublas_fixture,
+                                             print_kernel=True,
+                                             log_kernel_filename="temp_workspace.log",
+                                             verify_correctness=True
+                                         )
     assert filecmp.cmp(os.path.dirname(os.path.realpath(__file__))
                             + "/saved_artifacts/test_loop_partitioning.cu",
                        "temp_workspace.log")
 
     baseline_tflops = TFLOPs / np.average(baseline_perf_results)
-    nimble_tflops = TFLOPs / np.average(nimble_perf_results)
-    logger.info(f"Baseline vs. Nimble: {baseline_tflops} vs. {nimble_tflops} (TFLOPS)")
+    loop_partitioning_tflops = TFLOPs / np.average(loop_partitioning_perf_results)
+    logger.info(f"Baseline vs. Loop Partitioning: {baseline_tflops} vs. {loop_partitioning_tflops} (TFLOPS)")
 
     if CUDAContext.device_name == 'NVIDIA GeForce RTX 3090':
-        np.testing.assert_allclose(baseline_tflops, 0.98, atol=1e-1, rtol=1e-1)
-        np.testing.assert_allclose(nimble_tflops, 11.2, atol=1e-1, rtol=1e-1)
+        np.testing.assert_allclose(baseline_tflops, 0.98, **tolerance)
+        np.testing.assert_allclose(loop_partitioning_tflops, 11.2, **tolerance)
+    if CUDAContext.device_name == 'NVIDIA GeForce RTX 3090':
+        np.testing.assert_allclose(baseline_tflops, 0.98, **tolerance)
+        np.testing.assert_allclose(loop_partitioning_tflops, 11.2, **tolerance)
 
 
 @flaky(max_runs=3)
@@ -131,7 +137,10 @@ def test_loop_partitioning_ii():
     - **There are cases that can be handled by local padding but NOT by loop
       partitioning**. We refer to the example below, which is again the same as
       the one in local padding
-      (:py:func:`codegen.test_1_local_padding.test_local_padding_ii`). 
+      (:py:func:`codegen.test_1_local_padding.test_local_padding_ii`). In this
+      example, all the thread blocks possess the same predicates, which prevents
+      the loop partitioning from taking place (since there is no region that can
+      be partitioned out without predicates).
 
     .. [Nimble] H. Shen et al. *Nimble: Efficiently Compiling Dynamic Neural
                 Networks for Model Inference*. MLSys 2021
@@ -157,20 +166,20 @@ def test_loop_partitioning_ii():
                                     log_kernel_filename="temp_workspace.log",
                                 )
 
-    with DoLoopPartitioning():
-        nimble_perf_results = get_time_evaluator_results_rpc_wrapper(
-                                  wkl_func=BatchMatmulNT,
-                                  wkl_func_args=wkl_func_args,
-                                  sched_func_or_str=batch_matmul_nt_1x128x128x8,
-                                  fixture=cublas_fixture,
-                                  print_kernel=True,
-                                  log_kernel_filename="temp_workspace_ii.log",
-                                  verify_correctness=True
-                              )
+    with NoLocalPadding(), DoLoopPartitioning():
+        loop_partitioning_perf_results = get_time_evaluator_results_rpc_wrapper(
+                                             wkl_func=BatchMatmulNT,
+                                             wkl_func_args=wkl_func_args,
+                                             sched_func_or_str=batch_matmul_nt_1x128x128x8,
+                                             fixture=cublas_fixture,
+                                             print_kernel=True,
+                                             log_kernel_filename="temp_workspace_ii.log",
+                                             verify_correctness=True
+                                         )
     # Loop partitioning is not able to optimize for this case, hence there
     # should NOT be any difference in the generated code.
     assert filecmp.cmp("temp_workspace_ii.log", "temp_workspace.log")
 
     baseline_tflops = TFLOPs / np.average(baseline_perf_results)
-    nimble_tflops = TFLOPs / np.average(nimble_perf_results)
-    logger.info(f"Baseline vs. DietCode: {baseline_tflops} vs. {nimble_tflops} (TFLOPS)")
+    loop_partitioning_tflops = TFLOPs / np.average(loop_partitioning_perf_results)
+    logger.info(f"Baseline vs. Loop Partitioning: {baseline_tflops} vs. {loop_partitioning_tflops} (TFLOPS)")
