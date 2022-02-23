@@ -52,7 +52,7 @@
 </aside>
 <dl class="py function">
 <dt class="sig sig-object py" id="codegen.test_1_local_padding.test_local_padding">
-<span class="sig-prename descclassname"><span class="pre">codegen.test_1_local_padding.</span></span><span class="sig-name descname"><span class="pre">test_local_padding</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/UofT-EcoSystem/DietCode/blob/main/tests/codegen/test_1_local_padding.py#L19-L148"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#codegen.test_1_local_padding.test_local_padding" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">codegen.test_1_local_padding.</span></span><span class="sig-name descname"><span class="pre">test_local_padding</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/UofT-EcoSystem/DietCode/blob/main/tests/codegen/test_1_local_padding.py#L20-L149"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#codegen.test_1_local_padding.test_local_padding" title="Permalink to this definition">¶</a></dt>
 <dd><p>This test case shows the performance improvement brought by local padding.
 We compare the compute throughputs between two schedules, one without local
 padding (baseline) and the other with local padding.</p>
@@ -137,7 +137,7 @@ the higher the better.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="codegen.test_1_local_padding.test_local_padding_ii">
-<span class="sig-prename descclassname"><span class="pre">codegen.test_1_local_padding.</span></span><span class="sig-name descname"><span class="pre">test_local_padding_ii</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/UofT-EcoSystem/DietCode/blob/main/tests/codegen/test_1_local_padding.py#L151-L255"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#codegen.test_1_local_padding.test_local_padding_ii" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">codegen.test_1_local_padding.</span></span><span class="sig-name descname"><span class="pre">test_local_padding_ii</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/UofT-EcoSystem/DietCode/blob/main/tests/codegen/test_1_local_padding.py#L152-L256"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#codegen.test_1_local_padding.test_local_padding_ii" title="Permalink to this definition">¶</a></dt>
 <dd><p>This test case shows the necessity of NOT shrinking the local workspace,
 which is required for local padding.</p>
 <p>In TVM, the size of the local workspace (e.g., shared memory or registers)
