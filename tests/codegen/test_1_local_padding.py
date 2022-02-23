@@ -93,22 +93,15 @@ def test_local_padding():
     this case (on modern NVIDIA RTX GPUs). The table below illustrates the
     results we get from the CI workflow:
 
-    =========== ======== ============= ============
-    GPU         Baseline Local Padding Optimal
-    =========== ======== ============= ============
-    RTX 3090    ~0.98    ~11.6         ~11.7 (12.5)
+    =========== ======== =============
+    GPU         Baseline Local Padding
+    =========== ======== =============
+    RTX 3090    ~0.98    ~11.6
     RTX 2080 Ti ~0.43    ~5.27
-    =========== ======== ============= ============
+    =========== ======== =============
 
     where the numbers denote the compute throughputs (in TFLOPs/sec), and hence
     the higher the better.
-
-    The rightmost column of the table shows the optimal throughput numbers,
-    which are obtained by rounding the shape dimensions to the closest multiple
-    of the schedule's tile sizes (i.e., :math:`T=64` and :math:`I=768`). The
-    number in the bracket is the raw throughput and the number before multiplies
-    it with the ratio of (real/padded shape dimension) (i.e.,
-    :math:`60/64\\times 770/772`).
     """
     from ops.dense.sample_schedule import dense_128x128x4
     from ops.dense.fixture import Dense, cuBLASDenseFixture

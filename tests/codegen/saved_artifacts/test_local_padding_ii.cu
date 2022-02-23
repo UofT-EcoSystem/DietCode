@@ -153,9 +153,7 @@ extern "C" __global__ void __launch_bounds__(128) default_function_kernel0(float
     X_shared[((((int)threadIdx.x) + 512))] = X[((((((((int)blockIdx.x) * 7680) + ((((int)threadIdx.x) >> 3) * 64)) + (k_outer_outer * 8)) + (((int)threadIdx.x) & 7)) + 4096))];
     X_shared[((((int)threadIdx.x) + 640))] = X[((((((((int)blockIdx.x) * 7680) + ((((int)threadIdx.x) >> 3) * 64)) + (k_outer_outer * 8)) + (((int)threadIdx.x) & 7)) + 5120))];
     X_shared[((((int)threadIdx.x) + 768))] = X[((((((((int)blockIdx.x) * 7680) + ((((int)threadIdx.x) >> 3) * 64)) + (k_outer_outer * 8)) + (((int)threadIdx.x) & 7)) + 6144))];
-    if (((int)threadIdx.x) < 64) {
-      X_shared[((((int)threadIdx.x) + 896))] = X[((((((((int)blockIdx.x) * 7680) + ((((int)threadIdx.x) >> 3) * 64)) + (k_outer_outer * 8)) + (((int)threadIdx.x) & 7)) + 7168))];
-    }
+    X_shared[((((int)threadIdx.x) + 896))] = ((((int)threadIdx.x) < 64) ? X[((((((((int)blockIdx.x) * 7680) + ((((int)threadIdx.x) >> 3) * 64)) + (k_outer_outer * 8)) + (((int)threadIdx.x) & 7)) + 7168))] : 0.000000e+00f);
     W_shared[((((int)threadIdx.x) * 4))] = W[(((((((int)blockIdx.x) * 7680) + ((((int)threadIdx.x) >> 1) * 64)) + (k_outer_outer * 8)) + ((((int)threadIdx.x) & 1) * 4)))];
     W_shared[(((((int)threadIdx.x) * 4) + 1))] = W[(((((((int)blockIdx.x) * 7680) + ((((((int)threadIdx.x) * 4) + 1) >> 3) * 64)) + (k_outer_outer * 8)) + (((((int)threadIdx.x) * 4) + 1) & 7)))];
     W_shared[(((((int)threadIdx.x) * 4) + 2))] = W[(((((((int)blockIdx.x) * 7680) + ((((((int)threadIdx.x) * 4) + 2) >> 3) * 64)) + (k_outer_outer * 8)) + (((((int)threadIdx.x) * 4) + 2) & 7)))];

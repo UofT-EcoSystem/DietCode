@@ -46,26 +46,36 @@ def test_loop_partitioning():
 
     which does not have any predicates.
 
-    We compare the compute throughputs between two schedules, one without loop
-    partitioning (baseline) and the other with loop partitioning. The benchmark
-    we use is the same as the one in local padding
-    (:py:func:`codegen.test_1_local_padding.test_local_padding`). Our
-    evaluations show that loop partitioning can also significantly boost the
-    performance of the generated CUDA kernel by as much as :math:`10\\times`
-    (the same order of speedup as local padding). The table below illustrates
-    the results we get from the CI workflow:
+    We compare the compute throughputs between four schedules:
 
-    =========== ======== ================= ============= ============
-    GPU         Baseline Loop Partitioning Local Padding Optimal
-    =========== ======== ================= ============= ============
-    RTX 3090    ~0.98    ~11.2             ~11.6         ~11.7 (12.5)
+      1. without any optimization (baseline)
+      2. loop partitioning
+      3. local padding
+      4. local padding + loop partitioning
+     
+    The benchmark we use is the same as the one in local padding
+    (:py:func:`codegen.test_1_local_padding.test_local_padding`). Our
+    evaluations show that 
+    
+      1. Loop partitioning can also significantly boost the performance of the
+         generated CUDA kernel by as much as :math:`10\\times` (the same order
+         of speedup as local padding).
+      2. Although local padding and loop partitioning are orthogonal to each
+         other, applying them jointly is NOT able to boost the performance in
+         this case.
+    
+    The table below illustrates the results we get from the CI workflow:
+
+    =========== ======== ================= ============= ===================
+    GPU         Baseline Loop Partitioning Local Padding | Local Padding + 
+                                                         | Loop Partitioning
+    =========== ======== ================= ============= ===================
+    RTX 3090    ~0.98    ~11.2             ~11.6         ~11.0
     RTX 2080 Ti ~0.43    ~5.98             ~5.27
-    =========== ======== ================= ============= ============
+    =========== ======== ================= ============= ===================
 
     where the numbers denote the compute throughputs (in TFLOPs/sec), and hence
-    the higher the better. Please refer to
-    :py:func:`codegen.test_1_local_padding.test_local_padding` for the
-    definition of *optimal*.
+    the higher the better.
     """
     from ops.dense.sample_schedule import dense_128x128x4
     from ops.dense.fixture import Dense, cuBLASDenseFixture
@@ -97,20 +107,37 @@ def test_loop_partitioning():
                                              log_kernel_filename="temp_workspace.log",
                                              verify_correctness=True
                                          )
+    with DoLoopPartitioning():
+        partition_and_pad_perf_results = \
+            get_time_evaluator_results_rpc_wrapper(
+                wkl_func=Dense,
+                wkl_func_args=wkl_func_args,
+                sched_func_or_str=dense_128x128x4,
+                fixture=cublas_fixture,
+                print_kernel=True,
+                log_kernel_filename="temp_workspace_ii.log",
+                verify_correctness=True
+            )
+
+    baseline_tflops = TFLOPs / np.average(baseline_perf_results)
+    loop_partitioning_tflops = TFLOPs / np.average(loop_partitioning_perf_results)
+    partition_and_pad_tflops = TFLOPs / np.average(partition_and_pad_perf_results)
+    logger.info( "Baseline vs. Loop Partitioning vs. Loop Partition + Local Padding: "
+                f"{baseline_tflops} vs. {loop_partitioning_tflops} vs. "
+                f"{partition_and_pad_tflops} (TFLOPS)"
+                )
+
     assert filecmp.cmp(os.path.dirname(os.path.realpath(__file__))
                             + "/saved_artifacts/test_loop_partitioning.cu",
                        "temp_workspace.log")
 
-    baseline_tflops = TFLOPs / np.average(baseline_perf_results)
-    loop_partitioning_tflops = TFLOPs / np.average(loop_partitioning_perf_results)
-    logger.info(f"Baseline vs. Loop Partitioning: {baseline_tflops} vs. {loop_partitioning_tflops} (TFLOPS)")
-
     if CUDAContext.device_name == 'NVIDIA GeForce RTX 3090':
         np.testing.assert_allclose(baseline_tflops, 0.98, **tolerance)
         np.testing.assert_allclose(loop_partitioning_tflops, 11.2, **tolerance)
-    if CUDAContext.device_name == 'NVIDIA GeForce RTX 3090':
-        np.testing.assert_allclose(baseline_tflops, 0.98, **tolerance)
-        np.testing.assert_allclose(loop_partitioning_tflops, 11.2, **tolerance)
+        np.testing.assert_allclose(partition_and_pad_tflops, 11.0, **tolerance)
+    if CUDAContext.device_name == 'NVIDIA GeForce RTX 2080 Ti':
+        np.testing.assert_allclose(baseline_tflops, 0.42, **tolerance)
+        np.testing.assert_allclose(loop_partitioning_tflops, 5.98, **tolerance)
 
 
 @flaky(max_runs=3)
@@ -141,6 +168,14 @@ def test_loop_partitioning_ii():
       example, all the thread blocks possess the same predicates, which prevents
       the loop partitioning from taking place (since there is no region that can
       be partitioned out without predicates).
+
+    Nevertheless, there are still advantages of loop partitioning that local
+    padding does not have: Since **loop partitioning does not involve padding**,
+    it does not have to perform any redundant computations, which explains why
+    its performance can be better than local padding on RTX 2080 Ti (as can be
+    seen in the previous table). However, this is NOT a problem for the DietCode
+    auto-scheduling framework since we expect that the auto-scheduling outcomes
+    should have relatively low padding ratio.
 
     .. [Nimble] H. Shen et al. *Nimble: Efficiently Compiling Dynamic Neural
                 Networks for Model Inference*. MLSys 2021
