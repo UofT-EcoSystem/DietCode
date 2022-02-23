@@ -1,3 +1,8 @@
+"""
+.. seealso::
+
+    :py:mod:`codegen.test_2_loop_partitioning`
+"""
 import filecmp
 from flaky import flaky
 import logging
@@ -17,8 +22,8 @@ def test_local_padding():
     """
     This test case shows the performance improvement brought by local padding.
     We compare the compute throughputs between two schedules, one without local
-    padding (baseline) and the other with local padding (DietCode).
-    
+    padding (baseline) and the other with local padding.
+
     We use the dense layer as an example workload:
     
     .. math::
@@ -88,12 +93,12 @@ def test_local_padding():
     this case (on modern NVIDIA RTX GPUs). The table below illustrates the
     results we get from the CI workflow:
 
-    =========== ======== ========
-    GPU         Baseline DietCode
-    =========== ======== ========
+    =========== ======== =============
+    GPU         Baseline Local Padding
+    =========== ======== =============
     RTX 3090    ~0.98    ~11.6
     RTX 2080 Ti ~0.43    ~5.2
-    =========== ======== ========
+    =========== ======== =============
 
     where the numbers denote the compute throughputs (in TFLOPs/sec), and hence
     the higher the better.
@@ -118,29 +123,29 @@ def test_local_padding():
                                     print_kernel=True
                                 )
 
-    dietcode_perf_results = get_time_evaluator_results_rpc_wrapper(
-                                wkl_func=Dense,
-                                wkl_func_args=wkl_func_args,
-                                sched_func_or_str=dense_128x128x4,
-                                fixture=cublas_fixture,
-                                print_kernel=True,
-                                log_kernel_filename="temp_workspace.log",
-                                verify_correctness=True
-                            )
+    local_padding_perf_results = get_time_evaluator_results_rpc_wrapper(
+                                     wkl_func=Dense,
+                                     wkl_func_args=wkl_func_args,
+                                     sched_func_or_str=dense_128x128x4,
+                                     fixture=cublas_fixture,
+                                     print_kernel=True,
+                                     log_kernel_filename="temp_workspace.log",
+                                     verify_correctness=True
+                                 )
     assert filecmp.cmp(os.path.dirname(os.path.realpath(__file__))
                            + "/saved_artifacts/test_local_padding.cu",
                        "temp_workspace.log")
 
     baseline_tflops = TFLOPs / np.average(baseline_perf_results)
-    dietcode_tflops = TFLOPs / np.average(dietcode_perf_results)
-    logger.info(f"Baseline vs. DietCode: {baseline_tflops} vs. {dietcode_tflops} (TFLOPS)")
+    local_padding_tflops = TFLOPs / np.average(local_padding_perf_results)
+    logger.info(f"Baseline vs. Local Padding: {baseline_tflops} vs. {local_padding_tflops} (TFLOPS)")
 
     if CUDAContext.device_name == 'NVIDIA GeForce RTX 3090':
         np.testing.assert_allclose(baseline_tflops, 0.98, atol=1e-1, rtol=1e-1)
-        np.testing.assert_allclose(dietcode_tflops, 11.6, atol=1e-1, rtol=1e-1)
+        np.testing.assert_allclose(local_padding_tflops, 11.6, atol=1e-1, rtol=1e-1)
     if CUDAContext.device_name == 'NVIDIA GeForce RTX 2080 Ti':
         np.testing.assert_allclose(baseline_tflops, 0.43, atol=1e-1, rtol=1e-1)
-        np.testing.assert_allclose(dietcode_tflops, 5.2,  atol=1e-1, rtol=1e-1)
+        np.testing.assert_allclose(local_padding_tflops, 5.2,  atol=1e-1, rtol=1e-1)
 
 
 @flaky(max_runs=3)
@@ -192,12 +197,12 @@ def test_local_padding_ii():
     this case. The table below illustrates the results we get from the CI
     workflow:
 
-    =========== ======== ========
-    GPU         Baseline DietCode
-    =========== ======== ========
+    =========== ======== =============
+    GPU         Baseline Local Padding
+    =========== ======== =============
     RTX 3090    ~3.5     ~8.7
     RTX 2080 Ti ~1.8     ~5.5
-    =========== ======== ========
+    =========== ======== =============
 
     where the numbers again denote the compute throughputs (in TFLOPs/sec), and
     hence the higher the better.
@@ -225,26 +230,26 @@ def test_local_padding_ii():
                                     print_kernel=True
                                 )
 
-    dietcode_perf_results = get_time_evaluator_results_rpc_wrapper(
-                                wkl_func=BatchMatmulNT,
-                                wkl_func_args=wkl_func_args,
-                                sched_func_or_str=batch_matmul_nt_1x128x128x8,
-                                fixture=cublas_fixture,
-                                print_kernel=True,
-                                log_kernel_filename="temp_workspace.log",
-                                verify_correctness=True
-                            )
+    local_padding_perf_results = get_time_evaluator_results_rpc_wrapper(
+                                     wkl_func=BatchMatmulNT,
+                                     wkl_func_args=wkl_func_args,
+                                     sched_func_or_str=batch_matmul_nt_1x128x128x8,
+                                     fixture=cublas_fixture,
+                                     print_kernel=True,
+                                     log_kernel_filename="temp_workspace.log",
+                                     verify_correctness=True
+                                 )
     assert filecmp.cmp(os.path.dirname(os.path.realpath(__file__))
                            + "/saved_artifacts/test_local_padding_ii.cu",
                        "temp_workspace.log")
 
     baseline_tflops = TFLOPs / np.average(baseline_perf_results)
-    dietcode_tflops = TFLOPs / np.average(dietcode_perf_results)
-    logger.info(f"Baseline vs. DietCode: {baseline_tflops} vs. {dietcode_tflops} (TFLOPS)")
+    local_padding_tflops = TFLOPs / np.average(local_padding_perf_results)
+    logger.info(f"Baseline vs. Local Padding: {baseline_tflops} vs. {local_padding_tflops} (TFLOPS)")
 
     if CUDAContext.device_name == 'NVIDIA GeForce RTX 3090':
         np.testing.assert_allclose(baseline_tflops, 3.5, atol=1e-1, rtol=1e-1)
-        np.testing.assert_allclose(dietcode_tflops, 8.7, atol=1e-1, rtol=1e-1)
+        np.testing.assert_allclose(local_padding_tflops, 8.7, atol=1e-1, rtol=1e-1)
     if CUDAContext.device_name == 'NVIDIA GeForce RTX 2080 Ti':
         np.testing.assert_allclose(baseline_tflops, 1.8, atol=1e-1, rtol=1e-1)
-        np.testing.assert_allclose(dietcode_tflops, 5.5, atol=1e-1, rtol=1e-1)
+        np.testing.assert_allclose(local_padding_tflops, 5.5, atol=1e-1, rtol=1e-1)
