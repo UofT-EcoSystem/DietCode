@@ -1,3 +1,4 @@
+export PS1='(Base) ${PS1}'
 export USE_DIETCODE=0
 export OLD_LD_LIBRARY_PATH=${OLD_LD_LIBRARY_PATH:-${LD_LIBRARY_PATH}}
 export LD_LIBRARY_PATH=${OLD_LD_LIBRARY_PATH}:/mnt/tvm_base/build

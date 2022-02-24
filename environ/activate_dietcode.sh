@@ -1,3 +1,4 @@
+export PS1="(DietCode) ${PS1}"
 export USE_DIETCODE=1
 export OLD_LD_LIBRARY_PATH=${OLD_LD_LIBRARY_PATH:-${LD_LIBRARY_PATH}}
 export LD_LIBRARY_PATH=${OLD_LD_LIBRARY_PATH}:/mnt/tvm/build
