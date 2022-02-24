@@ -35,7 +35,7 @@ from tvm import te
     def write_dispatcher(self, sched_func_name_prefix, search_task, dispatcher):
         wkl_func_args = ', '.join([t.op.name for t in search_task.compute_dag.tensors])
         best_states = list(dispatcher.states)
-        wkl_inst_disp_map = dispatcher.inst_disp_map
+        wkl_inst_disp_map = dispatcher.wkl_inst_disp_map
         wkl_inst_disp_dict = dict()
         for k, v in wkl_inst_disp_map.items():
             shape_value = tuple(int(v) for v in search_task.wkl_insts[k.value])
