@@ -18,7 +18,7 @@ def test_train(pytestconfig):
     I = pytestconfig.getoption('I')
     H = pytestconfig.getoption('H')
 
-    DynT, DynI, DynH = tir.Var('T'), tir.Var('I'), tir.DynShapeVar('H')
+    DynT, DynI, DynH = tir.DynShapeVar('T'), tir.DynShapeVar('I'), tir.DynShapeVar('H')
 
     auto_scheduler.train(wkl_func=Dense,
                          wkl_func_args=(B * DynT, DynI, DynH),

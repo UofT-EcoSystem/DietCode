@@ -69,12 +69,8 @@ class _AutoScheduler(abc.ABC):
             best_input, _ = \
                     load_best_record(sched_log_fname, task.workload_key, False)
             best_state = best_input.state
-            return task, best_state, task.compute_dag.apply_steps_from_state(best_state)
-
-        if shape_vars is None:
-            # static workload
-            best_state, sched, in_args = task.tune(tune_option, search_policy)
-            return task, best_state, (sched, in_args)
+            return task, best_state, \
+                   task.compute_dag.apply_steps_from_state(best_state)
         else:
             return task, task.tune(tune_option, search_policy)  # dietcode_dispatcher
     
@@ -88,8 +84,7 @@ class _AutoScheduler(abc.ABC):
 
 
 class AnsorAutoScheduler(_AutoScheduler):
-    def train(self, wkl_func, wkl_func_args, fvendor_fixture,
-              sched_preproc=None,
+    def train(self, wkl_func, wkl_func_args, fvendor_fixture, sched_preproc=None,
               sched_results_log_fname="temp_workspace", append_log=False,
               fflop_estimator=_default_fflop_estimator):
         logger.info("{}{}".format(wkl_func.__name__, wkl_func_args))
@@ -164,8 +159,7 @@ class AnsorAutoScheduler(_AutoScheduler):
 
 class DietCodeAutoScheduler(_AutoScheduler):
     def train(self, wkl_func, wkl_func_args, shape_vars, wkl_insts, wkl_inst_weights,
-              fvendor_fixture, sched_func_name_prefix,
-              sched_preproc=None,
+              fvendor_fixture, sched_func_name_prefix, sched_preproc=None,
               sched_results_log_fname="temp_workspace", append_log=False,
               fflop_estimator=_default_fflop_estimator):
         logger.info("{}{}".format(wkl_func.__name__, wkl_func_args))

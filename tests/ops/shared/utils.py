@@ -18,15 +18,13 @@ def get_time_evaluator_results(wkl_func, wkl_func_args, fixture,
     Measure the given workload with the provided schedule string (generated from
     the auto-scheduler) or schedule function.
 
-    Parameters
-    ==========
-    wkl_func            : Workload Function
-    wkl_func_args       : Workload Function Arguments
-    fixture             : Operator Fixture, used for checking correctness
-    print_kernel        : Whether to print the kernel to the console
-    log_kernel_filename : Filename to dump kernel output
-    verify_correctness  : Whether to verify the correctness of the generated
-                          kernel (using the fixture)
+    :param wkl_func:            Workload Function
+    :param wkl_func_args:       Workload Function Arguments
+    :param fixture:             Operator Fixture, used for checking correctness
+    :param print_kernel:        Whether to print the kernel to the console
+    :param log_kernel_filename: Filename to dump kernel output
+    :param verify_correctness:  Whether to verify the correctness of the
+                                generated kernel (using the fixture)
     """
     tensor_args = wkl_func(*wkl_func_args)
     s = te.create_schedule(tensor_args[-1].op)
