@@ -11,7 +11,7 @@ from math import prod
 
 logger = logging.getLogger(__name__)
 
-from shared import CUDATarget, rand_seed, use_dietcode
+from shared import CUDATarget, rand_seed
 from shared.auto_scheduler import auto_sched_ntrials, get_log_filename, \
                                   local_rpc_measure_ctx
 from shared.logger import ScopedTimer
@@ -48,12 +48,12 @@ class _AutoScheduler(abc.ABC):
     def _train(self, func, args, sched_log_fname, shape_vars=None,
                wkl_insts=None, wkl_inst_weights=None):
         if shape_vars is not None:
-            task = SearchTask(func=func, args=args,
-                              shape_vars=shape_vars, wkl_insts=wkl_insts,
-                              wkl_inst_weights=wkl_inst_weights,
-                              target=CUDATarget)
+            search_task = SearchTask(func=func, args=args,
+                                     shape_vars=shape_vars, wkl_insts=wkl_insts,
+                                     wkl_inst_weights=wkl_inst_weights,
+                                     target=CUDATarget)
         else:
-            task = SearchTask(func=func, args=args, target=CUDATarget)
+            search_task = SearchTask(func=func, args=args, target=CUDATarget)
         
         tune_option = TuningOptions(
                           num_measure_trials=auto_sched_ntrials,
@@ -62,17 +62,8 @@ class _AutoScheduler(abc.ABC):
                       )
 
         cost_model = XGBModel(seed=rand_seed)
-        search_policy = SketchPolicy(task, cost_model, seed=rand_seed)
-
-        if not use_dietcode:
-            task.tune(tune_option, search_policy)
-            best_input, _ = \
-                    load_best_record(sched_log_fname, task.workload_key, False)
-            best_state = best_input.state
-            return task, best_state, \
-                   task.compute_dag.apply_steps_from_state(best_state)
-        else:
-            return task, task.tune(tune_option, search_policy)  # dietcode_dispatcher
+        search_policy = SketchPolicy(search_task, cost_model, seed=rand_seed)
+        return search_task, tune_option, search_policy
     
     @abc.abstractmethod
     def train(self):
@@ -103,10 +94,15 @@ class AnsorAutoScheduler(_AutoScheduler):
 
         with ScopedTimer("ansor_autosched_timer.csv", append_log,
                          sched_func_name):
-            search_task, best_state, _ = \
+            sched_log_fname = get_log_filename('ansor', sched_func_name)
+            search_task, tune_option, search_policy = \
                     self._train(func=wkl_func, args=wkl_func_args,
-                                sched_log_fname=get_log_filename('ansor', sched_func_name)
+                                sched_log_fname=sched_log_fname
                                 )
+            search_task.tune(tune_option, search_policy)
+            best_input, _ = load_best_record(sched_log_fname, search_task.workload_key, False)
+            best_state = best_input.state
+            
         pysched_logger.write_best_state(sched_func_name, search_task, best_state,
                                         sched_preproc)
 
