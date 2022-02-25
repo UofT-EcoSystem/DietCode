@@ -40,7 +40,7 @@ class AvgStdMedianLogger:
 
 
 class ScopedTimer:
-    __slots__ = ['filename', 'attr', 'tic', 'toc']
+    __slots__ = ['filename', 'name', 'tic', 'toc']
 
     def __init__(self, filename, append_mode, name):
         self.filename = filename

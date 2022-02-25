@@ -4,7 +4,7 @@ import pprint
 
 logger = logging.getLogger(__name__)
 
-from ...shared.logger import AvgStdMedianLogger
+from shared.logger import AvgStdMedianLogger
 
 
 class PySchedLogger:
