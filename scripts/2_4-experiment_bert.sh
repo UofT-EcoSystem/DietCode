@@ -19,4 +19,5 @@ AUTO_SCHED_NTRIALS=${AUTO_SCHED_NTRIALS} pytest -s test_dietcode.py::test_train_
 cp dietcode_autosched_batch_matmul_nt_192xTxTx64.json saved_schedules_G4
 
 cd ${PROJECT_ROOT}/networks/bert
+./download_bert_base_uncased.sh
 pytest -s test_dietcode.py::test_infer_dynT
