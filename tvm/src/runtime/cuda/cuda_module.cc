@@ -61,7 +61,7 @@ class CUDAModuleNode : public runtime::ModuleNode {
         try {
           CUDA_DRIVER_CALL(cuModuleUnload(module_[i]));
         } catch(...) {
-          LOG(FATAL) << "cuda_source=" << cuda_source_;
+          LOG(WARNING) << "cuda_source=" << cuda_source_;
         }
       }
     }
