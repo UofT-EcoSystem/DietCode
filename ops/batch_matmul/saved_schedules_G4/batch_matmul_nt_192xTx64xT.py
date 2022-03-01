@@ -437,7 +437,7 @@ def batch_matmul_nt_192x128x64x128(X, W, T_batch_matmul_NT, s):
     T_batch_matmul_NT_b_o_i_i_o_i_fused_j_o_i_fused = s[T_batch_matmul_NT].fuse(T_batch_matmul_NT_b_o_i, T_batch_matmul_NT_i_o_i, T_batch_matmul_NT_j_o_i)
     s[T_batch_matmul_NT].bind(T_batch_matmul_NT_b_o_i_i_o_i_fused_j_o_i_fused, te.thread_axis("threadIdx.x"))
     W_shared_ax0_ax1_fused_ax2_fused = s[W_shared].fuse(W_shared_ax0, W_shared_ax1, W_shared_ax2)
-    W_shared_ax0_ax1_fused_ax2_fused_o, W_shared_ax0_ax1_fused_ax2_fused_i = s[W_shared].split(W_shared_ax0_ax1_fused_ax2_fused, factor=4)
+    W_shared_ax0_ax1_fused_ax2_fused_o, W_shared_ax0_ax1_fused_ax2_fused_i = s[W_shared].split(W_shared_ax0_ax1_fused_ax2_fused, factor=1)
     s[W_shared].vectorize(W_shared_ax0_ax1_fused_ax2_fused_i)
     W_shared_ax0_ax1_fused_ax2_fused_o_o, W_shared_ax0_ax1_fused_ax2_fused_o_i = s[W_shared].split(W_shared_ax0_ax1_fused_ax2_fused_o, factor=128)
     s[W_shared].bind(W_shared_ax0_ax1_fused_ax2_fused_o_i, te.thread_axis("threadIdx.x"))
@@ -446,7 +446,7 @@ def batch_matmul_nt_192x128x64x128(X, W, T_batch_matmul_NT, s):
     s[X_shared].vectorize(X_shared_ax0_ax1_fused_ax2_fused_i)
     X_shared_ax0_ax1_fused_ax2_fused_o_o, X_shared_ax0_ax1_fused_ax2_fused_o_i = s[X_shared].split(X_shared_ax0_ax1_fused_ax2_fused_o, factor=128)
     s[X_shared].bind(X_shared_ax0_ax1_fused_ax2_fused_o_i, te.thread_axis("threadIdx.x"))
-    s[T_batch_matmul_NT_local].pragma(T_batch_matmul_NT_local_b_c_o_o_o_o, "auto_unroll_max_step", 2048 if int(os.getenv("NIMBLE_ENV", "0")) else 512)
+    s[T_batch_matmul_NT_local].pragma(T_batch_matmul_NT_local_b_c_o_o_o_o, "auto_unroll_max_step", 2048 if int(os.getenv("USE_NIMBLE", "0")) else 512)
     s[T_batch_matmul_NT_local].pragma(T_batch_matmul_NT_local_b_c_o_o_o_o, "unroll_explicit", True)
 
 
