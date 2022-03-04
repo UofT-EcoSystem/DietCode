@@ -45,8 +45,9 @@ class _AutoScheduler(abc.ABC):
         logger.info("Returning sched_func_name={}".format(sched_func_name))
         return sched_func_name
 
-    def _train(self, func, args, sched_log_fname, shape_vars=None,
-               wkl_insts=None, wkl_inst_weights=None):
+    def _define_search_task_and_policy(self, func, args, sched_log_fname,
+                                       shape_vars=None, wkl_insts=None,
+                                       wkl_inst_weights=None):
         if shape_vars is not None:
             search_task = SearchTask(func=func, args=args,
                                      shape_vars=shape_vars, wkl_insts=wkl_insts,
@@ -96,9 +97,9 @@ class AnsorAutoScheduler(_AutoScheduler):
                          sched_func_name):
             sched_log_fname = get_log_filename('ansor', sched_func_name)
             search_task, tune_option, search_policy = \
-                    self._train(func=wkl_func, args=wkl_func_args,
-                                sched_log_fname=sched_log_fname
-                                )
+                    self._define_search_task_and_policy(
+                        func=wkl_func, args=wkl_func_args, sched_log_fname=sched_log_fname
+                    )
             search_task.tune(tune_option, search_policy)
             best_input, _ = load_best_record(sched_log_fname, search_task.workload_key, False)
             best_state = best_input.state
@@ -164,11 +165,14 @@ class DietCodeAutoScheduler(_AutoScheduler):
 
         with ScopedTimer("dietcode_autosched_timer.csv", append_log,
                          sched_func_name_prefix):
-            search_task, dietcode_dispatcher = \
-                    self._train(func=wkl_func, args=wkl_func_args,
-                                sched_log_fname=get_log_filename('dietcode', sched_func_name_prefix),
-                                shape_vars=shape_vars, wkl_insts=wkl_insts,
-                                wkl_inst_weights=wkl_inst_weights)
+            search_task, tune_option, search_policy = \
+                    self._define_search_task_and_policy(
+                        func=wkl_func, args=wkl_func_args,
+                        sched_log_fname=get_log_filename('dietcode', sched_func_name_prefix),
+                        shape_vars=shape_vars, wkl_insts=wkl_insts,
+                        wkl_inst_weights=wkl_inst_weights
+                    )
+            dietcode_dispatcher = search_task.tune(tune_option, search_policy)
 
         pysched_logger.write_dietcode_dispatcher(sched_func_name_prefix,
                                                  search_task,
