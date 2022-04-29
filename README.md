@@ -32,6 +32,11 @@ for dynamic-shape tensor programs. Please kindly go through the documentation
 below that guides you on how to build and use the *DietCode* auto-scheduler
 framework.
 
+## News
+
+We are actively working on the RFC for upstreaming the codebase to TVM, and will
+post the latest updates here.
+
 ## Prerequisites
 
 - Minimum Requirement: A machine with a modern NVIDIA GPU and GPU driver
