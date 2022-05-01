@@ -11,12 +11,10 @@ cd ${PROJECT_ROOT}/$1
 
 mkdir -p build && cd build
 
-if [ ! -f Makefile ]; then
-        cmake -DUSE_CUDA=/usr/local/cuda/ \
-              -DUSE_LLVM=/usr/lib/llvm/bin/llvm-config \
-              -DUSE_CUBLAS=1 \
-              -DUSE_CUDNN=1 ..
-fi
+cmake -DUSE_CUDA=/usr/local/cuda/ \
+      -DUSE_LLVM=/usr/lib/llvm/bin/llvm-config \
+      -DUSE_CUBLAS=1 \
+      -DUSE_CUDNN=1 ..
 
 make -j 4
 
