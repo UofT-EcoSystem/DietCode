@@ -115,7 +115,20 @@ Here is an overview of the DietCode framework design.
 # Drawbacks
 [drawbacks]: #drawbacks
 
-// Discuss a bit about the op coverage and binary size.
+- The proposed approach mostly works on NVIDIA GPUs and has not been tested on
+  other hardware platforms.
+- The current compilation workflow generates one program per input shape.
+  Although we can merge those static-shape programs into a single dynamic-shape
+  program like the following code snippet:
+  ```CUDA
+  __global__ void default_function(float* X, float* W, float* Y,
+                                   const int T)
+                                   // Note the `T` here.
+  ```
+  Our evaluations indicate that this program has at least 5% worse performance
+  compared with the static-shape alternatives. Hence, we decide to sacrifice the
+  binary size for the runtime performance, which can potentially be problematic
+  when the hardware resources are limited.
 
 # Rationale and Alternatives
 [rationale-and-alternatives]: #rationale-and-alternatives
@@ -129,27 +142,36 @@ approach is not guaranteed to achieve better performance as static shapes.
 # Prior State-of-the-Arts
 [prior-sotas]: #prior-sotas
 
-// Brorrow some related work from the paper.
+- **Reuse-based Tuner** 
 
-- Ansor: ...
-- 
+  Selective Tuning ([Cody Yu. \[RFC\]\[AutoTVM\] Selective Tuning, 2019.
+  ](https://github.com/apache/incubator-tvm/issues/4188)) and ETO group
+  workloads into clusters based on a set of pre-defined rules (e.g., similarity
+  ratio in Selective Tuning) and reuse the same schedule in a single cluster.
 
+- **Dynamic Neural Networks**
+
+  Dynamic batching is a common graph-level optimization adopted by frameworks
+  such as DyNet~\cite{DyNet}, Cavs~\cite{Cavs}, BatchMaker~\cite{BatchMaker},
+  and TensorFlow Fold~\cite{TensorFlowFold} for cases when the batch size is
+  dynamic. Nimble~\cite{Nimble} and DISC~\cite{DISC} both design a compiler to
+  represent and execute dynamic neural networks. Cortex~\cite{Cortex} is a
+  compiler-based framework on recursive neural networks. Those works focus on
+  the graph-level optimizations and therefore are orthogonal to DietCode, which
+  operates on each individual layer. In fact, those graph-level solutions can
+  also leverage DietCode for efficient operator code generation.
 
 # Unresolved Questions
 [unresolved-questions]: #unresolved-questions
 
-// I tried to list one but you could write whatever in your mind.
-
-- Limited dynamic shape dimension.
-- ...
+- Does not support arbitrary shape dimensions. For better performance, we expect
+  that shape dimensions have to be specified beforehand.
 
 # Future Possibilities
 [future-possibilities]: #future-possibilities
 
-// I tried to list some but you could write whatever in your mind.
-
-- Evaeluate more ops.
-- CPU support.
+- Evaluate more operator use cases.
+- CPU Support
 
 # Upstreaming Milestones
 
@@ -166,5 +188,4 @@ corresponds to a PR with unit tests of roughly several hundred lines.
   - Program Measurer
   - Micro-Kernel Cost Model
   - Evolutionary Search
-- [ ] Dynamic-Shape Program Compilation
 - [ ] Decision-Tree Dispatching
