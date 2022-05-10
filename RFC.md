@@ -23,6 +23,10 @@ auto-scheduling, which is therefore more efficient compared with existing
 auto-schedulers. We evaluate DietCode using state-of-the-art machine learning
 workloads on a modern GPU.
 
+### 
+
+### User Interface
+
 
 
 
@@ -34,3 +38,6 @@ by up to 5.88x less than the state-of-the-art auto-scheduler on the uniformly
 sampled dynamic shapes, (2) improves performance by up to 69.5% better than the
 auto-scheduler and 18.6% better than the vendor library. All these advantages
 make DietCode an efficient and practical solution for dynamic-shape workloads.
+
+## Upstreaming Milestones
+
