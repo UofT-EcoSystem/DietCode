@@ -144,25 +144,32 @@ approach is not guaranteed to achieve better performance as static shapes.
 
 - **Reuse-based Tuner** 
 
-  Selective Tuning ([Cody Yu. \[RFC\]\[AutoTVM\] Selective Tuning,
+  Selective Tuning ([Cody Yu.
   2019](https://github.com/apache/incubator-tvm/issues/4188)) and ETO ([Jingzhi
-  Fang et al. *ETO: Accelerating Optimization of {DNN} Operators by
-  High-Performance Tensor Program Reuse*,
-  2021](http://www.vldb.org/pvldb/vol15/p183-chen.pdf)) group workloads into
-  clusters based on a set of pre-defined rules (e.g., similarity ratio in
-  Selective Tuning) and reuse the same schedule in a single cluster.
+  Fang et al. VLDB 2021](http://www.vldb.org/pvldb/vol15/p183-chen.pdf)) group
+  workloads into clusters based on a set of pre-defined rules (e.g., similarity
+  ratio in Selective Tuning) and reuse the same schedule in a single cluster.
 
 - **Dynamic Neural Networks**
 
   Dynamic batching is a common graph-level optimization adopted by frameworks
-  such as DyNet~\cite{DyNet}, Cavs~\cite{Cavs}, BatchMaker~\cite{BatchMaker},
-  and TensorFlow Fold~\cite{TensorFlowFold} for cases when the batch size is
-  dynamic. Nimble~\cite{Nimble} and DISC~\cite{DISC} both design a compiler to
-  represent and execute dynamic neural networks. Cortex~\cite{Cortex} is a
-  compiler-based framework on recursive neural networks. Those works focus on
-  the graph-level optimizations and therefore are orthogonal to DietCode, which
-  operates on each individual layer. In fact, those graph-level solutions can
-  also leverage DietCode for efficient operator code generation.
+  such as DyNet ([Graham Neubig et al. 2017](http://arxiv.org/abs/1701.03980)),
+  Cavs ([Shizhen Xu et al. USENIX ATC
+  2018](https://www.usenix.org/conference/atc18/presentation/xu-shizen)),
+  BatchMaker ([Pin Gao et al. EuroSys
+  2018](https://doi.org/10.1145/3190508.3190541)), and TensorFlow Fold ([Moshe
+  Looks et al. ICLR 2017](https://openreview.net/forum?id=ryrGawqex)] for cases
+  when the batch size is dynamic. Nimble ([Haichen Shen et al. MLSys
+  2021](https://proceedings.mlsys.org/paper/2021/hash/4e732ced3463d06de0ca9a15b6153677-Abstract.html))
+  and DISC ([Kai Zhu et al. EuroMLSys
+  2021](https://dl.acm.org/doi/10.1145/3437984.3458838)) both design a compiler
+  to represent and execute dynamic neural networks. Cortex ([Pratik Fegade et
+  al. MLSys
+  2021](https://proceedings.mlsys.org/paper/2021/hash/182be0c5cdcd5072bb1864cdee4d3d6e-Abstract.html)
+  is a compiler-based framework on recursive neural networks. Those works focus
+  on the graph-level optimizations and therefore are orthogonal to DietCode,
+  which operates on each individual layer. In fact, those graph-level solutions
+  can also leverage DietCode for efficient operator code generation.
 
 # Unresolved Questions
 [unresolved-questions]: #unresolved-questions
