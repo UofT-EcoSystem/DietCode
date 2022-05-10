@@ -77,19 +77,26 @@ To enable auto-scheduling for dynamic shape workloads, users only need to:
 1. Have `ShapeVar` in the TE/TensorIR computes.
 1. Specify the weight of each shape value.
 
-Note that the proposed interface is optional, so it won't break any existing
+Note that the proposed interface is optional, so it will not break any existing
 code.
 
 
-# Reference-level explanation
+# Reference-Level Explanation
 [reference-level-explanation]: #reference-level-explanation
 
 Here is an overview of the DietCode framework design.
 
 <img src="./docs/figures/DietCode.jpg" width="61.8%" />
 
-
-- 
+- We construct **a shape-generic search space that consists of micro-kernels**,
+  an incomplete program that carries out a tile of the complete computation, to
+  efficiently support dynamic-shape workloads. 
+  
+  We use the hardware constraints (e.g., the maximum number of threads, the
+  amount of shared and local memory) rather than the shape information to
+  determine the micro-kernel candidates. Those candidates serve as the building
+  blocks and are executed repeatedly to carry out a workload instance (defined
+  as an static-shape instance of the dynamic-shape workload).
 - 
 - 
 
