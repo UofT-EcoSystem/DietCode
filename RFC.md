@@ -6,16 +6,19 @@
 # Summary
 [summary]: #summary
 
-We propose to integrate DietCode, an auto-scheduler for dynamic tensor programs, to AutoTIR.
-DietCode offers the following features:
-- A shape generic search space to cover all possible shapes in dynamic shape workloads.
-- An improved cost model to judge the quality of schedule candidates based on dynamic shape.
-- Some improvements to the TVM CUDA codegen to achieve better performance with imperfect tiling.
+We propose to integrate DietCode, an auto-scheduler for dynamic tensor programs,
+to AutoTIR. DietCode offers the following features:
+- A shape generic search space to cover all possible shapes in dynamic shape
+  workloads.
+- An improved cost model to judge the quality of schedule candidates based on
+  dynamic shape.
+- Some improvements to the TVM CUDA codegen to achieve better performance with
+  imperfect tiling.
 
-DietCode has been published by MLSys 2022 so please see
-[the paper](https://proceedings.mlsys.org/paper/2022/hash/fa7cdfad1a5aaf8370ebeda47a1ff1c3-Abstract.html)
-for more details and evaluations. Meanwhile, DietCode itself is also publicly available
-[here](https://github.com/UofT-EcoSystem/DietCode).
+DietCode has been published by MLSys 2022 so please see [the
+paper](https://proceedings.mlsys.org/paper/2022/hash/fa7cdfad1a5aaf8370ebeda47a1ff1c3-Abstract.html)
+for more details and evaluations. Meanwhile, DietCode itself is also publicly
+available [here](https://github.com/UofT-EcoSystem/DietCode).
 
 # Motivation
 [motivation]: #motivation
@@ -25,22 +28,22 @@ workloads is a crucial but challenging task. Many machine learning and system
 practitioners rely on vendor libraries or auto-schedulers to do the job. While
 the former requires large engineering efforts, the latter only supports
 static-shape workloads in existing works. It is difficult, if not impractical,
-to apply existing auto-schedulers directly to **dynamic-shape workloads**, as this
-leads to extremely long auto-scheduling time.
+to apply existing auto-schedulers directly to **dynamic-shape workloads**, as
+this leads to extremely long auto-scheduling time.
 
 We observe that the key challenge faced by existing auto-schedulers when
 handling a dynamic-shape workload is that they cannot construct a unified search
 space for all the possible shapes of the workload, because their search space is
-shape-dependent. To address this, this RFC aims to add dynamic-shape supports
-to AutoTIR by integrating DietCode framework, which constructs **a shape-generic
-search space and cost model** to auto-schedule dynamic-shape workloads efficiently.
+shape-dependent. To address this, this RFC aims to add dynamic-shape supports to
+AutoTIR by integrating DietCode framework, which constructs **a shape-generic
+search space and cost model** to auto-schedule dynamic-shape workloads
+efficiently.
 
 Our evaluation shows that DietCode has the following key strengths when
 auto-scheduling an entire model end-to-end: 
 
-1. reduces the auto-scheduling time by up to 5.88x less than the
-current auto-scheduler on 8 uniformly sampled dynamic shapes, and
-
+1. reduces the auto-scheduling time by up to 5.88x less than the current
+auto-scheduler on 8 uniformly sampled dynamic shapes, and
 1. improves performance by up to 69.5% better than the auto-scheduler and 18.6%
 better than the vendor library. All these advantages make DietCode an efficient
 and practical solution for dynamic-shape workloads.
@@ -49,9 +52,9 @@ and practical solution for dynamic-shape workloads.
 # Guide-level explanation
 [guide-level-explanation]: #guide-level-explanation
 
-We implemented and experiemented DietCode based on Auto-Scheduler,
-so the following example is based on Auto-Scheduler. However, we plan
-to integrate this RFC to AutoTIR.
+We implemented and experimented DietCode based on the current auto-scheduler
+submodule, so the following example is based on it as well. However, we plan to
+integrate this RFC to AutoTIR (MetaScheduler).
 
 ```Python
 T, T_vals = tir.ShapeVar('T’), list(range(1, 128))
@@ -70,13 +73,12 @@ search_policy = SketchPolicy(search_task, XGBModel())
 search_task.tune(tune_option, search_policy)
 ```
 
-To enable auto-scheduling for dynamic shape workloads,
-users only need to:
+To enable auto-scheduling for dynamic shape workloads, users only need to:
 1. Have `ShapeVar` in the TE/TensorIR computes.
-2. Specify the weight of each shape value.
+1. Specify the weight of each shape value.
 
-Note that the proposed interface is optional, so it won't
-break any existing code.
+Note that the proposed interface is optional, so it won't break any existing
+code.
 
 
 # Reference-level explanation
