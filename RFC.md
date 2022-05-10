@@ -115,8 +115,6 @@ Here is an overview of the DietCode framework design.
 # Drawbacks
 [drawbacks]: #drawbacks
 
-- The proposed approach mostly works on NVIDIA GPUs and has not been tested on
-  other hardware platforms.
 - The current compilation workflow generates one program per input shape.
   Although we can merge those static-shape programs into a single dynamic-shape
   program like the following code snippet:
@@ -179,8 +177,11 @@ approach is not guaranteed to achieve better performance as static shapes.
 # Unresolved Questions
 [unresolved-questions]: #unresolved-questions
 
-- Does not support arbitrary shape dimensions. For better performance, we expect
-  that shape dimensions have to be specified beforehand.
+- The current design does not support arbitrary shape dimensions. For better
+  auto-scheduling outcomes, we expect that shape dimensions have to be specified
+  beforehand.
+- The proposed approach mostly works on NVIDIA GPUs and has not been tested on
+  other hardware platforms.
 
 # Future Possibilities
 [future-possibilities]: #future-possibilities
