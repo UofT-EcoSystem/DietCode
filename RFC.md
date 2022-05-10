@@ -144,10 +144,13 @@ approach is not guaranteed to achieve better performance as static shapes.
 
 - **Reuse-based Tuner** 
 
-  Selective Tuning ([Cody Yu. \[RFC\]\[AutoTVM\] Selective Tuning, 2019.
-  ](https://github.com/apache/incubator-tvm/issues/4188)) and ETO group
-  workloads into clusters based on a set of pre-defined rules (e.g., similarity
-  ratio in Selective Tuning) and reuse the same schedule in a single cluster.
+  Selective Tuning ([Cody Yu. \[RFC\]\[AutoTVM\] Selective Tuning,
+  2019](https://github.com/apache/incubator-tvm/issues/4188)) and ETO ([Jingzhi
+  Fang et al. *ETO: Accelerating Optimization of {DNN} Operators by
+  High-Performance Tensor Program Reuse*,
+  2021](http://www.vldb.org/pvldb/vol15/p183-chen.pdf)) group workloads into
+  clusters based on a set of pre-defined rules (e.g., similarity ratio in
+  Selective Tuning) and reuse the same schedule in a single cluster.
 
 - **Dynamic Neural Networks**
 
