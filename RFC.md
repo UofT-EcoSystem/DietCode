@@ -49,7 +49,7 @@ better than the vendor library. All these advantages make DietCode an efficient
 and practical solution for dynamic-shape workloads.
 
 
-# Guide-level explanation
+# Guide-Level Explanation
 [guide-level-explanation]: #guide-level-explanation
 
 We implemented and experimented DietCode based on the current auto-scheduler
@@ -84,29 +84,31 @@ code.
 # Reference-level explanation
 [reference-level-explanation]: #reference-level-explanation
 
-// Please explain briefly about what's happening behind.
-// You could write a pseudo code to explain the search process, for example.
-
 Here is an overview of the DietCode framework design.
 
 <img src="./docs/figures/DietCode.jpg" width="61.8%" />
+
+
+- 
+- 
+- 
 
 # Drawbacks
 [drawbacks]: #drawbacks
 
 // Discuss a bit about the op coverage and binary size.
 
-# Rationale and alternatives
+# Rationale and Alternatives
 [rationale-and-alternatives]: #rationale-and-alternatives
 
 There is an approach proposed by [Nimble](https://arxiv.org/pdf/2006.03031.pdf),
-which partitions a range of dynamic shape to buckets and tunes one kernel for each bucket.
-We could, of course, implement this approach to existing Auto-SCheduler and AutoTIR.
-However, as evaluated in the DietCode paper, this approach is not guaranteed to achieve
-better performance as static shapes.
+which partitions a range of dynamic shape to buckets and tunes one kernel for
+each bucket. We could, of course, implement this approach to the current
+auto-scheduler and AutoTIR. However, as evaluated in the DietCode paper, this
+approach is not guaranteed to achieve better performance as static shapes.
 
-# Prior art
-[prior-art]: #prior-art
+# Prior State-of-the-Arts
+[prior-sotas]: #prior-sotas
 
 // Brorrow some related work from the paper.
 
@@ -114,7 +116,7 @@ better performance as static shapes.
 - 
 
 
-# Unresolved questions
+# Unresolved Questions
 [unresolved-questions]: #unresolved-questions
 
 // I tried to list one but you could write whatever in your mind.
@@ -122,7 +124,7 @@ better performance as static shapes.
 - Limited dynamic shape dimension.
 - ...
 
-# Future possibilities
+# Future Possibilities
 [future-possibilities]: #future-possibilities
 
 // I tried to list some but you could write whatever in your mind.
