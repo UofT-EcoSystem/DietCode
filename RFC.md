@@ -23,12 +23,31 @@ auto-scheduling, which is therefore more efficient compared with existing
 auto-schedulers. We evaluate DietCode using state-of-the-art machine learning
 workloads on a modern GPU.
 
-### 
+### Framework Overview
+
+<img src="./docs/figures/DietCode.jpg" width="61.8%" />
 
 ### User Interface
 
+```Python
+T, T_vals = tir.ShapeVar('T’), list(range(1, 128))
 
+task = SearchTask(func=Dense, args=(16*T, 768, 2304),
+                  shape_vars=(T,), wkl_insts=(T_vals,)
+                  wkl_inst_weights=([1. for _ in T_vals],))
 
+tune_option = TuningOptions(
+                  num_measure_trials=auto_sched_ntrials,
+                  runner=local_rpc_measure_ctx.runner,
+                  measure_callbacks=[RecordToFile(sched_log_fname)]
+              )
+search_policy = SketchPolicy(search_task, XGBModel())
+
+search_task.tune(tune_option, search_policy)
+```
+
+Note that the above interface is based on Ansor, and we will migrate the same
+changes to the MetaScheduler accordingly.
 
 ## Evaluation Results
 
