@@ -1,33 +1,57 @@
-# \[RFC\] DietCode: An Auto-Scheduler for Dynamic Tensor Programs
+- Feature Name: DietCode: An Auto-Scheduler for Dynamic Tensor Programs
+- Start Date: (2022-05-10)
+- RFC PR: [apache/tvm-rfcs#xx](https://github.com/apache/tvm-rfcs/pull/xx)
+- GitHub Issue: [apache/tvm#yy](https://github.com/apache/tvm/pull/yy)
 
-## Motivation
+# Summary
+[summary]: #summary
+
+We propose to integrate DietCode, an auto-scheduler for dynamic tensor programs, to AutoTIR.
+DietCode offers the following features:
+- A shape generic search space to cover all possible shapes in dynamic shape workloads.
+- An improved cost model to judge the quality of schedule candidates based on dynamic shape.
+- Some improvements to the TVM CUDA codegen to achieve better performance with imperfect tiling.
+
+DietCode has been published by MLSys 2022 so please see
+[the paper](https://proceedings.mlsys.org/paper/2022/hash/fa7cdfad1a5aaf8370ebeda47a1ff1c3-Abstract.html)
+for more details and evaluations. Meanwhile, DietCode itself is also publicly available
+[here](https://github.com/UofT-EcoSystem/DietCode).
+
+# Motivation
+[motivation]: #motivation
 
 Achieving high performance for compute-intensive operators in machine learning
 workloads is a crucial but challenging task. Many machine learning and system
 practitioners rely on vendor libraries or auto-schedulers to do the job. While
 the former requires large engineering efforts, the latter only supports
 static-shape workloads in existing works. It is difficult, if not impractical,
-to apply existing auto-schedulers directly to dynamic-shape workloads, as this
+to apply existing auto-schedulers directly to **dynamic-shape workloads**, as this
 leads to extremely long auto-scheduling time.
-
-## Proposed Design
 
 We observe that the key challenge faced by existing auto-schedulers when
 handling a dynamic-shape workload is that they cannot construct a unified search
 space for all the possible shapes of the workload, because their search space is
-shape-dependent. To address this, we propose DietCode, a new auto-scheduler
-framework that efficiently supports dynamic-shape workloads by constructing a
-shape-generic search space and cost model. Under this construction, all shapes
-jointly search within the same space and update the same cost model when
-auto-scheduling, which is therefore more efficient compared with existing
-auto-schedulers. We evaluate DietCode using state-of-the-art machine learning
-workloads on a modern GPU.
+shape-dependent. To address this, this RFC aims to add dynamic-shape supports
+to AutoTIR by integrating DietCode framework, which constructs **a shape-generic
+search space and cost model** to auto-schedule dynamic-shape workloads efficiently.
 
-### Framework Overview
+Our evaluation shows that DietCode has the following key strengths when
+auto-scheduling an entire model end-to-end: 
 
-<img src="./docs/figures/DietCode.jpg" width="61.8%" />
+1. reduces the auto-scheduling time by up to 5.88x less than the
+current auto-scheduler on 8 uniformly sampled dynamic shapes, and
 
-### User Interface
+1. improves performance by up to 69.5% better than the auto-scheduler and 18.6%
+better than the vendor library. All these advantages make DietCode an efficient
+and practical solution for dynamic-shape workloads.
+
+
+# Guide-level explanation
+[guide-level-explanation]: #guide-level-explanation
+
+We implemented and experiemented DietCode based on Auto-Scheduler,
+so the following example is based on Auto-Scheduler. However, we plan
+to integrate this RFC to AutoTIR.
 
 ```Python
 T, T_vals = tir.ShapeVar('T’), list(range(1, 128))
@@ -46,25 +70,68 @@ search_policy = SketchPolicy(search_task, XGBModel())
 search_task.tune(tune_option, search_policy)
 ```
 
-Note that the above interface is based on Ansor, and we will migrate the same
-changes to the MetaScheduler accordingly.
+To enable auto-scheduling for dynamic shape workloads,
+users only need to:
+1. Have `ShapeVar` in the TE/TensorIR computes.
+2. Specify the weight of each shape value.
 
-## Evaluation Results
+Note that the proposed interface is optional, so it won't
+break any existing code.
 
-Our evaluation shows that DietCode has the following key strengths when
-auto-scheduling an entire model end-to-end: 
 
-1. reduces the auto-scheduling time by up to 5.88x less than the
-current auto-scheduler on 8 uniformly sampled dynamic shapes, and
+# Reference-level explanation
+[reference-level-explanation]: #reference-level-explanation
 
-1. improves performance by up to 69.5% better than the auto-scheduler and 18.6%
-better than the vendor library. All these advantages make DietCode an efficient
-and practical solution for dynamic-shape workloads.
+// Please explain briefly about what's happening behind.
+// You could write a pseudo code to explain the search process, for example.
 
-## Upstreaming Milestones
+Here is an overview of the DietCode framework design.
+
+<img src="./docs/figures/DietCode.jpg" width="61.8%" />
+
+# Drawbacks
+[drawbacks]: #drawbacks
+
+// Discuss a bit about the op coverage and binary size.
+
+# Rationale and alternatives
+[rationale-and-alternatives]: #rationale-and-alternatives
+
+There is an approach proposed by [Nimble](https://arxiv.org/pdf/2006.03031.pdf),
+which partitions a range of dynamic shape to buckets and tunes one kernel for each bucket.
+We could, of course, implement this approach to existing Auto-SCheduler and AutoTIR.
+However, as evaluated in the DietCode paper, this approach is not guaranteed to achieve
+better performance as static shapes.
+
+# Prior art
+[prior-art]: #prior-art
+
+// Brorrow some related work from the paper.
+
+- Ansor: ...
+- 
+
+
+# Unresolved questions
+[unresolved-questions]: #unresolved-questions
+
+// I tried to list one but you could write whatever in your mind.
+
+- Limited dynamic shape dimension.
+- ...
+
+# Future possibilities
+[future-possibilities]: #future-possibilities
+
+// I tried to list some but you could write whatever in your mind.
+
+- Evaeluate more ops.
+- CPU support.
+
+# Upstreaming Milestones
 
 We propose the following milestones for upstreaming, where each bullet point
-corresponds to a PR of roughly several hundred lines.
+corresponds to a PR with unit tests of roughly several hundred lines.
 
 - [ ] Code Generation Support
   - Local Padding
@@ -77,10 +144,4 @@ corresponds to a PR of roughly several hundred lines.
   - Micro-Kernel Cost Model
   - Evolutionary Search
 - [ ] Dynamic-Shape Program Compilation
-  ```CUDA
-  __global__ void default_function(float* X, float* Y, float* Z,
-                                   const int T) {
-                                   // Note the extra `T` here
-  }
-  ```
 - [ ] Decision-Tree Dispatching
