@@ -106,10 +106,11 @@ Here is an overview of the DietCode framework design.
   1. A shape-dependent adaption cost function *f*<sub>adapt</sub> that defines
      the penalty of porting *M* to *P*.
   
-While *f*<sub>MK</sub> is a function that has to be learned and updated by real
-hardware measurements during the auto-scheduling process, *f*<sub>adapt</sub> is
-a simple term that can be evaluated using the core occupancy and the padding
-ratio (in other words, it does not require feature extraction
+  While *f*<sub>MK</sub> is a function that has to be learned and updated by
+  real hardware measurements during the auto-scheduling process,
+  *f*<sub>adapt</sub> is a simple term that can be evaluated using the core
+  occupancy and the padding ratio (in other words, it does not require feature
+  extraction from the schedules).
 
 # Drawbacks
 [drawbacks]: #drawbacks
