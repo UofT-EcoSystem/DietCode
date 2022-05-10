@@ -54,8 +54,8 @@ changes to the MetaScheduler accordingly.
 Our evaluation shows that DietCode has the following key strengths when
 auto-scheduling an entire model end-to-end: 
 
-1. reduces the auto-scheduling time by up to 5.88x less than the
-state-of-the-art auto-scheduler on the uniformly sampled dynamic shapes, and
+1. reduces the auto-scheduling time by 5.88x less than the
+state-of-the-art auto-scheduler on 8 uniformly sampled dynamic shapes, and
 
 1. improves performance by up to 69.5% better than the auto-scheduler and 18.6%
 better than the vendor library. All these advantages make DietCode an efficient
