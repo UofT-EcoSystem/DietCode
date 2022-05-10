@@ -189,7 +189,8 @@ approach is not guaranteed to achieve better performance as static shapes.
 - Evaluate more operator use cases.
 - CPU Support
 
-# Upstreaming Milestones
+# Upstream Milestones
+[upstream-milestones]: #upstream-milestones
 
 We propose the following milestones for upstreaming, where each bullet point
 corresponds to a PR with unit tests of roughly several hundred lines.
