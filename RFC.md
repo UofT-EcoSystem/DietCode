@@ -158,18 +158,23 @@ approach is not guaranteed to achieve better performance as static shapes.
   2018](https://www.usenix.org/conference/atc18/presentation/xu-shizen)),
   BatchMaker ([Pin Gao et al. EuroSys
   2018](https://doi.org/10.1145/3190508.3190541)), and TensorFlow Fold ([Moshe
-  Looks et al. ICLR 2017](https://openreview.net/forum?id=ryrGawqex)] for cases
-  when the batch size is dynamic. Nimble ([Haichen Shen et al. MLSys
+  Looks et al. ICLR 2017](https://openreview.net/forum?id=ryrGawqex)) for cases
+  when the batch size is dynamic. 
+  
+  Nimble ([Haichen Shen et al. MLSys
   2021](https://proceedings.mlsys.org/paper/2021/hash/4e732ced3463d06de0ca9a15b6153677-Abstract.html))
   and DISC ([Kai Zhu et al. EuroMLSys
   2021](https://dl.acm.org/doi/10.1145/3437984.3458838)) both design a compiler
-  to represent and execute dynamic neural networks. Cortex ([Pratik Fegade et
-  al. MLSys
+  to represent and execute dynamic neural networks. 
+  
+  Cortex ([Pratik Fegade et al. MLSys
   2021](https://proceedings.mlsys.org/paper/2021/hash/182be0c5cdcd5072bb1864cdee4d3d6e-Abstract.html)
-  is a compiler-based framework on recursive neural networks. Those works focus
-  on the graph-level optimizations and therefore are orthogonal to DietCode,
-  which operates on each individual layer. In fact, those graph-level solutions
-  can also leverage DietCode for efficient operator code generation.
+  is a compiler-based framework on recursive neural networks. 
+  
+  Those works focus on the graph-level optimizations and therefore are
+  orthogonal to DietCode, which operates on each individual layer. In fact,
+  those graph-level solutions can also leverage DietCode for efficient operator
+  code generation.
 
 # Unresolved Questions
 [unresolved-questions]: #unresolved-questions
