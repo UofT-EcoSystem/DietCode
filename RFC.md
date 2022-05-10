@@ -1,4 +1,4 @@
-# \[RFC\] DietCode: Automatic Optimization for Dynamic Tensor Programs
+# \[RFC\] DietCode: An Auto-Scheduler for Dynamic Tensor Programs
 
 ## Motivation
 
