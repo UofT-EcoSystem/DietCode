@@ -97,8 +97,19 @@ Here is an overview of the DietCode framework design.
   determine the micro-kernel candidates. Those candidates serve as the building
   blocks and are executed repeatedly to carry out a workload instance (defined
   as an static-shape instance of the dynamic-shape workload).
-- 
-- 
+- We build a **micro-kernel-based cost model**. The key insight is that the cost
+  of a complete program *P* that is made up of a micro-kernel *M* can be
+  decomposed into two parts: 
+  
+  1. A shape-generic cost function *f*<sub>MK</sub> that predicts the cost of
+     *M*, and
+  1. A shape-dependent adaption cost function *f*<sub>adapt</sub> that defines
+     the penalty of porting *M* to *P*.
+  
+While *f*<sub>MK</sub> is a function that has to be learned and updated by real
+hardware measurements during the auto-scheduling process, *f*<sub>adapt</sub> is
+a simple term that can be evaluated using the core occupancy and the padding
+ratio (in other words, it does not require feature extraction
 
 # Drawbacks
 [drawbacks]: #drawbacks
