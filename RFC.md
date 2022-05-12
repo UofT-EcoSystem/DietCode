@@ -8,16 +8,13 @@
 
 We propose to integrate DietCode, an auto-scheduler for dynamic tensor programs,
 to AutoTIR. DietCode offers the following features:
-- A shape generic search space to cover all possible shapes in dynamic shape
-  workloads.
-- An improved cost model to judge the quality of schedule candidates based on
-  dynamic shape.
-- Some improvements to the TVM CUDA codegen to achieve better performance with
-  imperfect tiling.
+- A shape-generic search space to cover possible shapes in dynamic shape workloads.
+- A dynamic-shape aware cost model to judge the quality of schedule candidates.
+- Enhancement to the TVM CUDA codegen for imperfect tiling.
 
 DietCode has been published by MLSys 2022 so please see [the
 paper](https://proceedings.mlsys.org/paper/2022/hash/fa7cdfad1a5aaf8370ebeda47a1ff1c3-Abstract.html)
-for more details and evaluations. Meanwhile, DietCode itself is also publicly
+for more details and evaluations. Meanwhile, the latest DietCode codebase is also publicly
 available [here](https://github.com/UofT-EcoSystem/DietCode).
 
 # Motivation
@@ -26,13 +23,13 @@ available [here](https://github.com/UofT-EcoSystem/DietCode).
 Achieving high performance for compute-intensive operators in machine learning
 workloads is a crucial but challenging task. Many machine learning and system
 practitioners rely on vendor libraries or auto-schedulers to do the job. While
-the former requires large engineering efforts, the latter only supports
+the former requires significant engineering efforts, the latter in TVM only supports
 static-shape workloads in existing works. It is difficult, if not impractical,
-to apply existing auto-schedulers directly to **dynamic-shape workloads**, as
-this leads to extremely long auto-scheduling time.
+to apply the existing auto-scheduler directly to **dynamic-shape workloads**, as
+this leads to extremely long tuning time.
 
 We observe that the key challenge faced by existing auto-schedulers when
-handling a dynamic-shape workload is that they cannot construct a unified search
+handling a dynamic-shape workload is that they cannot construct a conclusive search
 space for all the possible shapes of the workload, because their search space is
 shape-dependent. To address this, this RFC aims to add dynamic-shape supports to
 AutoTIR by integrating DietCode framework, which constructs **a shape-generic
@@ -52,34 +49,34 @@ and practical solution for dynamic-shape workloads.
 # Guide-Level Explanation
 [guide-level-explanation]: #guide-level-explanation
 
-We implemented and experimented DietCode based on the current auto-scheduler
-submodule, so the following example is based on it as well. However, we plan to
-integrate this RFC to AutoTIR (MetaScheduler).
+The existing experiments are largely conducted with auto-scheduler.
+However, having been syncing with the AutoTIR team for quarters,
+we plan to integrate this RFC to MetaSchedule (AutoTIR),
+because it provides more systematic interface
+and cleaner integration path with less hacks.
 
-```Python
-T, T_vals = tir.ShapeVar('T’), list(range(1, 128))
+To provide an example of additional information users are required to feed the system:
 
-task = SearchTask(func=Dense, args=(16*T, 768, 2304),
-                  shape_vars=(T,), wkl_insts=(T_vals,)
-                  wkl_inst_weights=([1. for _ in T_vals],))
+```python
+# A symbolic shape constraint
+T = tir.ShapeVar('T’)
+# The candidate values of `T`
+T_vals = list(range(1, 128))
 
-tune_option = TuningOptions(
-                  num_measure_trials=auto_sched_ntrials,
-                  runner=local_rpc_measure_ctx.runner,
-                  measure_callbacks=[RecordToFile(sched_log_fname)]
-              )
-search_policy = SketchPolicy(search_task, XGBModel())
-
-search_task.tune(tune_option, search_policy)
+task = Task(func=Dense,
+            args=(16*T, 768, 2304),
+            shape_vars=(T,),
+            wkl_insts=(T_vals,)
+            wkl_inst_weights=([1. for _ in T_vals],))
 ```
 
 To enable auto-scheduling for dynamic shape workloads, users only need to:
-1. Have `ShapeVar` in the TE/TensorIR computes.
-1. Specify the weight of each shape value.
+1. Have `ShapeVar` in the TE/TensorIR compututation.
+2. Specify the weight/distribution of each shape value.
 
-Note that the proposed interface is optional, so it will not break any existing
-code.
-
+Notes:
+1. Symbolic constraint is required additional in Relay, but could be inferred automatically after Relax is introduced;
+2. The proposed interface does not change any existing functionality.
 
 # Reference-Level Explanation
 [reference-level-explanation]: #reference-level-explanation
@@ -166,7 +163,7 @@ approach is not guaranteed to achieve better performance as static shapes.
   to represent and execute dynamic neural networks. 
   
   Cortex ([Pratik Fegade et al. MLSys
-  2021](https://proceedings.mlsys.org/paper/2021/hash/182be0c5cdcd5072bb1864cdee4d3d6e-Abstract.html)
+  2021](https://proceedings.mlsys.org/paper/2021/hash/182be0c5cdcd5072bb1864cdee4d3d6e-Abstract.html))
   is a compiler-based framework on recursive neural networks. 
   
   Those works focus on the graph-level optimizations and therefore are
