@@ -83,7 +83,7 @@ Notes:
 
 Here is an overview of the DietCode framework design.
 
-<img src="./docs/figures/DietCode.jpg" width="61.8%" />
+<img src="https://raw.githubusercontent.com/UofT-EcoSystem/DietCode/main/docs/figures/DietCode.jpg" width="61.8%" />
 
 - We construct **a shape-generic search space that consists of micro-kernels**,
   an incomplete program that carries out a tile of the complete computation, to
