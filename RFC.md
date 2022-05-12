@@ -8,7 +8,8 @@
 
 We propose to integrate DietCode, an auto-scheduler for dynamic tensor programs,
 to AutoTIR. DietCode offers the following features:
-- A shape-generic search space to cover possible shapes in dynamic shape workloads.
+- A shape-generic search space to cover possible shapes in dynamic shape
+  workloads.
 - A dynamic-shape aware cost model to judge the quality of schedule candidates.
 - Enhancement to the TVM CUDA codegen for imperfect tiling.
 
@@ -40,22 +41,22 @@ Our evaluation shows that DietCode has the following key strengths when
 auto-scheduling an entire model end-to-end: 
 
 1. reduces the auto-scheduling time by up to 5.88x less than the current
-auto-scheduler on 8 uniformly sampled dynamic shapes, and
+   auto-scheduler on 8 uniformly sampled dynamic shapes, and
 1. improves performance by up to 69.5% better than the auto-scheduler and 18.6%
-better than the vendor library. All these advantages make DietCode an efficient
-and practical solution for dynamic-shape workloads.
+   better than the vendor library. All these advantages make DietCode an
+   efficient and practical solution for dynamic-shape workloads.
 
 
 # Guide-Level Explanation
 [guide-level-explanation]: #guide-level-explanation
 
-The existing experiments are largely conducted with auto-scheduler.
-However, having been syncing with the AutoTIR team for quarters,
-we plan to integrate this RFC to MetaSchedule (AutoTIR),
-because it provides more systematic interface
-and cleaner integration path with less hacks.
+The existing experiments are largely conducted with auto-scheduler. However,
+having been syncing with the AutoTIR team for quarters, we plan to integrate
+this RFC to MetaSchedule (AutoTIR), because it provides more systematic
+interface and cleaner integration path with less hacks.
 
-To provide an example of additional information users are required to feed the system:
+To provide an example of additional information users are required to feed the
+system:
 
 ```python
 # A symbolic shape constraint
@@ -75,7 +76,8 @@ To enable auto-scheduling for dynamic shape workloads, users only need to:
 2. Specify the weight/distribution of each shape value.
 
 Notes:
-1. Symbolic constraint is required additional in Relay, but could be inferred automatically after Relax is introduced;
+1. Symbolic constraint is required additional in Relay, but could be inferred
+   automatically after Relax is introduced;
 2. The proposed interface does not change any existing functionality.
 
 # Reference-Level Explanation
