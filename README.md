@@ -37,6 +37,10 @@ framework.
 We are actively working on the RFC for upstreaming the codebase to TVM, and will
 post the latest updates here.
 
+- [`2022/05/12`] We have opened an
+  [RFC](https://github.com/apache/tvm-rfcs/pull/72) in the TVM repository. Any
+  suggestions are welcome.
+
 ## Prerequisites
 
 - Minimum Requirement: A machine with a modern NVIDIA GPU and GPU driver
