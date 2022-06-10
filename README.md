@@ -37,6 +37,8 @@ framework.
 We are actively working on the RFC for upstreaming the codebase to TVM, and will
 post the latest updates here.
 
+- [`2022/06/01`] Our RFC is officially merged into the repository. We are
+  currently collaborating with OctoML people on the first milestone.
 - [`2022/05/12`] We have opened an
   [RFC](https://github.com/apache/tvm-rfcs/pull/72) in the TVM repository. Any
   suggestions are welcome.
