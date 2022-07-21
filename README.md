@@ -10,9 +10,6 @@ contents*.
   </tr>
   <tr>
     <td>
-      <a href="https://github.com/UofT-EcoSystem/DietCode/actions/workflows/rtx_3090_desktop.yml">
-        <img src="https://github.com/UofT-EcoSystem/DietCode/actions/workflows/rtx_3090_desktop.yml/badge.svg" alt="RTX 3090 desktop">
-      </a>
       <a href="https://github.com/UofT-EcoSystem/DietCode/actions/workflows/rtx_2080_ti_server.yml">
         <img src="https://github.com/UofT-EcoSystem/DietCode/actions/workflows/rtx_2080_ti_server.yml/badge.svg" alt="RTX 2080 Ti server">
       </a>
